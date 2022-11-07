@@ -1,0 +1,12 @@
+{ 
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+        "@/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "vueCompilerOptions": {
+    "experimentalDisableTemplateSupport": true // 去掉volar下el标签红色波浪线问题
+  },
+}
