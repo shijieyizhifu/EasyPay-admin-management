@@ -32,7 +32,7 @@
                     <el-button type="danger" v-if="row.status == 'Y'" size="mini" @click="handleStatus(row,'N')">
                         禁用
                     </el-button> -->
-                    <el-button type="primary" size="mini" @click="handleUpdate(row)">
+                    <el-button type="success" size="mini" @click="handleUpdate(row)">
                         {{ $t('table.edit') }}
                       </el-button>
                     <el-button type="primary" size="mini" @click="handleBusiness(row)">
@@ -46,6 +46,7 @@
         </div>
         <div v-else>
             <el-table
+                style="width:1001px"
                 :key="1"
                 v-loading="listLoading"
                 :data="channelList"

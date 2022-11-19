@@ -48,10 +48,18 @@ axiosIns.interceptors.response.use((response) => {
         sessionStorage.clear()
         // store.commit('user/update_user', {})
         router.push('/login')
-        return
+        return data
     }
     return data
-})
+},
+err => {
+    Message({
+        showClose: true,
+        message: err,
+        type: 'error'
+    })
+}
+)
 
 const utilsApi = {
 
@@ -310,7 +318,7 @@ utilsApi.saveAgencyMerchant = async (params) => {
 }
 
 //查询商户绑定的汇率
-utilsApi.findMerchantRate = async (params) => {
+utilsApi.findAgencyMerchantRate = async (params) => {
     let reslut = await axiosIns.get("/v1/agencyMerchant/findMerchantRate?" + formatParams(params))
     return reslut
 }
@@ -356,6 +364,76 @@ utilsApi.findAgentType = async (params) => {
 //查询代理商业务费率
 utilsApi.findAgentRate = async (params) => {
     let reslut = await axiosIns.get("/v1/agent/findBusiness?" + formatParams(params))
+    return reslut
+}
+
+//查询所有代理商
+utilsApi.agentFindAll = async (params) => {
+    let reslut = await axiosIns.get("/v1/agent/findAll")
+    return reslut
+}
+
+//查询代理商业务集群
+utilsApi.findAgentBusinessMerchant = async (params) => {
+    let reslut = await axiosIns.get("/v1/agent/agentBusinessMerchant?" + formatParams(params))
+    return reslut
+}
+
+//给代理业务绑定商户业务
+utilsApi.agentInsertMerchantBusiness = async (params) => {
+    let reslut = await axiosIns.post("/v1/agent/insertMerchantBusiness", toFromData(params))
+    return reslut
+}
+
+//查询代理开通某个业务的商户
+utilsApi.getMerchantByBusiness = async (params) => {
+    let reslut = await axiosIns.get("/v1/merchant/getMerchantByBusiness?" + formatParams(params))
+    return reslut
+}
+
+//---------------------------------商户--------------------------------
+
+//查询商户
+utilsApi.merchantPage = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/page", params)
+    return reslut
+}
+
+//新增商户
+utilsApi.merchantSave = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/save", params)
+    return reslut
+}
+
+//新增商户业务费率
+utilsApi.merchantInsterbusiness = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/insertBusiness", params)
+    return reslut
+}
+
+//查询商户业务费率
+utilsApi.findMerchantRate = async (params) => {
+    let reslut = await axiosIns.get("/v1/merchant/findBusiness?" + formatParams(params))
+    return reslut
+}
+
+//---------------------------------订单--------------------------------
+
+//查询代收订单
+utilsApi.orderPage = async (params) => {
+    let reslut = await axiosIns.post("/v1/order/page", params)
+    return reslut
+}
+
+//查询代付订单
+utilsApi.orderPayOutPage = async (params) => {
+    let reslut = await axiosIns.post("/v1/order/payOutPage", params)
+    return reslut
+}
+
+//---------------------------------查询商户或者代理商余额--------------------------------
+utilsApi.searchBalances = async (params) => {
+    let reslut = await axiosIns.get("/v1/account/findByCode?" + formatParams(params))
     return reslut
 }
 

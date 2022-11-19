@@ -69,7 +69,7 @@ module.exports = {
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
-
+    
     // set svg-sprite-loader
     config.module
       .rule('svg')
@@ -86,6 +86,9 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
+
+    config
+      .when(process.env.NODE_ENV === 'development', config => config.devtool('source-map'))
 
     config
       .when(process.env.NODE_ENV !== 'development',

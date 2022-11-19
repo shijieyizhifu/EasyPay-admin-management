@@ -103,9 +103,53 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/offlineRecord/index'),
+        component: () => import('@/views1/offlineRecord/index'),
         name: 'OfflineRecord',
         meta: { title: '流水记录' }
+      }
+    ]
+  },
+  {
+    path: '/merchantManagement',
+    component: Layout,
+    redirect: '/merchantManagement/index',
+    alwaysShow: true,
+    name: 'merchantManagement',
+    meta: {
+      title: '商户管理',
+      icon: 'el-icon-user-solid',
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views1/merchantManagement/index'),
+        name: 'MerchantManagement',
+        meta: { title: '商户' }
+      }
+    ]
+  },
+  {
+    path: '/orderManagement',
+    component: Layout,
+    redirect: '/orderManagement/index',
+    alwaysShow: true,
+    name: 'orderManagement',
+    meta: {
+      title: '订单管理',
+      icon: 'el-icon-s-order',
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views1/orderManagement/index'),
+        name: 'OrderManagement',
+        meta: { title: '代收订单' }
+      },
+      {
+        path: 'payOut',
+        component: () => import('@/views1/orderManagement/payOut'),
+        name: 'OrderPayOutManagement',
+        meta: { title: '代付订单' }
       }
     ]
   },
@@ -117,12 +161,12 @@ export const asyncRoutes = [
     name: 'agentManagement',
     meta: {
       title: '代理商管理',
-      icon: 'el-icon-s-operation',
+      icon: 'el-icon-s-custom',
     },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/agentManagement/index'),
+        component: () => import('@/views1/agentManagement/index'),
         name: 'AgentManagement',
         meta: { title: '代理商' }
       }
@@ -141,19 +185,19 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/channelManagement/index'),
+        component: () => import('@/views1/channelManagement/index'),
         name: 'tradingChannel',
         meta: { title: '交易通道' }
       },
       {
         path: 'business',
-        component: () => import('@/views/channelManagement/business'),
+        component: () => import('@/views1/channelManagement/business'),
         name: 'business',
         meta: { title: '平台业务' }
       },
       {
         path: 'channelMerchant',
-        component: () => import('@/views/channelManagement/channelMerchant'),
+        component: () => import('@/views1/channelManagement/channelMerchant'),
         name: 'channelMerchant',
         meta: { title: '通道商户' }
       }
@@ -167,12 +211,12 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       title: '系统管理',
-      icon: 'lock',
+      icon: 'el-icon-setting',
     },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/permission/index'),
+        component: () => import('@/views1/permission/index'),
         name: 'PermissionManager',
         meta: {
           title: '权限管理',
@@ -180,7 +224,7 @@ export const asyncRoutes = [
       },
       {
         path: 'role',
-        component: () => import('@/views/permission/role'),
+        component: () => import('@/views1/permission/role'),
         name: 'RolePermission',
         meta: {
           title: '角色管理',
@@ -188,7 +232,7 @@ export const asyncRoutes = [
       },
       {
         path: 'user',
-        component: () => import('@/views/permission/user'),
+        component: () => import('@/views1/permission/user'),
         name: 'UserPermission',
         meta: {
           title: '用户管理',
@@ -196,7 +240,7 @@ export const asyncRoutes = [
       },
       {
         path: 'dataDictionary',
-        component: () => import('@/views/permission/dataDictionary'),
+        component: () => import('@/views1/permission/dataDictionary'),
         name: 'DataDictionary',
         meta: {
           title: '数据字典',

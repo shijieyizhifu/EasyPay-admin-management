@@ -6,6 +6,7 @@
               </div>
           
               <el-table
+                style="width:911px"
                 :key="tableKey"
                 v-loading="listLoading"
                 :data="list"
@@ -28,7 +29,7 @@
                         </template>
                       </el-table-column>
                 </template>
-                <el-table-column :label="'操作'" fixed="right" align="center" width="230" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'" align="center" width="230" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
@@ -36,7 +37,7 @@
                     <el-button type="danger" v-if="row.status == 'Y'" size="mini" @click="handleStatus(row,'N')">
                         禁用
                     </el-button>
-                    <el-button type="primary" size="mini" @click="handleUpdate(row)">
+                    <el-button type="success" size="mini" @click="handleUpdate(row)">
                         {{ $t('table.edit') }}
                       </el-button>
                     <el-button type="primary" size="mini" @click="handleBusiness(row)">
@@ -50,6 +51,7 @@
         </div>
         <div v-else>
             <el-table
+                style="width:1081px"
                 :key="1"
                 v-loading="listLoading"
                 :data="rateList"
@@ -62,20 +64,18 @@
                 </el-table-column> -->
                 <template v-for="item in ChannelMerchantRate">
                     <el-table-column  :key="item.label" v-if="!['merchant', 'agencyCode', 'businessCode'].includes(item.key)" :label="item.label" :width="item.width || '80px'" align="center">
-                        <template slot-scope="{row}">
-                            <div>
-                                <span v-if="item.listType == 'custom'">
-                                    {{ row[item.key] }}
-                                </span>
-                                <span v-else-if="item.type == 'select' && item.listType != 'custom'">
-                                    {{ item.list.find(i => i.value == row[item.key]).name }}
-                                </span>
-                                <span v-else>{{ row[item.key] == -1 ? '不限' : row[item.key] }}</span>
-                            </div>
-                        </template>
+                      <template slot-scope="{row}">
+                        <span v-if="item.listType == 'custom'">
+                            {{ row['businessName'] }}
+                        </span>
+                      <span v-else-if="item.type == 'select' && item.listType != 'custom'">
+                        {{ item.list.find(i => i.value == row.rate[item.key]) ? item.list.find(i => i.value == row.rate[item.key]).name : '' }}
+                      </span>
+                      <span v-else>{{ row.rate[item.key] == -1 ? '不限' : row.rate[item.key] }}</span>
+                    </template>
                     </el-table-column>
                 </template>
-                <el-table-column :label="'操作'" fixed="right" align="center" width="120" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'"  align="center" width="120" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <el-button type="primary" size="mini" @click="handleUpdate1(row)">
                         修改
@@ -96,8 +96,8 @@
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <div v-for="item,index in ChannelMerchant" :key="index">
                 <el-form-item  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
-                    <el-input v-if="!item.type && !item.hidden" v-model="temp[item.key]" :disabled="dialogStatus==='编辑' && item.editDisabled" :placeholder="item.label"/>
-                    <el-select  filterable v-if="item.type == 'select'  && !item.hidden" :disabled="dialogStatus==='编辑' && item.editDisabled" v-model="temp[item.key]" :placeholder="item.label">
+                    <el-input v-if="!item.type && !(item.hidden && item.hidden.indexOf('form')>=0)" v-model="temp[item.key]" :disabled="dialogStatus==='编辑' && item.editDisabled" :placeholder="item.label"/>
+                    <el-select  filterable v-if="item.type == 'select'  && !(item.hidden && item.hidden.indexOf('form')>=0)" :disabled="dialogStatus==='编辑' && item.editDisabled" v-model="temp[item.key]" :placeholder="item.label">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
                       </el-select>
                 </el-form-item>
@@ -123,8 +123,8 @@
                     type="warning">
                 </el-alert>
                 <el-form-item v-if="item.key != 'businessCode'"  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
-                    <el-input v-if="!item.type  && !item.hidden" v-model="temp1[item.key]" :disabled="dialogStatus1 ==='编辑' && item.editDisabled" :placeholder="item.label"/>
-                    <el-select  filterable v-if="item.type == 'select'  && !item.hidden" v-model="temp1[item.key]" :placeholder="item.label">
+                    <el-input v-if="!item.type  && !(item.hidden && item.hidden.indexOf('form')>=0)" v-model="temp1[item.key]" :disabled="dialogStatus1 ==='编辑' && item.editDisabled" :placeholder="item.label"/>
+                    <el-select  filterable v-if="item.type == 'select'  && !(item.hidden && item.hidden.indexOf('form')>=0)" v-model="temp1[item.key]" :placeholder="item.label">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
                       </el-select>
                 </el-form-item>
@@ -270,13 +270,18 @@
         })
       },
       getBusinessCode(name) {
-        return ChannelMerchantRate.filter(item => item.key == 'businessName')[0].list.filter(item => item.name == name)[0].businessCode
+        console.log(name)
+        console.log(ChannelMerchantRate)
+        return ChannelMerchantRate.find(item => item.key == 'businessName').list.find(item => item.name == name).businessCode
       },
       createData1() {
         this.$refs['dataForm1'].validate(async (valid) => {
           if (valid) {
-            this.temp1.businessCode = this.getBusinessCode(this.temp1.businessName)
-            let data = JSON.parse(JSON.stringify(this.temp1))
+            let data = {}
+            data.rate = JSON.parse(JSON.stringify(this.temp1))
+            data.merchant = data.rate.merchant
+            data.agencyCode = data.rate.agencyCode
+            data.businessCode = this.getBusinessCode(this.temp1.businessName)
             delete data.id
             let res = await utilsApi.merchantRateSave(data)
             if(res.code == 0){
@@ -286,7 +291,7 @@
                     type: 'success',
                     duration: 2000
                 })
-                this.findMerchantRate()
+                this.findAgencyMerchantRate()
                 this.dialogFormVisible1 = false
             }
           }
@@ -301,6 +306,11 @@
         })
       },
       handleUpdate1(row) {
+        row.rateObj = JSON.parse(JSON.stringify(row.rate))
+        for(let i in row.rateObj){
+          row[i] = row.rateObj[i]
+        }
+        console.log(row)
         this.temp1 = row
         this.dialogStatus1 = '编辑'
         this.dialogFormVisible1 = true
@@ -328,7 +338,11 @@
       updateData1() {
         this.$refs['dataForm1'].validate(async(valid) => {
           if (valid) {
-            this.temp1.businessCode = this.getBusinessCode(this.temp1.businessName)
+            let data = {}
+            data.rate = JSON.parse(JSON.stringify(this.temp1))
+            data.merchant = data.rate.merchant
+            data.agencyCode = data.rate.agencyCode
+            data.businessCode = this.getBusinessCode(this.temp1.businessName)
             let res = await utilsApi.merchantRateSave(this.temp1)
             if(res.code == 0){
                 this.$notify({
@@ -337,7 +351,7 @@
                     type: 'success',
                     duration: 2000
                 })
-                this.findMerchantRate()
+                this.findAgencyMerchantRate()
                 this.dialogFormVisible1 = false
             }
           }
@@ -405,11 +419,11 @@
                 }
             }
         }
-        let res = await this.findMerchantRate()
+        let res = await this.findAgencyMerchantRate()
         this.listLoading = false
       },
-      async findMerchantRate() {
-        let res = await utilsApi.findMerchantRate({agencyCode: this.currentRow.agencyCode, merchant: this.currentRow.merchant})
+      async findAgencyMerchantRate() {
+        let res = await utilsApi.findAgencyMerchantRate({agencyCode: this.currentRow.agencyCode, merchant: this.currentRow.merchant})
         this.rateList = res.data
       }
     }

@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-11-04 18:03:08
+ * @LastEditTime: 2022-11-16 17:16:46
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,6 +15,14 @@
                     <el-select style="width:183px;" clearable filterable v-if="item.type == 'select'" v-model="item.value" :placeholder="item.label">
                       <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
                     </el-select>
+                    <el-date-picker
+                      v-if="item.type == 'date'"
+                      v-model="item.value"
+                      type="daterange"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                      :default-time="['00:00:00', '23:59:59']">
+                    </el-date-picker>
                 </el-form-item>
             </span>
           </el-form>
@@ -22,7 +30,7 @@
             <el-button style="margin-left: 10px;"  class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
               {{ $t('table.search') }}
             </el-button>
-            <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addData">
+            <el-button v-if="!showAddButtonList.includes(type)" class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit" @click="addData">
               {{ $t('table.add') }}
             </el-button>
           </el-row>
@@ -38,10 +46,17 @@
           return []
         }
       },
+      type: {
+        type: String,
+        default: function() {
+          return ''
+        }
+      }
     },
     data() {
       return {
-        searchData: this.searchFields.filter(item => item.filter == true)
+        searchData: this.searchFields.filter(item => item.filter == true),
+        showAddButtonList: ['pay','payOut']
       }
     },
     // watch:{

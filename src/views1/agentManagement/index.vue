@@ -6,6 +6,7 @@
               </div>
           
               <el-table
+                style="width:766px"
                 :key="tableKey"
                 v-loading="listLoading"
                 :data="list"
@@ -14,8 +15,11 @@
                 highlight-current-row
               >
               <!-- @sort-change="sortChange" -->
-                <el-table-column :label="$t('table.id')" type="index"  align="center" width="80" >
-                </el-table-column>
+              <el-table-column type="expand" label="余额" width="55">
+                <template slot-scope="{row}">
+                  <expandBalances :row="row"></expandBalances>
+                </template>
+              </el-table-column>
                 <el-table-column v-for="item,index in agent" :key="index" :label="item.label" :width="item.width || '120px'" align="center">
                     <template slot-scope="{row}">
                       <span v-if="item.type == 'select'">
@@ -24,7 +28,7 @@
                       <span v-else>{{ row[item.key] }}</span>
                     </template>
                   </el-table-column>
-                <el-table-column :label="'操作'" fixed="right" align="center" width="230" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'"  align="center" width="230" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
@@ -89,13 +93,16 @@
                             <span v-else>{{ row.rate[item.key] == -1 ? '不限' : row.rate[item.key] }}</span>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column :label="'操作'" fixed="right" align="center" width="230" class-name="small-padding fixed-width">
+                    <el-table-column :label="'操作'" fixed="right" align="center" width="100" class-name="small-padding fixed-width">
                     <template slot-scope="{row}">
-                        <el-button type="primary" size="mini" @click="handleUpdate1(row)">
+                        <!-- <el-button type="primary" size="mini" @click="handleUpdate1(row)">
                             修改
-                        </el-button>
+                        </el-button> -->
+                        <el-button type="primary" size="mini" @click="bindMerchant(row)">
+                          集群
+                      </el-button>
                     </template>
-                    </el-table-column> -->
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
@@ -117,7 +124,52 @@
             {{ $t('table.confirm') }}
             </el-button>
         </div>
-        </el-dialog>
+      </el-dialog>
+      <el-dialog :title="'集群'" :visible.sync="bindMerchantDialog" width="750px" center>
+        <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tab-pane label="已绑定" name="1"></el-tab-pane>
+          <el-tab-pane label="待绑定" name="2"></el-tab-pane>
+        </el-tabs>
+        <el-table
+            :key="1"
+            :data="merchantList"
+            border
+            fit
+            highlight-current-row
+        >
+        <!-- @sort-change="sortChange" -->
+            <el-table-column prop="merchantCode" label="商户编码" align="center" width="100" >
+            </el-table-column>
+            <el-table-column prop="merchantName" label="商户名称" align="center" width="100" >
+            </el-table-column>
+            <el-table-column prop="businessCode" label="业务编码" align="center" width="100" >
+            </el-table-column>
+            <el-table-column prop="businessName" label="业务名称" align="center" width="100" >
+            </el-table-column>
+            <el-table-column prop="rate" label="手续费（%）" align="center" width="110" >
+            </el-table-column>
+            <el-table-column prop="agentCode" label="固定手续费" align="center" width="100" >
+              <template slot-scope="{row}">
+                <span>{{row.fee == -1 ? '无' : row.fee}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column :label="'操作'" v-if="activeName == 2"  align="center" width="100" class-name="small-padding fixed-width">
+            <template slot-scope="{row}">
+                <!-- <el-button type="primary" size="mini" @click="handleUpdate1(row)">
+                    修改
+                </el-button> -->
+                <el-button  type="primary" size="mini" @click="handleBindMerchant(row)">
+                  绑定
+                </el-button>
+            </template>
+            </el-table-column>
+        </el-table>
+        <div slot="footer">
+            <el-button @click="bindMerchantDialog = false" >
+              关闭
+            </el-button>
+        </div>
+      </el-dialog>
       <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <div v-for="item,index in agent" :key="index">
@@ -141,7 +193,7 @@
       <el-dialog :title="dialogStatus1" :visible.sync="dialogFormVisible1">
         <el-form ref="dataForm1" :model="temp1" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
             <el-form-item  :label="'通道&商户'" required>
-                <el-cascader ref="cascader"  :props="props"></el-cascader>
+                <el-cascader ref="cascader" v-if="dialogFormVisible1"  :props="props"></el-cascader>
             </el-form-item>
             <div v-for="item,index in agentRate" :key="index">
                 <el-alert
@@ -176,11 +228,13 @@
   import utilsApi from '@/utils/utilsApi'
   import moment from 'moment'
   import Search from '@/components/Search'
+  import ExpandBalances from '@/components/ExpandBalances'
   import { agent, formRules, agentRate } from '@/utils/table'
+import { array } from 'jszip/lib/support'
   
   export default {
     name: 'Agent',
-    components: { Pagination, Search },
+    components: { Pagination, Search, ExpandBalances },
     data() {
       return {
         tableKey: 0,
@@ -216,7 +270,12 @@
         props: {
           lazy: true,
           lazyLoad: this.lazyLoad
-        }
+        },
+        bindMerchantDialog: false,
+        merchantList: [],
+        bindMerchantList: [],
+        currentBindMerchant: [],
+        activeName: ''
       }
     },
     async created() {
@@ -499,6 +558,7 @@
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
             this.buinessList.push(this.allBuinessList.find(item => item.code == this.business.businessSelected))
+            this.businessValue = this.business.businessSelected
             this.businessDialog = false
             this.findAgencyRate()
           }
@@ -506,6 +566,47 @@
       },
       tabClick(item) {
         this.findAgencyRate(item.name)
+      },
+      async bindMerchant(row) {
+        this.bindMerchantDialog = true
+        this.agentBusinessMerchant = row
+        this.activeName = '1'
+        this.handleClick('1')
+      },
+      async findAgentBusinessMerchant() {
+        let res = await utilsApi.findAgentBusinessMerchant({agentBusinessId: this.agentBusinessMerchant.id})
+        this.merchantList = res.data
+        this.bindMerchantList = res.data
+      },
+      async getMerchantByBusiness() {
+        let res = await utilsApi.getMerchantByBusiness({agentCode: this.currentRow.code,businessCode: this.agentBusinessMerchant.businessCode})
+        let arr = this.bindMerchantList.map(item => item.merchantBusinerssId)
+        for(let i = res.data.length -1;i>=0;i--){
+          if(arr.includes(res.data[i].merchantBusinerssId)){
+            res.data.splice(i,1)
+          }
+        }
+        this.merchantList = res.data
+      },
+      async handleBindMerchant(row) {
+        let res = await utilsApi.agentInsertMerchantBusiness({agentBusinessId: this.agentBusinessMerchant.id, merchantBussinessId: row.merchantBusinerssId})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: '绑定成功',
+                    type: 'success',
+                    duration: 2000
+                })
+                this.handleClick()
+            }
+      },
+      handleClick() {
+        this.merchantList = []
+        if(this.activeName == 1) {
+          this.findAgentBusinessMerchant()
+        }else{
+          this.getMerchantByBusiness()
+        }
       }
     }
   }

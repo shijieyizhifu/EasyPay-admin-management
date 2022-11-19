@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 17:37:09
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-11-05 20:40:11
+ * @LastEditTime: 2022-11-16 17:13:42
  * @FilePath: /vue-element-admin/src/utils/table.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -362,7 +362,7 @@ export const ChannelMerchantRate = [
         value: '',
         required: true,
         width: '140px',
-        hidden: false,
+        hidden: 'table and form',
         editDisabled: true,
     },
     {
@@ -387,15 +387,17 @@ export const ChannelMerchantRate = [
         key: 'rate',
         value: '',
         required: true,
-    },{
-        label: '状态',
-        key: 'status',
-        value: '',
-        required: true,
-        filter: true,
-        type: 'select',
-        list: []
-    },{
+    },
+    // {
+    //     label: '状态',
+    //     key: 'status',
+    //     value: '',
+    //     required: true,
+    //     filter: true,
+    //     type: 'select',
+    //     list: []
+    // },
+    {
         label: '最低手续费',
         key: 'mixFee',
         value: '-1',
@@ -532,5 +534,294 @@ export const agentRate = [
         key: 'monthPriceLimit',
         value: '-1',
         required: true,
+    }
+]
+
+//商户
+export const merchant = [
+    {
+        label: '商户编码',
+        key: 'merchantCode',
+        value: '',
+        filter: true,
+        hidden: 'form',
+        required: true,
+    },
+    {
+        label: '商户名字',
+        key: 'name',
+        value: '',
+        required: true,
+        filter: true,
+    },
+    {
+        label: '状态',
+        key: 'status',
+        value: '',
+        filter: true,
+        type: 'select',
+        list: []
+    },
+    {
+        label: 'IP认证',
+        key: 'ipVerify',
+        value: '',
+        filter: true,
+        type: 'select',
+        list: []
+    },
+    {
+        label: '商户手机号',
+        key: 'phone',
+        value: '',
+        required: true,
+        filter: true,
+    },
+    {
+        label: '代理商编码',
+        key: 'agentCode',
+        value: '',
+        hidden: 'form',
+        required: true,
+        filter: true,
+    },
+    {
+        label: '代理商名字',
+        key: 'agentName',
+        hidden: 'form',
+        filter: true,
+        value: '',
+    },
+    {
+        label: '登录名',
+        key: 'logName',
+        value: '',
+        required: true,
+    },
+]
+
+//商户费率
+export const merchantRate = [
+    {
+        label: '平台业务',
+        key: 'businessCode',
+        value: '',
+        required: true,
+        type: 'select',
+        editDisabled: true,
+        filter: true,
+        listType: 'custom',
+        list: []
+    },
+    {
+        label: '支付类型',
+        key: 'payType',
+        value: '',
+        required: true,
+        type: 'select',
+        list: []
+    },{
+        label: '费率比例',
+        key: 'rate',
+        value: '',
+        required: true,
+    },{
+        label: '最低手续费',
+        key: 'mixFee',
+        value: '-1',
+        required: true,
+    },{
+        label: '每笔固定手续费',
+        key: 'fee',
+        value: '-1',
+        required: true,
+    },{
+        label: '最高手续费',
+        key: 'maxFee',
+        value: '-1',
+        required: true,
+    },{
+        label: '订单最小金额限制',
+        key: 'mixPriceLimit',
+        value: '-1',
+        required: true,
+    },{
+        label: '订单最大金额限制',
+        key: 'maxPriceLimit',
+        value: '-1',
+        required: true,
+    },{
+        label: '每日订单数量限制',
+        key: 'dayCountLimit',
+        value: '-1',
+        required: true,
+    },{
+        label: '每月订单数量限制',
+        key: 'monthCountLimit',
+        value: '-1',
+        required: true,
+    },{
+        label: '每日上限金额',
+        key: 'dayPriceLimit',
+        value: '-1',
+        required: true,
+    },{
+        label: '每月上限金额',
+        key: 'monthPriceLimit',
+        value: '-1',
+        required: true,
+    }
+]
+
+//代收订单 
+export const payOrder = [
+    {
+        label: '商户号',
+        key: 'merchant',
+        value: '',
+        filter: true
+    },{
+        label: '商户名称',
+        key: 'merchantName',
+        value: '',
+        filter: true
+    },{
+        label: '商户订单号',
+        key: 'merchantOrderNo',
+        value: '',
+        filter: true
+    },{
+        label: '系统订单号',
+        key: 'orderNo',
+        value: '',
+        filter: true
+    },{
+        label: '代理商编码',
+        key: 'agentCode',
+        value: '',
+        filter: true
+    },{
+        label: '代理商名称',
+        key: 'agentName',
+        value: '',
+        filter: true
+    },{
+        label: '通道编码',
+        key: 'agencyCode',
+        value: '',
+        filter: true
+    },{
+        label: '业务编码',
+        key: 'businessCode',
+        value: '',
+        filter: true
+    },{
+        label: '业务名称',
+        key: 'businessName',
+        value: '',
+        filter: true
+    },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'payStatus',
+        filter: true
+    },{
+        label: '通知状态',
+        key: 'notifyStatus',
+        value: '',
+        type: 'select',
+        list: [],
+    },{
+        label: '日期',
+        key: 'date',
+        value: '',
+        filter: true,
+        type: 'date'
+    }
+]
+
+//代付订单 
+export const payOutOrder = [
+    {
+        label: '商户号',
+        key: 'merchant',
+        value: '',
+        filter: true
+    },{
+        label: '商户名称',
+        key: 'merchantName',
+        value: '',
+        filter: true
+    },{
+        label: '商户订单号',
+        key: 'merchantOrderNo',
+        value: '',
+        filter: true
+    },{
+        label: '系统订单号',
+        key: 'orderNo',
+        value: '',
+        filter: true
+    },{
+        label: '代理商编码',
+        key: 'agentCode',
+        value: '',
+        filter: true
+    },{
+        label: '代理商名称',
+        key: 'agentName',
+        value: '',
+        filter: true
+    },{
+        label: '通道编码',
+        key: 'agencyCode',
+        value: '',
+        filter: true
+    },{
+        label: '业务编码',
+        key: 'businessCode',
+        value: '',
+        filter: true
+    },{
+        label: '业务名称',
+        key: 'businessName',
+        value: '',
+        filter: true
+    },{
+        label: '收款账户',
+        key: 'accNo',
+        value: '',
+    },{
+        label: '收款商户名称',
+        key: 'accName',
+        width: '120px',
+        value: '',
+    },{
+        label: '银行编码',
+        key: 'bankCode',
+        value: '',
+    },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'payStatus',
+        filter: true
+    },{
+        label: '回调状态',
+        key: 'notifyStatus',
+        value: '',
+        type: 'select',
+        list: [],
+    },{
+        label: '日期',
+        key: 'date',
+        value: '',
+        filter: true,
+        type: 'date'
     }
 ]
