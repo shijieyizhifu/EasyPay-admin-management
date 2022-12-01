@@ -125,6 +125,12 @@ export const asyncRoutes = [
         component: () => import('@/views1/merchantManagement/index'),
         name: 'MerchantManagement',
         meta: { title: '商户' }
+      },
+      {
+        path: 'merchantOffline',
+        component: () => import('@/views1/merchantOffline/index'),
+        name: 'MerchantOffline',
+        meta: { title: '回U记录'}
       }
     ]
   },
@@ -171,6 +177,29 @@ export const asyncRoutes = [
         meta: { title: '代理商' }
       }
     ]
+  },{
+    path: '/financeManagement',
+    component: Layout,
+    redirect: '/financeManagement/index',
+    alwaysShow: true,
+    name: 'financeManagement',
+    meta: {
+      title: '财务管理',
+      icon: 'el-icon-bangzhu',
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views1/financeManagement/index'),
+        name: 'FinanceManagement',
+        meta: { title: '调账管理' }
+      },{
+        path: 'fundsRecords',
+        component: () => import('@/views1/financeManagement/fundsRecords'),
+        name: 'FundsRecords',
+        meta: { title: '冻结/解冻记录'}
+      }
+    ]
   },
   {
     path: '/channelManagement',
@@ -200,6 +229,12 @@ export const asyncRoutes = [
         component: () => import('@/views1/channelManagement/channelMerchant'),
         name: 'channelMerchant',
         meta: { title: '通道商户' }
+      },
+      {
+        path: 'clusterMerchant',
+        component: () => import('@/views1/channelManagement/clusterMerchant'),
+        name: 'clusterMerchant',
+        meta: { title: '集群管理' }
       }
     ]
   },

@@ -96,7 +96,7 @@
           <el-button @click="dialogFormVisible = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus==='新增'?createData():updateData()">
+          <el-button type="primary" :loading="buttonLoading" @click="dialogStatus==='新增'?createData():updateData()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -116,7 +116,7 @@
           <el-button @click="dialogFormVisible1 = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus1==='新增'?createData1():updateData1()">
+          <el-button type="primary" :loading="buttonLoading" @click="dialogStatus1==='新增'?createData1():updateData1()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -136,6 +136,7 @@
     components: { Pagination, Search },
     data() {
       return {
+        buttonLoading: false,
         tableKey: 0,
         list: null,
         total: 0,
@@ -233,7 +234,9 @@
           if (valid) {
             let data = JSON.parse(JSON.stringify(this.temp))
             delete data.id
+            this.buttonLoading = true
             let res = await utilsApi.insertAgency(data)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -252,7 +255,9 @@
           if (valid) {
             let data = JSON.parse(JSON.stringify(this.temp1))
             delete data.id
+            this.buttonLoading = true
             let res = await utilsApi.agencyBusinessSave(data)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -285,7 +290,9 @@
       updateData() {
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.updateDictionary(this.temp)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -302,7 +309,9 @@
       updateData1() {
         this.$refs['dataForm1'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.agencyBusinessSave(this.temp1)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',

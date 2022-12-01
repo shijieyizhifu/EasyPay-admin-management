@@ -65,7 +65,7 @@ const utilsApi = {
 
 }
 
-const toFromData = (obj) => {
+const toFormData = (obj) => {
     let data = new FormData()
     for(let i in obj){
         data.append(i, obj[i])
@@ -76,12 +76,18 @@ const toFromData = (obj) => {
 const formatParams = (obj) => {
     const str = [];
     Object.keys(obj).sort().forEach((key) => {
-      if (obj.hasOwnProperty(key)) {
+      if (obj.hasOwnProperty(key) && obj[key]) {
         str.push(key + '=' + obj[key])
       }
     });
     return str.join('&')
 }
+
+//上传图片地址
+utilsApi.uploadImgUrl =  '/v1/file/uploadImage'
+
+//图片地址
+utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?  'http://8.218.2.19:8000/image/' : 'http://8.218.2.19:8000/image/'
 
 //登录
 utilsApi.login = async (params) => {
@@ -123,7 +129,7 @@ utilsApi.offlineRecordUpdate = async (params) => {
 
 //删除
 utilsApi.offlineRecordDel = async (params) => {
-    let reslut = await axiosIns.post("/v1/offlineRecord/del",toFromData(params))
+    let reslut = await axiosIns.post("/v1/offlineRecord/del",toFormData(params))
     return reslut
 }
 
@@ -227,7 +233,7 @@ utilsApi.updateDictionary = async (params) => {
 
 //删除字典
 utilsApi.delDictionary = async (params) => {
-    let reslut = await axiosIns.post("/v1/dictionary/del" , toFromData(params))
+    let reslut = await axiosIns.post("/v1/dictionary/del" , toFormData(params))
     return reslut
 }
 
@@ -300,6 +306,50 @@ utilsApi.updateBusiness = async (params) => {
 //查询平台业务关联的通道业务
 utilsApi.findAgencyBusiness = async (params) => {
     let reslut = await axiosIns.get("/v1/business/findAgencyBusiness?" + formatParams(params))
+    return reslut
+}
+
+//---------------------------------集群管理--------------------------------
+
+//新增和修改集群
+utilsApi.clusterSave = async (params) => {
+    let reslut = await axiosIns.post("/v1/cluster/save", params)
+    return reslut
+}
+
+//分页查询集群数据
+utilsApi.clusterPage = async (params) => {
+    let reslut = await axiosIns.post("/v1/cluster/page", params)
+    return reslut
+}
+
+//重置集群商户
+utilsApi.resetClusterMerchant = async (params) => {
+    let reslut = await axiosIns.post("/v1/cluster/resetMerchant", params)
+    return reslut
+}
+
+//新增集群商户
+utilsApi.insterClusterMerchant = async (params) => {
+    let reslut = await axiosIns.post("/v1/cluster/insterMerchant", params)
+    return reslut
+}
+
+//删除集群商户
+utilsApi.delClusterMerchant = async (params) => {
+    let reslut = await axiosIns.post("/v1/cluster/delClusterMerchant", toFormData(params))
+    return reslut
+}
+
+//查询集群的商户
+utilsApi.findClusterMerchant = async (params) => {
+    let reslut = await axiosIns.get("/v1/cluster/findClusterMerchant?" + formatParams(params))
+    return reslut
+}
+
+//查询集群可绑定 和未绑定的商户
+utilsApi.findAllClusterMerchant = async (params) => {
+    let reslut = await axiosIns.get("/v1/cluster/findMerchant?" + formatParams(params))
     return reslut
 }
 
@@ -381,7 +431,7 @@ utilsApi.findAgentBusinessMerchant = async (params) => {
 
 //给代理业务绑定商户业务
 utilsApi.agentInsertMerchantBusiness = async (params) => {
-    let reslut = await axiosIns.post("/v1/agent/insertMerchantBusiness", toFromData(params))
+    let reslut = await axiosIns.post("/v1/agent/insertMerchantBusiness", toFormData(params))
     return reslut
 }
 
@@ -405,6 +455,18 @@ utilsApi.merchantSave = async (params) => {
     return reslut
 }
 
+//修改商户业务的状态
+utilsApi.updateBusinessStatus = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/updateBusinessStatus",  toFormData(params))
+    return reslut
+}
+
+//修改商户状态
+utilsApi.updateMerchantStatus = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/updateMerchantStatus",  toFormData(params))
+    return reslut
+}
+
 //新增商户业务费率
 utilsApi.merchantInsterbusiness = async (params) => {
     let reslut = await axiosIns.post("/v1/merchant/insertBusiness", params)
@@ -425,15 +487,79 @@ utilsApi.orderPage = async (params) => {
     return reslut
 }
 
+//补发订单通知
+utilsApi.orderNotify = async (params) => {
+    let reslut = await axiosIns.get("/v1/orderNotify?" + formatParams(params))
+    return reslut
+}
+
 //查询代付订单
 utilsApi.orderPayOutPage = async (params) => {
     let reslut = await axiosIns.post("/v1/order/payOutPage", params)
     return reslut
 }
 
+//补发代付通知
+utilsApi.payOutNotify = async (params) => {
+    let reslut = await axiosIns.get("/v1/payOutNotify?" + formatParams(params))
+    return reslut
+}
+
 //---------------------------------查询商户或者代理商余额--------------------------------
 utilsApi.searchBalances = async (params) => {
     let reslut = await axiosIns.get("/v1/account/findByCode?" + formatParams(params))
+    return reslut
+}
+
+//---------------------------------回u记录--------------------------------
+
+//查询商户回U 数据
+utilsApi.merchantOfflinePage = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchantOffline/page", params)
+    return reslut
+}
+
+//通过/驳回 回U申请
+utilsApi.updateOffline = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchantOffline/updateOffline", params)
+    return reslut
+}
+
+//---------------------------------财务管理--------------------------------
+
+//冻结和解冻
+utilsApi.accountFreeze = async (params) => {
+    let reslut = await axiosIns.post("/v1/account/freeze", params)
+    return reslut
+}
+
+//查询冻结 解冻记录列表
+utilsApi.accountPage = async (params) => {
+    let reslut = await axiosIns.post("/v1/account/page", params)
+    return reslut
+}
+
+//解冻审核
+utilsApi.accountReview = async (params) => {
+    let reslut = await axiosIns.post("/v1/account/review", toFormData(params))
+    return reslut
+}
+
+//加减余额 申请
+utilsApi.balanceOperate = async (params) => {
+    let reslut = await axiosIns.post("/v1/account/balanceOperate", params)
+    return reslut
+}
+
+//查询 加减余额列表
+utilsApi.balancePage = async (params) => {
+    let reslut = await axiosIns.post("/v1/account/balancePage", params)
+    return reslut
+}
+
+//审核加减余额
+utilsApi.balanceReview = async (params) => {
+    let reslut = await axiosIns.post("/v1/account/balanceReview", toFormData(params))
     return reslut
 }
 

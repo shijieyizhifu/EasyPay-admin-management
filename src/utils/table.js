@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 17:37:09
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-11-16 17:13:42
+ * @LastEditTime: 2022-12-01 20:00:18
  * @FilePath: /vue-element-admin/src/utils/table.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -20,6 +20,7 @@ width：表格列宽度，表单字段描述宽度
 type：默认是input，可选值select
 list：当type为select时，存储选项
 listType：默认来源数据字典，可选值custom（用来自定义查询）
+listKey：自定义数据字段key
 */
 export const formRules = (item) => {
     if(!item.required){
@@ -315,22 +316,18 @@ export const ChannelMerchant = [
         label: 'md5私钥',
         key: 'md5Private',
         value: '',
-        required: true,
     },{
         label: 'rsa私钥',
         key: 'rsaPrivate',
         value: '',
-        required: true,
     },{
         label: 'rsa公钥',
         key: 'rsaPublic',
         value: '',
-        required: true,
     },{
         label: '平台公钥',
         key: 'agencyPublic',
         value: '',
-        required: true,
     },{
         label: '备注',
         key: 'remake',
@@ -621,6 +618,12 @@ export const merchantRate = [
         type: 'select',
         list: []
     },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: []
+    },{
         label: '费率比例',
         key: 'rate',
         value: '',
@@ -823,5 +826,154 @@ export const payOutOrder = [
         value: '',
         filter: true,
         type: 'date'
+    }
+]
+
+//回U记录
+export const backUList = [
+    {
+        label: '商户编码',
+        key: 'merchantCode',
+        value: '',
+        filter: true
+    },
+    // {
+    //     label: '商户名称',
+    //     key: 'merchantName',
+    //     value: '',
+    //     filter: true
+    // },
+    {
+        label: '币种',
+        key: 'currency',
+        value: '',
+        filter: true
+    },{
+        label: '金额',
+        key: 'amount',
+        value: '',
+    },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'backUStatus',
+        filter: true
+    },{
+        label: '回U地址',
+        key: 'merchantAddress',
+        value: '',
+    },{
+        label: 'U的费率',
+        key: 'usdtRate',
+        value: '',
+    },{
+        label: '收款（U)',
+        key: 'actualReceive',
+        value: '',
+    },{
+        label: '付款 (U)',
+        key: 'actualPayment',
+        value: '',
+    },{
+        label: '手续费（U）',
+        key: 'profit',
+        width: '120px',
+        value: '',
+    },{
+        label: '通道商户',
+        key: 'agencyCode',
+        value: '',
+    },
+]
+
+//解冻/冻结记录
+export const fundsList = [
+    {
+        label: '商户/代理商编码',
+        key: 'code',
+        value: '',
+        width: '140px',
+        filter: true
+    },{
+        label: '商户/代理商名字',
+        key: 'name',
+        value: '',
+        width: '140px',
+        filter: true
+    },{
+        label: '备注',
+        key: 'remake',
+        value: '',
+    },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'fundsStatus',
+        filter: true
+    },{
+        label: '类型',
+        key: 'type',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'fundsType',
+        filter: true
+    },{
+        label: '发起人',
+        key: 'createName',
+        value: '',
+    },{
+        label: '审核人',
+        key: 'reviewName',
+        value: '',
+    }
+]
+
+//调账记录
+export const adjustAccountsList = [
+    {
+        label: '商户/代理商编码',
+        key: 'code',
+        value: '',
+        width: '140px',
+        filter: true
+    },{
+        label: '商户/代理商名字',
+        key: 'name',
+        value: '',
+        width: '140px',
+        filter: true
+    },{
+        label: '备注',
+        key: 'remake',
+        value: '',
+    },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'fundsStatus',
+        filter: true
+    },{
+        label: '类型',
+        key: 'type',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'adjustAccountType',
+        filter: true
+    },{
+        label: '发起人',
+        key: 'createdName',
+        value: '',
+    },{
+        label: '审核人',
+        key: 'reviewName',
+        value: '',
     }
 ]

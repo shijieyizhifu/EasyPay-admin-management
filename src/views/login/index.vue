@@ -50,7 +50,6 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
-
     </el-form>
   </div>
 </template>
@@ -68,8 +67,8 @@ export default {
         password: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur'}],
-        password: [{ required: true, trigger: 'blur' }]
+        username: [{ required: true, trigger: 'blur',message: '请输入用户名'}],
+        password: [{ required: true, trigger: 'blur' ,message: '请输入密码'}],
       },
       passwordType: 'password',
       capsTooltip: false,

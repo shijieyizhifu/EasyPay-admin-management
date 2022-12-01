@@ -93,16 +93,13 @@
                             <span v-else>{{ row.rate[item.key] == -1 ? '不限' : row.rate[item.key] }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="'操作'" fixed="right" align="center" width="100" class-name="small-padding fixed-width">
+                    <!-- <el-table-column :label="'操作'" fixed="right" align="center" width="100" class-name="small-padding fixed-width">
                     <template slot-scope="{row}">
-                        <!-- <el-button type="primary" size="mini" @click="handleUpdate1(row)">
-                            修改
-                        </el-button> -->
                         <el-button type="primary" size="mini" @click="bindMerchant(row)">
                           集群
                       </el-button>
                     </template>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </div>
         </div>
@@ -153,14 +150,12 @@
                 <span>{{row.fee == -1 ? '无' : row.fee}}</span>
               </template>
             </el-table-column>
-            <el-table-column :label="'操作'" v-if="activeName == 2"  align="center" width="100" class-name="small-padding fixed-width">
+            <el-table-column :label="'操作'"   align="center" width="100" class-name="small-padding fixed-width">
             <template slot-scope="{row}">
-                <!-- <el-button type="primary" size="mini" @click="handleUpdate1(row)">
-                    修改
-                </el-button> -->
-                <el-button  type="primary" size="mini" @click="handleBindMerchant(row)">
+                <el-button v-if="activeName == 2"  type="primary" size="mini" @click="handleBindMerchant(row)">
                   绑定
                 </el-button>
+                <span v-else>-</span>
             </template>
             </el-table-column>
         </el-table>
@@ -185,7 +180,7 @@
           <el-button @click="dialogFormVisible = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus==='新增'?createData():updateData()">
+          <el-button type="primary" :loading="buttonLoading" @click="dialogStatus==='新增'?createData():updateData()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -215,7 +210,7 @@
           <el-button @click="dialogFormVisible1 = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus1==='新增'?createData1():updateData1()">
+          <el-button :loading="buttonLoading" type="primary" @click="dialogStatus1==='新增'?createData1():updateData1()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -237,6 +232,7 @@ import { array } from 'jszip/lib/support'
     components: { Pagination, Search, ExpandBalances },
     data() {
       return {
+        buttonLoading: false,
         tableKey: 0,
         list: null,
         total: 0,
@@ -387,7 +383,9 @@ import { array } from 'jszip/lib/support'
           if (valid) {
             let data = JSON.parse(JSON.stringify(this.temp))
             delete data.id
+            this.buttonLoading = true
             let res = await utilsApi.agentInsert(data)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -402,7 +400,6 @@ import { array } from 'jszip/lib/support'
         })
       },
       createData1() {
-        console.log(this.$refs.cascader.getCheckedNodes())
         let selectData = this.$refs.cascader.getCheckedNodes()[0]
         if(!selectData){
             this.$notify({
@@ -422,7 +419,9 @@ import { array } from 'jszip/lib/support'
             data.agencyCode = selectData.parent.data.agencyCode
             data.businessCode = this.businessValue
             data.agentCode = this.currentRow.code
+            this.buttonLoading = true
             let res = await utilsApi.agentInsterbusiness([data])
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -455,7 +454,9 @@ import { array } from 'jszip/lib/support'
       updateData() {
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.updateDictionary(this.temp)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -472,7 +473,9 @@ import { array } from 'jszip/lib/support'
       updateData1() {
         this.$refs['dataForm1'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.agencyBusinessSave(this.temp1)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',

@@ -59,16 +59,14 @@
                 <span >{{ moment(row.createdTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
             </template>
         </el-table-column>
-        <!-- <el-table-column :label="'操作'" align="center" width="230" class-name="small-padding fixed-width">
-          <template slot-scope="{row,$index}">
-            <el-button type="success" size="mini" @click="handleUpdate(row)">
-              {{ $t('table.edit') }}
+        <el-table-column :label="'操作'" align="center" width="120" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+            <el-button v-if="row.status == 'Y'" type="success" size="mini" @click="orderNotify(row)">
+              补发通知
             </el-button>
-            <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-              {{ $t('table.delete') }}
-            </el-button>
+            <span v-else>-</span>
           </template>
-        </el-table-column> -->
+        </el-table-column>
       </el-table>
   
       <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
@@ -244,6 +242,26 @@
           }
         });
       },
+      orderNotify(row) {
+        this.$alert('确定为该订单补发通知吗？', '通知', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.orderNotify({id: row.id})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: '补发通知成功',
+                    type: 'success',
+                    duration: 2000
+                })
+            }
+          }
+        });
+      }
     }
   }
   </script>

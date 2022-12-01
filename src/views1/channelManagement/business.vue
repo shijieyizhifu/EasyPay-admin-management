@@ -90,7 +90,7 @@
           <el-button @click="dialogFormVisible = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus==='新增'?createData():updateData()">
+          <el-button :loading="buttonLoading" type="primary" @click="dialogStatus==='新增'?createData():updateData()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -110,6 +110,7 @@
     components: { Pagination, Search },
     data() {
       return {
+        buttonLoading: false,
         tableKey: 0,
         list: null,
         total: 0,
@@ -185,7 +186,9 @@
           if (valid) {
             let data = JSON.parse(JSON.stringify(this.temp))
             delete data.id
+            this.buttonLoading = true
             let res = await utilsApi.insterBusiness(data)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -210,7 +213,9 @@
       updateData() {
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.updateBusiness(this.temp)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',

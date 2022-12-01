@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-11-16 17:16:46
+ * @LastEditTime: 2022-12-01 16:44:33
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -56,7 +56,7 @@
     data() {
       return {
         searchData: this.searchFields.filter(item => item.filter == true),
-        showAddButtonList: ['pay','payOut']
+        showAddButtonList: ['pay','payOut','MerchantOffline','FundsRecords']
       }
     },
     // watch:{

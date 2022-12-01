@@ -18,7 +18,7 @@
               <!-- @sort-change="sortChange" -->
                 <el-table-column type="expand" label="余额" width="55">
                   <template slot-scope="{row}">
-                    <expandBalances :row="row"></expandBalances>
+                    <expandBalances :type="'merchant'" :row="row"></expandBalances>
                   </template>
                 </el-table-column>
                 <el-table-column v-for="item,index in merchant" :key="index" :label="item.label" :width="item.width || '120px'" align="center">
@@ -58,22 +58,28 @@
               <!-- @sort-change="sortChange" -->
                 <el-table-column v-for="item,index in merchantRate" :key="index" :label="item.label" :width="item.width || '80px'" align="center">
                     <template slot-scope="{row}">
-                        <span v-if="item.listType == 'custom'">
-                            {{ row['businessName'] }}
-                        </span>
+                      <span v-if="item.listType == 'custom'">
+                          {{ row['businessName'] }}
+                      </span>
+                      <span v-else-if="item.type == 'select' && item.key == 'status'">
+                        {{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}
+                      </span>
                       <span v-else-if="item.type == 'select' && item.listType != 'custom'">
                         {{ item.list.find(i => i.value == row.rate[item.key]) ? item.list.find(i => i.value == row.rate[item.key]).name : '' }}
                       </span>
                       <span v-else>{{ row.rate[item.key] == -1 ? '不限' : row.rate[item.key] }}</span>
                     </template>
                   </el-table-column>
-                <!-- <el-table-column :label="'操作'" fixed="right" align="center" width="230" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'"  align="center"  class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
-                    <el-button type="primary" size="mini" @click="handleUpdate1(row)">
-                        修改
+                    <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleBusinessStatus(row,'Y')">
+                        启用
+                    </el-button>
+                    <el-button type="danger" v-if="row.status == 'Y'" size="mini" @click="handleBusinessStatus(row,'N')">
+                        禁用
                     </el-button>
                   </template>
-                </el-table-column> -->
+                </el-table-column>
               </el-table>
               <el-row style="display:flex;justify-content:center;margin-top: 16px;">
                 <el-button style="margin-left: 10px;"  class="filter-item" type="primary"  @click="rateAdd">
@@ -104,7 +110,7 @@
           <el-button @click="dialogFormVisible = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus==='新增'?createData():updateData()">
+          <el-button type="primary" :loading="buttonLoading" @click="dialogStatus==='新增'?createData():updateData()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -131,7 +137,7 @@
           <el-button @click="dialogFormVisible1 = false">
             {{ $t('table.cancel') }}
           </el-button>
-          <el-button type="primary" @click="dialogStatus1==='新增'?createData1():updateData1()">
+          <el-button type="primary" :loading="buttonLoading" @click="dialogStatus1==='新增'?createData1():updateData1()">
             {{ $t('table.confirm') }}
           </el-button>
         </div>
@@ -152,6 +158,7 @@
     components: { Pagination, Search, ExpandBalances },
     data() {
       return {
+        buttonLoading: false,
         tableKey: 0,
         list: null,
         total: 0,
@@ -264,7 +271,9 @@
           if (valid) {
             let data = JSON.parse(JSON.stringify(this.temp))
             delete data.id
+            this.buttonLoading = true
             let res = await utilsApi.merchantSave(data)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -287,7 +296,9 @@
             delete data.rate.businessCode
             data.businessCode = this.temp1.businessCode
             data.merchantCode = this.currentRow.merchantCode
+            this.buttonLoading = true
             let res = await utilsApi.merchantInsterbusiness(data)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -320,7 +331,9 @@
       updateData() {
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.merchantSave(this.temp)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -337,7 +350,9 @@
       updateData1() {
         this.$refs['dataForm1'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.merchantInsert(this.temp1)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -373,8 +388,8 @@
           }
         });
       },
-      async handleStatus(row,status){
-        this.$alert(`确定${status == 'Y' ? '启用' : '禁用'}该通道？`, '提示', {
+      async handleBusinessStatus(row,status){
+        this.$alert(`确定${status == 'Y' ? '启用' : '禁用'}该商户业务？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -382,7 +397,29 @@
             if(action != 'confirm'){
                 return
             }
-            let res = await utilsApi.updateStatusAgency({id: row.id,status})
+            let res = await utilsApi.updateBusinessStatus({merchantBusinessId: row.id,status})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: `${status == 'Y' ? '启用' : '禁用'}成功`,
+                    type: 'success',
+                    duration: 2000
+                })
+                this.findMerchantRate()
+            }
+          }
+        });
+      },
+      async handleStatus(row,status){
+        this.$alert(`确定${status == 'Y' ? '启用' : '禁用'}该商户？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.updateMerchantStatus({merchantCode: row.merchantCode,status})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
