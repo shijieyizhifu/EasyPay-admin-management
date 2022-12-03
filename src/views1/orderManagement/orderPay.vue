@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-03 17:32:43
+ * @LastEditTime: 2022-12-03 17:44:40
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,14 @@
             <el-card>
                 <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" >
                     <el-form-item label="商户号" prop="merchant">
-                        <el-input  v-model="temp.merchant" @blur="findMerchantRate" placeholder="商户号"/>
+                        <el-select v-model="temp.merchant" @blur="findMerchantRate" filterable placeholder="请选择">
+                            <el-option
+                              v-for="item in merchantList"
+                              :key="item.merchantCode"
+                              :label="item.name"
+                              :value="item.merchantCode">
+                            </el-option>
+                          </el-select>
                     </el-form-item>
                     <el-form-item label="订单号" prop="orderNo">
                         <el-input  v-model="temp.orderNo" placeholder="订单号"/>
@@ -102,13 +109,20 @@ export default {
             },
             businessList:[],
             msg: '',
-            loading: false
+            loading: false,
+            merchantList: []
         }
     },
     async created() {
-        this.findMerchantRate()
+        this.merchantPage()
     },
     methods: {
+        async merchantPage() {
+            let res = await utilsApi.merchantPage({page:1,size:10000})
+            this.merchantList = res.data.records
+            this.temp.merchant = this.merchantList.find(item => item.name == '平台测试商户号')?.merchantCode
+            this.findMerchantRate()
+        },
         async findMerchantRate() {
             let res = await utilsApi.findMerchantRate({merchantCode: this.temp.merchant})
             this.businessList = res.data.filter(item => item.status == 'Y')
@@ -119,7 +133,8 @@ export default {
                 if (valid) {
                     try {
                         let data = JSON.parse(JSON.stringify(this.temp))
-                        data.sign = utilsApi.sign(data)
+                        let rsaPrivate = this.merchantList.find(item => item.merchantCode == this.temp.merchant)?.rsaPrivate
+                        data.sign = utilsApi.sign(data,rsaPrivate)
                         this.loading = true
                         let res = await utilsApi.orderPay(data)
                         this.loading = false
