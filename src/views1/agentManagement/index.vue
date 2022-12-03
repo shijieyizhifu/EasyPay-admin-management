@@ -305,7 +305,7 @@ import { array } from 'jszip/lib/support'
             for(let i of res.data){
                 i.value = i.code
                 i.leaf = node.level >= 2
-                i.label = i.name
+                i.label = i.agencyCode
             }
             resolve(res.data);
         }else{

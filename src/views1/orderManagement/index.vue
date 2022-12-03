@@ -64,6 +64,11 @@
             <el-button v-if="row.status == 'Y'" type="success" size="mini" @click="orderNotify(row)">
               补发通知
             </el-button>
+            <div v-else-if="row.status == 'N'">
+              <el-button  type="success" size="mini" @click="finishOrder(row)">
+                处理成功
+              </el-button>
+            </div>
             <span v-else>-</span>
           </template>
         </el-table-column>
@@ -258,6 +263,27 @@
                     type: 'success',
                     duration: 2000
                 })
+            }
+          }
+        });
+      },
+      finishOrder(row,status) {
+        this.$alert('确定吧该订单处理为成功吗？', '处理订单', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.finishOrder({id: row.id})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: '处理订单成功',
+                    type: 'success',
+                    duration: 2000
+                })
+                this.getList()
             }
           }
         });

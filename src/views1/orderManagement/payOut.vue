@@ -62,11 +62,19 @@
             </el-button>
           </template>
         </el-table-column> -->
-        <el-table-column :label="'操作'" align="center" width="120" class-name="small-padding fixed-width">
+        <el-table-column :label="'操作'" align="center" width="180" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <el-button v-if="row.status == 'Y'" type="success" size="mini" @click="payOutNotify(row)">
               补发通知
             </el-button>
+            <div v-else-if="row.status == 'N'">
+              <el-button  type="success" size="mini" @click="finishPayOut(row,'Y')">
+                处理成功
+              </el-button>
+              <el-button  type="danger" size="mini" @click="finishPayOut(row,'Z')">
+                处理失败
+              </el-button>
+            </div>
             <span v-else>-</span>
           </template>
         </el-table-column>
@@ -261,6 +269,27 @@
                     type: 'success',
                     duration: 2000
                 })
+            }
+          }
+        });
+      },
+      finishPayOut(row,status) {
+        this.$alert(`确定吧该订单处理为${status == "Y" ? '成功' : '失败'}吗？`, '处理订单', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.finishPayOut({id: row.id,status})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: `处理${status == "Y" ? '成功' : '失败'}订单成功`,
+                    type: 'success',
+                    duration: 2000
+                })
+                this.getList()
             }
           }
         });

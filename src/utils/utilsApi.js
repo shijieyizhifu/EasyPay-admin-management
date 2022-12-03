@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '@/router'
+const base64url = require('base64url')
+const crypto = require('crypto')
+
+const rsaPrivate = "-----BEGIN PRIVATE KEY-----\n" +"MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAKVTGCD8/im8bZNP/ZHlHSXNF/Lr9/sA/skZOQ3huOyQvhRUi0ZcPN8hjsvpMJJVFLakIAKUnOMB+Brwur/gRQWIOiqgTN2j0KteXbOLp36kppgd9hZ8AO8C50pfPZRTJUwYrWhytK2aNNpC4og/hgPQXEUAr2fImlJbsSwVLqx7AgMBAAECgYEAgddr+OSZfQ/nAy5smPvXU4vrRjc7UGAsuqXboGJqCSl4j6ECrWTdzeSeMNnY8uRtWzA1j7FGMiemwwnTscSij3kqXci/WDpTEXVeykb5uGLkMk4N3A+atoXkc6eKNLT+TbTcX1GxD42/oCZVzfSg4cbL0MGrRKTGn7yNsW9wX+ECQQDyovID91GIzbXDGfhRMyncF+SYDuXmLtBJrOb1yGyWC7DA8XIkvURO2+PhFyPWCkYwwicdn1rE9rsnn6ngp8XRAkEArm4WzxwZ+euUSNCSmXyGqAlhhVXUH1BtBCBz7z1/oy6hzDegbcQoB90iI/3p0uBXWfPkz8eWezwTcyrR188EiwJBAKCRaKtrPc/UolZsl0HVI/x861Ade9KqZDh9bZJ1gjaBogTtQ2ZAwjWVmuZYk+SPhAe8VHpr/Huf9BayuI7tOCECQQCZr5fbLYhZok5JhbPVFlnSjkllYIUAfi0/WJStcwMVtQ2L0GtCq3UV0Km3Co5NZaqxL+onhFQ7CmicrVqsidMXAkEAtPoUlDZSWaYSFKGZE46PZCEMoujNMKBYqguaqNtsogr6RMHji4Fbx4xc78y3Bu77eu+rz8eYqnkZ6sXMFuwyDg==\n" + "-----END PRIVATE KEY-----"
 
 const axiosIns = axios.create({
     // You can add your headers here
@@ -76,7 +80,7 @@ const toFormData = (obj) => {
 const formatParams = (obj) => {
     const str = [];
     Object.keys(obj).sort().forEach((key) => {
-      if (obj.hasOwnProperty(key) && obj[key]) {
+      if (obj.hasOwnProperty(key) && obj[key] && obj[key]) {
         str.push(key + '=' + obj[key])
       }
     });
@@ -88,6 +92,33 @@ utilsApi.uploadImgUrl =  '/v1/file/uploadImage'
 
 //图片地址
 utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?  'http://8.218.2.19:8000/image/' : 'http://8.218.2.19:8000/image/'
+
+function encryptRSABL (prik, str) {
+    console.log(str)
+    let encryptString = Buffer.from(str)
+    let result = []    
+    let inputLen = encryptString.length    
+    let offSet = 0    
+    let length = 117    
+    let i = 0    
+    while (inputLen - offSet > 0) {        
+        let cache = ''        
+        if (inputLen - offSet > length) { 
+            cache = crypto.privateEncrypt(prik, encryptString.slice(offSet, (offSet + length))) 
+        } else {
+            cache = crypto.privateEncrypt(prik, encryptString.slice(offSet, (offSet + (inputLen - offSet))))        
+        }        
+        cache.forEach(o => { result.push(o)        })
+        i++        
+        offSet = i * length    
+    }    
+    return base64url.fromBase64(new Buffer.from(result).toString('base64'))
+}
+//支付代付下单签名
+utilsApi.sign = function (data) {
+    let formatData = formatParams(data)
+    return encryptRSABL(rsaPrivate ,formatData)
+}
 
 //登录
 utilsApi.login = async (params) => {
@@ -496,6 +527,30 @@ utilsApi.orderNotify = async (params) => {
 //查询代付订单
 utilsApi.orderPayOutPage = async (params) => {
     let reslut = await axiosIns.post("/v1/order/payOutPage", params)
+    return reslut
+}
+
+//支付下单
+utilsApi.orderPay = async (params) => {
+    let reslut = await axiosIns.post("/v1/orderPay", params)
+    return reslut
+}
+
+//代付下单
+utilsApi.singleOrder = async (params) => {
+    let reslut = await axiosIns.post("/v1/singleOrder", params)
+    return reslut
+}
+
+//完成代付订单
+utilsApi.finishPayOut = async (params) => {
+    let reslut = await axiosIns.post("/v1/order/finishPayOut",toFormData(params))
+    return reslut
+}
+
+//完成代收订单
+utilsApi.finishOrder = async (params) => {
+    let reslut = await axiosIns.post("/v1/order/finishOrder",toFormData(params))
     return reslut
 }
 
