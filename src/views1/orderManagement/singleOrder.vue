@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-03 17:12:37
+ * @LastEditTime: 2022-12-03 17:27:41
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
             <el-card>
                 <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" >
                     <el-form-item label="商户号" prop="merchant">
-                        <el-input  v-model="temp.merchant" placeholder="商户号"/>
+                        <el-input  v-model="temp.merchant"  @blur="findMerchantRate" placeholder="商户号"/>
                     </el-form-item>
                     <el-form-item label="订单号" prop="orderNo">
                         <el-input  v-model="temp.orderNo" placeholder="订单号"/>
@@ -126,6 +126,7 @@ export default {
         async findMerchantRate() {
             let res = await utilsApi.findMerchantRate({merchantCode: this.temp.merchant})
             this.businessList = res.data.filter(item => item.status == 'Y')
+            this.temp.businessCode = this.businessList[0].businessCode
         },
         async orderPay() {
             this.$refs['dataForm'].validate(async (valid) => {
