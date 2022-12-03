@@ -281,7 +281,7 @@ export default {
       sourceImgContainer: {
         // sic
         width: 240,
-        height: 184 // 如果生成图比例与此一致会出现bug，先改成特殊的格式吧，哈哈哈
+        height: 184 // 如果生成图比例与此一致会出现bug，先改成特殊的格式把，哈哈哈
       },
       // 原图展示属性
       scale: {

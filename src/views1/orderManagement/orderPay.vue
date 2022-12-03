@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-03 15:57:26
+ * @LastEditTime: 2022-12-03 17:12:34
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -37,6 +37,9 @@
                     <el-form-item label="金额" prop="amount">
                         <el-input  v-model="temp.amount" placeholder="金额"/>
                     </el-form-item>
+                    <el-form-item label="手机号" prop="phone">
+                        <el-input  v-model="temp.phone" placeholder="手机号"/>
+                    </el-form-item>
                     <el-form-item label="通知地址" prop="notifyUrl">
                         <el-input  v-model="temp.notifyUrl" placeholder="通知地址"/>
                     </el-form-item>
@@ -50,7 +53,7 @@
                         <el-input  v-model="temp.subject" :maxlength='200' placeholder="备注"/>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="orderPay">
+                        <el-button :loading="loading" type="primary" @click="orderPay">
                             提交
                           </el-button>
                     </el-form-item>
@@ -98,7 +101,8 @@ export default {
                 bankCode: [{ required: true, message: '请输入银行编码', trigger: 'blur' }],
             },
             businessList:[],
-            msg: ''
+            msg: '',
+            loading: false
         }
     },
     async created() {
@@ -115,7 +119,9 @@ export default {
                     try {
                         let data = JSON.parse(JSON.stringify(this.temp))
                         data.sign = utilsApi.sign(data)
+                        this.loading = true
                         let res = await utilsApi.orderPay(data)
+                        this.loading = false
                         if(res.code == 0){
                             this.msg = '下单成功：,'+JSON.stringify(res.data)
                         }else{

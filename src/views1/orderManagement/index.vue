@@ -268,7 +268,7 @@
         });
       },
       finishOrder(row,status) {
-        this.$alert('确定吧该订单处理为成功吗？', '处理订单', {
+        this.$alert('确定把该订单处理为成功吗？', '处理订单', {
           confirmButtonText: '确定',
           type: 'warning',
           callback: async action => {
