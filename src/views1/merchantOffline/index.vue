@@ -37,7 +37,7 @@
                 <span >{{ moment(row.createdTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
             </template>
         </el-table-column>
-        <el-table-column  :label="'操作'" align="center" width="230" class-name="small-padding fixed-width">
+        <el-table-column  :label="'操作'" align="center" width="280" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <template v-if="row.status=='apply'">
                 <el-button type="success" size="mini" @click="handleUpdateOffline(row,true)">
@@ -47,10 +47,13 @@
                     驳回
                   </el-button>
             </template>
-            <el-button v-if="row.imageUrl"  size="mini" type="success" @click="handleBackUImg(row)">
-                查看回U证明
+            <el-button v-if="row.agencyImageUrl"  size="mini" type="success" @click="handleBackUImg(row,'agencyImageUrl')">
+                查看上游回U证明
             </el-button>
-            <span v-if="row.status!='apply' && !row.imageUrl">-</span>
+            <el-button v-if="row.merchantImageUrl"  size="mini" type="success" @click="handleBackUImg(row,'merchantImageUrl')">
+                查看商户回U证明
+            </el-button>
+            <span v-if="row.status!='apply' && !row.agencyImageUrl && !row.merchantImageUrl">-</span>
           </template>
         </el-table-column>
       </el-table>
@@ -59,8 +62,11 @@
   
       <el-dialog :title="'通过回U申请'" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
-            <el-form-item  label="U的费率" prop="usdtRate">
-                <el-input v-model="temp.usdtRate" placeholder="U的费率"/>
+            <el-form-item  label="上游U的费率" prop="agencyUsdtRate">
+              <el-input v-model="temp.agencyUsdtRate" placeholder="上游U的费率"/>
+            </el-form-item>
+            <el-form-item  label="U的费率" prop="merchantUsdtRate">
+                <el-input v-model="temp.merchantUsdtRate" placeholder="U的费率"/>
             </el-form-item>
             <el-form-item  label="收款（U）" prop="actualReceive">
                 <el-input v-model="temp.actualReceive" placeholder="收款（U）"/>
@@ -76,7 +82,7 @@
                     <el-option v-for="item in agencyList" :key="item.name" :label="item.name" :value="item.code" />
                   </el-select>
             </el-form-item>
-            <el-form-item  label="回U证明" required>
+            <el-form-item  label="上游回U证明" required>
                 <el-upload
                     ref="upload"
                     :headers="headers"
@@ -86,11 +92,28 @@
                     :on-success="uploadSuccess"
                     :on-remove="uploadRemove"
                     :on-error="uploadError"
+                    :limit="1"
                     list-type="picture">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <div slot="tip" class="el-upload__tip">只能上传图片文件</div>
                 </el-upload>
             </el-form-item>
+            <el-form-item  label="商户回U证明" required>
+              <el-upload
+                  ref="upload1"
+                  :headers="headers"
+                  class="upload-demo"
+                  :action="actionUrl"
+                  :file-list="fileList1"
+                  :on-success="uploadSuccess1"
+                  :on-remove="uploadRemove1"
+                  :on-error="uploadError"
+                  :limit="1"
+                  list-type="picture">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传图片文件</div>
+              </el-upload>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -102,12 +125,10 @@
         </div>
       </el-dialog>
 
-      <el-dialog :title="'回U证明'" :visible.sync="imgDialog"  center>
-        <el-carousel indicator-position="outside">
-            <el-carousel-item v-for="item in imgList" :key="item">
-              <img :src="item" alt="">
-            </el-carousel-item>
-          </el-carousel>
+      <el-dialog :title="'回U证明'" :visible.sync="imgDialog"  center width="408px">
+        <img
+          width="360"
+          :src="imgUrl"/>
         <div slot="footer">
             <el-button @click="imgDialog = false" >
               关闭
@@ -151,15 +172,17 @@
         agencyList: [],
         buttonLoading: false,
         fileList: [],
+        fileList1: [],
         rules: {
-            usdtRate: [{ required: true, message: '请输入U的费率', trigger: 'blur' }],
+            agencyUsdtRate: [{ required: true, message: '请输入上游U的费率', trigger: 'blur' }],
+            merchantUsdtRate: [{ required: true, message: '请输入U的费率', trigger: 'blur' }],
             actualReceive: [{ required: true, message: '请输入收款（U）', trigger: 'blur' }],
             actualPayment: [{ required: true, message: '请输入付款（U）', trigger: 'blur' }],
             profit: [{ required: true, message: '请输入手续费（U）', trigger: 'blur' }],
             agencyCode: [{ required: true, message: '请选择通道商户', trigger: 'change' }],
         },
         imgDialog: false,
-        imgList: []
+        imgUrl: ''
       }
     },
     async created() {
@@ -178,6 +201,12 @@
         },
         uploadRemove(file, fileList) {
             this.fileList = fileList
+        },
+        uploadSuccess1(response, file, fileList) {
+            this.fileList1 = fileList
+        },
+        uploadRemove1(file, fileList) {
+            this.fileList1 = fileList
         },
         uploadError(err, file, fileList) {
             this.$notify({
@@ -229,7 +258,16 @@
         if(this.fileList.length <=0){
             this.$notify({
                     title: '警告',
-                    message: '请上传回U证明！',
+                    message: '请上传上游回U证明！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        if(this.fileList1.length <=0){
+            this.$notify({
+                    title: '警告',
+                    message: '请上传商户回U证明！',
                     type: 'warning',
                     duration: 2000
                 })
@@ -240,7 +278,8 @@
             let data = JSON.parse(JSON.stringify(this.temp))
             data.id = this.currentRow.id
             data.status = 'success'
-            data.imageUrl = this.fileList.map(item => item.response.data).join(',')
+            data.agencyImageUrl = this.fileList[0].response.data
+            data.merchantImageUrl = this.fileList1[0].response.data
             this.buttonLoading = true
             let res = await utilsApi.updateOffline(data)
             this.buttonLoading = false
@@ -265,6 +304,7 @@
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
                 this.$refs['upload'].clearFiles()
+                this.$refs['upload1'].clearFiles()
             })
         }else{
             this.$alert('确定驳回该商户的回U申请吗？', '驳回', {
@@ -296,9 +336,9 @@
             });
         }
       },
-      handleBackUImg(row) {
+      handleBackUImg(row,key) {
         this.imgDialog = true
-        this.imgList = row.imageUrl.split(',').map(item => utilsApi.imgUrl + item)
+        this.imgUrl = utilsApi.imgUrl + row[key]
       }
     }
   }

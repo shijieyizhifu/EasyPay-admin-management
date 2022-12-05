@@ -93,13 +93,16 @@
                             <span v-else>{{ row.rate[item.key] == -1 ? '不限' : row.rate[item.key] }}</span>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column :label="'操作'" fixed="right" align="center" width="100" class-name="small-padding fixed-width">
-                    <template slot-scope="{row}">
-                        <el-button type="primary" size="mini" @click="bindMerchant(row)">
-                          集群
-                      </el-button>
-                    </template>
-                    </el-table-column> -->
+                    <el-table-column :label="'操作'" fixed="right" align="center" width="100" class-name="small-padding fixed-width">
+                      <template slot-scope="{row}">
+                          <!-- <el-button type="primary" size="mini" @click="bindMerchant(row)">
+                            集群
+                        </el-button> -->
+                        <el-button type="primary" size="mini" @click="handleUpdate1(row)">
+                          修改
+                        </el-button>
+                      </template>
+                    </el-table-column>
                 </el-table>
             </div>
         </div>
@@ -187,7 +190,7 @@
       </el-dialog>
       <el-dialog :title="dialogStatus1" :visible.sync="dialogFormVisible1">
         <el-form ref="dataForm1" :model="temp1" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
-            <el-form-item  :label="'通道&商户'" required>
+            <el-form-item  :label="'通道&商户'" required v-if="dialogStatus1 == '新增'">
                 <el-cascader ref="cascader" v-if="dialogFormVisible1"  :props="props"></el-cascader>
             </el-form-item>
             <div v-for="item,index in agentRate" :key="index">
@@ -271,7 +274,7 @@ import { array } from 'jszip/lib/support'
         merchantList: [],
         bindMerchantList: [],
         currentBindMerchant: [],
-        activeName: ''
+        activeName: '',
       }
     },
     async created() {
@@ -436,7 +439,7 @@ import { array } from 'jszip/lib/support'
         })
       },
       handleUpdate(row) {
-        this.temp = row
+        this.temp = row.rate
         this.dialogStatus = '编辑'
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -444,7 +447,8 @@ import { array } from 'jszip/lib/support'
         })
       },
       handleUpdate1(row) {
-        this.temp1 = row
+        this.temp1 = row.rate
+        this.temp1.id = row.id
         this.dialogStatus1 = '编辑'
         this.dialogFormVisible1 = true
         this.$nextTick(() => {
@@ -474,7 +478,12 @@ import { array } from 'jszip/lib/support'
         this.$refs['dataForm1'].validate(async(valid) => {
           if (valid) {
             this.buttonLoading = true
-            let res = await utilsApi.agencyBusinessSave(this.temp1)
+            let data = {
+              id: this.temp1.id,
+              rate: this.temp1
+            }
+            delete data.rate.id
+            let res = await utilsApi.updateAgentBusinessRate(data)
             this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
@@ -483,7 +492,7 @@ import { array } from 'jszip/lib/support'
                     type: 'success',
                     duration: 2000
                 })
-                this.findAgencyCode()
+                this.findAgencyRate()
                 this.dialogFormVisible1 = false
             }
           }
@@ -610,7 +619,7 @@ import { array } from 'jszip/lib/support'
         }else{
           this.getMerchantByBusiness()
         }
-      }
+      },
     }
   }
   </script>

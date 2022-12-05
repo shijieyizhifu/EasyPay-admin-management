@@ -57,7 +57,7 @@
                         <span >{{ moment(row.createdTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column :label="'操作'"  align="center" width="200" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'"  align="center" width="240" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <!-- <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
@@ -65,6 +65,9 @@
                     <el-button type="danger" v-if="row.status == 'Y'" size="mini" @click="handleStatus(row,'N')">
                         禁用
                     </el-button> -->
+                    <el-button type="danger" size="mini" @click="handleDelete(row)">
+                      删除
+                    </el-button>
                     <el-button type="success" size="mini" @click="handleUpdate(row)">
                         {{ $t('table.edit') }}
                     </el-button>
@@ -136,7 +139,7 @@
                     <el-button type="danger" v-if="row.status == 'Y'" size="mini" @click="handleStatus(row,'N')">
                         禁用
                     </el-button> -->
-                    <el-button type="danger" size="mini" @click="handleDelete(row)">
+                    <el-button type="danger" size="mini" @click="handleDelete1(row)">
                         删除
                     </el-button>
                   </template>
@@ -485,6 +488,28 @@
         })
       },
       async handleDelete(row, index) {
+        this.$alert('确定删除该数据？', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.delCluster({id: row.id})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: '删除成功',
+                    type: 'success',
+                    duration: 2000
+                })
+                this.getList()
+            }
+          }
+        });
+      },
+      async handleDelete1(row, index) {
         this.$alert('确定删除该数据？', '删除', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

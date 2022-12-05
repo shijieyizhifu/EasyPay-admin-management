@@ -4,7 +4,12 @@
             <div class="filter-container">
                 <search :searchFields='merchant' @searchData='handleFilter' @addData='handleCreate'/>
               </div>
-          
+              <el-alert
+                  title="重置的登录密码和支付密码：admin123456"
+                  :closable="false"
+                  style="margin-bottom: 12px;"
+                  type="warning">
+              </el-alert>
               <el-table
                 :key="tableKey"
                 v-loading="listLoading"
@@ -29,7 +34,7 @@
                       <span v-else>{{ row[item.key] }}</span>
                     </template>
                   </el-table-column>
-                <el-table-column :label="'操作'" align="center" width="230" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'" align="center" width="440" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
@@ -39,6 +44,15 @@
                     </el-button>
                     <el-button type="primary" size="mini" @click="handleBusiness(row)">
                         业务
+                    </el-button>
+                    <el-button type="success" size="mini" @click="handleIpVerify(row)">
+                      安全校验
+                    </el-button>
+                    <el-button type="warning" size="mini" @click="resetPayPassword(row)">
+                      重置支付密码
+                    </el-button>
+                    <el-button type="warning" size="mini" @click="resetLogPassword(row)">
+                      重置登录密码
                     </el-button>
                   </template>
                 </el-table-column>
@@ -70,13 +84,16 @@
                       <span v-else>{{ row.rate[item.key] == -1 ? '不限' : row.rate[item.key] }}</span>
                     </template>
                   </el-table-column>
-                <el-table-column :label="'操作'"  align="center"  class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'" width="160"  align="center"  class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleBusinessStatus(row,'Y')">
                         启用
                     </el-button>
                     <el-button type="danger" v-if="row.status == 'Y'" size="mini" @click="handleBusinessStatus(row,'N')">
                         禁用
+                    </el-button>
+                    <el-button type="primary" size="mini" @click="handleUpdate1(row)">
+                      修改
                     </el-button>
                   </template>
                 </el-table-column>
@@ -125,7 +142,7 @@
                         style="margin-bottom: 12px;"
                         type="warning">
                     </el-alert>
-                <el-form-item  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
+                <el-form-item  :label="item.label" v-if="!['status','businessCode'].includes(item.key)"  :prop="item.key" :required="item.required" :rules="formRules(item)">
                     <el-input v-if="!item.type" v-model="temp1[item.key]" :disabled="dialogStatus1 ==='编辑' && item.editDisabled" :placeholder="item.label"/>
                     <el-select  filterable v-if="item.type == 'select'" v-model="temp1[item.key]" :placeholder="item.label">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
@@ -140,6 +157,31 @@
           <el-button type="primary" :loading="buttonLoading" @click="dialogStatus1==='新增'?createData1():updateData1()">
             {{ $t('table.confirm') }}
           </el-button>
+        </div>
+      </el-dialog>
+      <el-dialog title="安全校验" :visible.sync="ipVerifyDialog" center>
+        <el-form ref="dataForm2" :model="temp2" :rules="rules2" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
+            <el-form-item label="开启/关闭" prop="ipVerify">
+                <el-select v-model="temp2.ipVerify" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in ipVerifyList"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item :label="'ip地址(逗号,隔开)'" :prop="temp2.ipVerify == 'Y' ? 'ips' : undefined">
+                <el-input type="textarea"  v-model="temp2.ips" placeholder="ip地址，逗号,隔开"/>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">
+              {{ $t('table.cancel') }}
+            </el-button>
+            <el-button type="primary" :loading="buttonLoading" @click="ipVerifyConfirm">
+              {{ $t('table.confirm') }}
+            </el-button>
         </div>
       </el-dialog>
     </div>
@@ -182,7 +224,13 @@
         temp1: {},
         rateList: [{rate:{}}],
         currentRow: {},
-        agentList: []
+        agentList: [],
+        ipVerifyDialog: false,
+        temp2: {},
+        rules2: {
+          ipVerify: [{ required: true, message: '请选择ip认证', trigger: 'change' }],
+          ips: [{ required: true, message: '请输入ip', trigger: 'blur' }],
+        }
       }
     },
     async created() {
@@ -209,6 +257,15 @@
             }
         }
         console.log(merchantRate)
+    },
+    computed: {
+      ipVerifyList() {
+        for(let i of merchant) {
+          if(i.key ==  'ipVerify') {
+            return i.list
+          }
+        }
+      },
     },
     methods: {
       formRules,
@@ -246,6 +303,35 @@
         this.dialogFormVisible = true
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
+        })
+      },
+      handleIpVerify(row) {
+        this.temp2 = {}
+        this.currentRow = row
+        this.ipVerifyDialog = true
+        this.$nextTick(() => {
+          this.$refs['dataForm2'].clearValidate()
+        })
+      },
+      ipVerifyConfirm() {
+        this.$refs['dataForm2'].validate(async (valid) => {
+          if (valid) {
+            let data = JSON.parse(JSON.stringify(this.temp2))
+            data.merchantCode = this.currentRow.merchantCode
+            this.buttonLoading = true
+            let res = await utilsApi.ipVerify(data)
+            this.buttonLoading = false
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: '设置成功',
+                    type: 'success',
+                    duration: 2000
+                })
+                this.getList()
+                this.ipVerifyDialog = false
+            }
+          }
         })
       },
       async rateAdd(){
@@ -321,7 +407,8 @@
         })
       },
       handleUpdate1(row) {
-        this.temp1 = row
+        this.temp1 = row.rate
+        this.temp1.id = row.id
         this.dialogStatus1 = '编辑'
         this.dialogFormVisible1 = true
         this.$nextTick(() => {
@@ -351,7 +438,13 @@
         this.$refs['dataForm1'].validate(async(valid) => {
           if (valid) {
             this.buttonLoading = true
-            let res = await utilsApi.merchantInsert(this.temp1)
+            this.buttonLoading = true
+            let data = {
+              id: this.temp1.id,
+              rate: this.temp1
+            }
+            delete data.rate.id
+            let res = await utilsApi.updateMerchantBusinessRate(data)
             this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
@@ -360,7 +453,7 @@
                     type: 'success',
                     duration: 2000
                 })
-                this.findAgencyCode()
+                this.findMerchantRate()
                 this.dialogFormVisible1 = false
             }
           }
@@ -384,6 +477,48 @@
                     duration: 2000
                 })
                 this.getList()
+            }
+          }
+        });
+      },
+      resetLogPassword(row) {
+        this.$alert(`确定重置该商户的登录密码吗？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.resetLogPassword({merchantCode: row.merchantCode})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: `重置登录密码成功`,
+                    type: 'success',
+                    duration: 2000
+                })
+            }
+          }
+        });
+      },
+      resetPayPassword(row) {
+        this.$alert(`确定重置该商户的支付密码吗？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.resetPayPassword({merchantCode: row.merchantCode})
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: `重置支付密码成功`,
+                    type: 'success',
+                    duration: 2000
+                })
             }
           }
         });

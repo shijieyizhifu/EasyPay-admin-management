@@ -91,7 +91,7 @@ const formatParams = (obj) => {
 utilsApi.uploadImgUrl =  '/v1/file/uploadImage'
 
 //图片地址
-utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?  'http://8.218.2.19:8000/image/' : 'http://8.218.2.19:8000/image/'
+utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?   'http://8.218.2.19:8000/image/' : 'http://8.218.2.19:8000/image/'
 
 function encryptRSABL (prik, str) {
     console.log(str)
@@ -349,6 +349,12 @@ utilsApi.clusterSave = async (params) => {
     return reslut
 }
 
+//删除集群
+utilsApi.delCluster = async (params) => {
+    let reslut = await axiosIns.post("/v1/cluster/delCluster", toFormData(params))
+    return reslut
+}
+
 //分页查询集群数据
 utilsApi.clusterPage = async (params) => {
     let reslut = await axiosIns.post("/v1/cluster/page", params)
@@ -473,6 +479,12 @@ utilsApi.getMerchantByBusiness = async (params) => {
     return reslut
 }
 
+//修改代理商费率
+utilsApi.updateAgentBusinessRate = async (params) => {
+    let reslut = await axiosIns.post("/v1/agent/updateBusinessRate",params)
+    return reslut
+}
+
 //---------------------------------商户--------------------------------
 
 //查询商户
@@ -505,11 +517,36 @@ utilsApi.merchantInsterbusiness = async (params) => {
     return reslut
 }
 
+//修改商户商费率
+utilsApi.updateMerchantBusinessRate = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/updateBusiessRate", params)
+    return reslut
+}
+
 //查询商户业务费率
 utilsApi.findMerchantRate = async (params) => {
     let reslut = await axiosIns.get("/v1/merchant/findBusiness?" + formatParams(params))
     return reslut
 }
+
+//重置登录密码
+utilsApi.resetLogPassword = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/resetLogPassword",toFormData(params))
+    return reslut
+}
+
+//重置支付密码
+utilsApi.resetPayPassword = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/resetPayPassword",toFormData(params))
+    return reslut
+}
+
+//安全校验
+utilsApi.ipVerify = async (params) => {
+    let reslut = await axiosIns.post("/v1/merchant/ipVerify",toFormData(params))
+    return reslut
+}
+
 
 //---------------------------------订单--------------------------------
 
