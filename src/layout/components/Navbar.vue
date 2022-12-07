@@ -22,6 +22,9 @@
           <el-dropdown-item @click.native="updateDialg">
             <span style="display:block;">修改密码</span>
           </el-dropdown-item>
+          <el-dropdown-item @click.native="bindGoogle" v-if="!user.is_auth">
+            <span style="display:block;">绑定谷歌验证器</span>
+          </el-dropdown-item>
           <el-dropdown-item @click.native="logout">
             <span style="display:block;">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
@@ -41,7 +44,33 @@
         <el-button @click="dialogFormVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="updatePassword">
+        <el-button type="primary" :loading="buttonLoading" @click="updatePassword">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="绑定谷歌验证器" :visible.sync="dialogFormGoogle">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="20px" style="width: 400px; margin-left:50px;">
+          <div style="text-align: center;">
+            <span>打开 Google Authenticator,扫描下方二维码或手动输入下方密钥,添加验证令牌。</span>
+            <div style="margin-top: 10px;margin-bottom: 10px;">
+              <div class="qrcode" ref="qrCodeUrl"></div>
+            </div>
+            <div >{{temp1.secret}}</div>
+            <el-button style="margin-top: 10px;margin-bottom: 10px;" v-clipboard:copy="temp1.secret" v-clipboard:success="clipboardSuccess" type="primary" icon="el-icon-document">
+              复制密钥
+            </el-button>
+            <div style="margin-bottom: 10px;">输入来自 Google Validator 的 6 位验证码</div>
+          </div>
+          <el-form-item :label="''" >
+            <el-input v-model="temp1.code" />
+          </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormGoogle = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" :loading="buttonLoading" @click="bindGooleAuth">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -59,6 +88,8 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import utilsApi from '@/utils/utilsApi'
+import clipboard from '@/directive/clipboard/index.js' // use clipboard by v-directive
+import QRCode from 'qrcodejs2'
 
 export default {
   components: {
@@ -70,6 +101,9 @@ export default {
     LangSelect,
     Search
   },
+  directives: {
+        clipboard
+    },
   data() {
     return {
       dialogFormVisible: false,
@@ -81,6 +115,11 @@ export default {
         oldPassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
         newPassword: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
       },
+      dialogFormGoogle: false,
+      temp1: {
+        url: ''
+      },
+      buttonLoading: false
     }
   },
   computed: {
@@ -88,9 +127,29 @@ export default {
       'sidebar',
       'avatar',
       'device'
-    ])
+    ]),
+    user() {
+      return JSON.parse(sessionStorage.getItem('user'))
+    }
   },
   methods: {
+    creatQrCode() {
+        let qrcode = new QRCode(this.$refs.qrCodeUrl, {
+            text: this.temp1.url, // 待生成为二维码的内容
+            width: 200,
+            height: 200,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        })
+    },
+    clipboardSuccess() {
+            this.$message({
+                message: '复制成功',
+                type: 'success',
+                duration: 1500
+            })
+        },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -117,10 +176,45 @@ export default {
           this.$refs['dataForm'].clearValidate()
         })
     },
+    async bindGoogle() {
+      this.dialogFormGoogle = true
+      let res = await utilsApi.genSecret()
+      this.temp1 = res.data
+      
+      this.$nextTick(() => {
+        this.creatQrCode()
+      })
+      // this.temp1.url = await utilsApi.axiosIns.get(res.data.url)
+    },
+    async bindGooleAuth() {
+      if(!this.temp1.code){
+        this.$notify({
+                title: '警告',
+                message: '请输入谷歌验证码！',
+                type: 'warning',
+                duration: 2000
+            })
+        return
+      }
+      this.buttonLoading = true
+      let res = await utilsApi.bindGooleAuth({code:this.temp1.code, secret: this.temp1.secret})
+      this.buttonLoading = false
+      if(res.code == 0){
+        this.$notify({
+            title: '成功',
+            message: '绑定成功',
+            type: 'success',
+            duration: 2000
+        })
+        this.dialogFormGoogle = false
+      }
+    },
     async updatePassword() {
       this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
+            this.buttonLoading = true
             let res = await utilsApi.updatePassword(this.temp)
+            this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -219,4 +313,6 @@ export default {
     }
   }
 }
+
+
 </style>

@@ -91,6 +91,9 @@
                       </el-select>
                 </el-form-item>
             </div>
+            <el-form-item  :label="'谷歌验证码'" required :prop="'verifCode'" :rules="formRules({key: 'verifCode',label: '谷歌验证码',required: true})">
+              <el-input  v-model="temp.verifCode" :placeholder="'谷歌验证码'"/>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -212,6 +215,16 @@
         this.getList()
       },
       handleCreate() {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
         this.temp = {}
         this.dialogStatus = '新增'
         this.dialogFormVisible = true
@@ -272,6 +285,16 @@
         })
       },
       handleUpdate(row) {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
         this.temp = row
         this.dialogStatus = '编辑'
         this.dialogFormVisible = true

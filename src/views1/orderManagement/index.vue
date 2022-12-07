@@ -129,7 +129,15 @@
       for(let i of payOrder){
         this.temp[i.key] = i.value
         if(i.type == 'select'){
+          // if(i.key == 'merchantName'){
+          //   let res = (await utilsApi.businessFindAll()).data
+          //   for(let i of res){
+          //       i.value = i.code
+          //   }
+          //   i.list = res
+          // }else{  
             i.list = (await utilsApi.dictionaryFindPage({type: i.listKey || i.key})).data.records
+          // }
         }
       }
       this.getList()
@@ -248,14 +256,23 @@
         });
       },
       orderNotify(row) {
-        this.$alert('确定为该订单补发通知吗？', '通知', {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        this.$prompt('请输入谷歌验证码', '补发通知', {
           confirmButtonText: '确定',
-          type: 'warning',
-          callback: async action => {
-            if(action != 'confirm'){
-                return
-            }
-            let res = await utilsApi.orderNotify({id: row.id})
+          cancelButtonText: '取消',
+          inputPattern: /^\d{6}$/,
+          inputErrorMessage: '请输入谷歌验证码'
+        }).then(async ({ value }) => {
+          let res = await utilsApi.orderNotify({id: row.id,verifCode: value})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -264,18 +281,26 @@
                     duration: 2000
                 })
             }
-          }
-        });
+        })
       },
       finishOrder(row,status) {
-        this.$alert('确定把该订单处理为成功吗？', '处理订单', {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        this.$prompt('请输入谷歌验证码', '处理成功订单', {
           confirmButtonText: '确定',
-          type: 'warning',
-          callback: async action => {
-            if(action != 'confirm'){
-                return
-            }
-            let res = await utilsApi.finishOrder({id: row.id})
+          cancelButtonText: '取消',
+          inputPattern: /^\d{6}$/,
+          inputErrorMessage: '请输入谷歌验证码'
+        }).then(async ({ value }) => {
+          let res = await utilsApi.finishOrder({id: row.id,verifCode: value})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -285,8 +310,7 @@
                 })
                 this.getList()
             }
-          }
-        });
+        })
       }
     }
   }

@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-01 20:08:09
+ * @LastEditTime: 2022-12-07 15:41:20
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -53,6 +53,9 @@
           <el-form-item :label="'备注'">
               <el-input  v-model="temp.remark" :maxlength='200' placeholder="备注"/>
           </el-form-item>
+          <el-form-item :label="'谷歌验证码'" prop="verifCode">
+            <el-input  v-model="temp.verifCode" placeholder="谷歌验证码"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -96,7 +99,7 @@
             },
             rules: {
               amount: [{ required: true, message: '请输入金额', trigger: 'blur' }],
-              // remark: [{ required: true, message: '请输入备注', trigger: 'blur' }],
+              verifCode: [{ required: true, message: '请输入谷歌验证码', trigger: 'blur' }],
             }
         }
     },
@@ -136,6 +139,16 @@
         this.list = res.data
       },
       accountFreeze(row, status) {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
         this.dialogFormVisible = true
         this.temp.amount = undefined
         this.temp.remark = undefined
@@ -152,7 +165,8 @@
               id: this.currentRow.id,
               amount: this.temp.amount,
               remake: this.temp.remark,
-              type: this.status
+              type: this.status,
+              verifCode: this.temp.verifCode
             }
             this.buttonLoading = true
             let res = {}

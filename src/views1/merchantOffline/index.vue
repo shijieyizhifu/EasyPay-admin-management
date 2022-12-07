@@ -74,8 +74,8 @@
             <el-form-item  label="付款（U）" prop="actualPayment">
                 <el-input v-model="temp.actualPayment" placeholder="付款（U）"/>
             </el-form-item>
-            <el-form-item  label="手续费（U）"  prop="profit">
-                <el-input v-model="temp.profit" placeholder="手续费（U）"/>
+            <el-form-item  label="利润（U）"  prop="profit">
+                <el-input v-model="temp.profit" placeholder="利润（U）"/>
             </el-form-item>
             <el-form-item  label="通道商户" prop="agencyCode">
                 <el-select v-model="temp.agencyCode" class="filter-item" placeholder="通道商户">
@@ -178,7 +178,7 @@
             merchantUsdtRate: [{ required: true, message: '请输入U的费率', trigger: 'blur' }],
             actualReceive: [{ required: true, message: '请输入收款（U）', trigger: 'blur' }],
             actualPayment: [{ required: true, message: '请输入付款（U）', trigger: 'blur' }],
-            profit: [{ required: true, message: '请输入手续费（U）', trigger: 'blur' }],
+            profit: [{ required: true, message: '请输入利润（U）', trigger: 'blur' }],
             agencyCode: [{ required: true, message: '请选择通道商户', trigger: 'change' }],
         },
         imgDialog: false,

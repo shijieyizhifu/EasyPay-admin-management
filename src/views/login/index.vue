@@ -47,6 +47,18 @@
         </el-form-item>
       </el-tooltip>
 
+      <el-form-item prop="verifCode" >
+        <span class="svg-container" style="width: 100px">
+          谷歌验证码
+        </span>
+        <el-input
+        style="width:70%"
+          v-model="loginForm.verifCode"
+          placeholder="请输入谷歌验证码"
+          name="verifCode"
+        />
+      </el-form-item>
+
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
@@ -64,7 +76,8 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '123456'
+        password: '123456',
+        verifCode: '',
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur',message: '请输入用户名'}],
@@ -122,7 +135,7 @@ export default {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.loading = true
-          let res = await utilsApi.login({ username: this.loginForm.username, password: this.loginForm.password })
+          let res = await utilsApi.login({ username: this.loginForm.username, password: this.loginForm.password, verifCode: this.loginForm.verifCode })
           this.loading = false
           if(res.code == 0) {
             let userRouter = [], userFunction = []
@@ -134,6 +147,16 @@ export default {
               }else{
                 userRouter.push(i)
               }
+            }
+            const data = await utilsApi.userInfo()
+            sessionStorage.setItem('user', JSON.stringify(data.data))
+            if(!data.is_auth){
+              this.$notify({
+                    title: '警告',
+                    message: '您未绑定谷歌验证器,请先去右上角绑定谷歌验证器！',
+                    type: 'warning',
+                    duration: 5000
+                })
             }
             sessionStorage.setItem('userRouter', JSON.stringify(userRouter))
             sessionStorage.setItem('userFunction', JSON.stringify(userFunction))

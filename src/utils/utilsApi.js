@@ -66,7 +66,7 @@ err => {
 )
 
 const utilsApi = {
-
+    axiosIns
 }
 
 const toFormData = (obj) => {
@@ -130,6 +130,25 @@ utilsApi.login = async (params) => {
 //修改密码
 utilsApi.updatePassword = async (params) => {
     let reslut = await axiosIns.post("/v1/adminUser/updatePassword",params)
+    return reslut
+}
+
+//获取一个谷歌验证器
+utilsApi.genSecret = async (params) => {
+    let reslut = await axiosIns.get("/v1/adminUser/genSecret",params)
+    return reslut
+}
+
+
+//获取当前的用户信息
+utilsApi.userInfo = async (params) => {
+    let reslut = await axiosIns.get("/v1/adminUser/userInfo")
+    return reslut
+}
+
+//绑定谷歌验证器
+utilsApi.bindGooleAuth = async (params) => {
+    let reslut = await axiosIns.post("/v1//adminUser/bindGooleAuth",toFormData(params))
     return reslut
 }
 

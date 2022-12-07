@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 17:37:09
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-01 20:00:18
+ * @LastEditTime: 2022-12-07 16:41:02
  * @FilePath: /vue-element-admin/src/utils/table.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -687,7 +687,10 @@ export const payOrder = [
         label: '商户名称',
         key: 'merchantName',
         value: '',
-        filter: true
+        filter: true,
+        // type: 'select',
+        // list: [],
+        // listKey: 'payStatus',
     },{
         label: '商户订单号',
         key: 'merchantOrderNo',
@@ -877,7 +880,7 @@ export const backUList = [
         key: 'actualPayment',
         value: '',
     },{
-        label: '手续费（U）',
+        label: '利润（U）',
         key: 'profit',
         width: '120px',
         value: '',

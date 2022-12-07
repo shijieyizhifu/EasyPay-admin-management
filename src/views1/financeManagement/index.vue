@@ -109,14 +109,23 @@
         this.getList()
       },
       review(row) {
-        this.$alert(`确定${row.type == 'IN' ? '增加' : '减少'}该商户/代理商余额吗？`, '余额审核', {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        this.$prompt('请输入谷歌验证码', `${row.type == 'IN' ? '增加' : '减少'}余额审核`, {
           confirmButtonText: '确定',
-          type: 'warning',
-          callback: async action => {
-            if(action != 'confirm'){
-                return
-            }
-            let res = await utilsApi.balanceReview({id: row.id})
+          cancelButtonText: '取消',
+          inputPattern: /^\d{6}$/,
+          inputErrorMessage: '请输入谷歌验证码'
+        }).then(async ({ value }) => {
+          let res = await utilsApi.balanceReview({id: row.id,verifCode: value})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -126,8 +135,7 @@
                 })
                 this.getList()
             }
-          }
-        });
+        })
       },
     }
   }

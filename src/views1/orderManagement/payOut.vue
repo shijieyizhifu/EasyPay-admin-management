@@ -254,14 +254,23 @@
         });
       },
       payOutNotify(row) {
-        this.$alert('确定为该代付补发通知吗？', '通知', {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        this.$prompt('请输入谷歌验证码', '补发通知', {
           confirmButtonText: '确定',
-          type: 'warning',
-          callback: async action => {
-            if(action != 'confirm'){
-                return
-            }
-            let res = await utilsApi.payOutNotify({id: row.id})
+          cancelButtonText: '取消',
+          inputPattern: /^\d{6}$/,
+          inputErrorMessage: '请输入谷歌验证码'
+        }).then(async ({ value }) => {
+          let res = await utilsApi.payOutNotify({id: row.id,verifCode: value})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -270,18 +279,26 @@
                     duration: 2000
                 })
             }
-          }
-        });
+        })
       },
       finishPayOut(row,status) {
-        this.$alert(`确定把该订单处理为${status == "Y" ? '成功' : '失败'}吗？`, '处理订单', {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        this.$prompt('请输入谷歌验证码', `处理${status == "Y" ? '成功' : '失败'}订单`, {
           confirmButtonText: '确定',
-          type: 'warning',
-          callback: async action => {
-            if(action != 'confirm'){
-                return
-            }
-            let res = await utilsApi.finishPayOut({id: row.id,status})
+          cancelButtonText: '取消',
+          inputPattern: /^\d{6}$/,
+          inputErrorMessage: '请输入谷歌验证码'
+        }).then(async ({ value }) => {
+          let res = await utilsApi.finishPayOut({id: row.id,verifCode: value})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -291,8 +308,7 @@
                 })
                 this.getList()
             }
-          }
-        });
+        })
       }
     }
   }
