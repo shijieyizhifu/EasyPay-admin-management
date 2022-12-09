@@ -47,6 +47,11 @@
             <span >{{ row.mobile }}</span>
           </template>
         </el-table-column>
+        <el-table-column  :label="'邮箱'" width="180px" align="center">
+          <template slot-scope="{row}">
+            <span >{{ row.email }}</span>
+          </template>
+        </el-table-column>
         <el-table-column :label="'操作'" align="center" width="230" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
             <el-button type="success" size="mini" @click="handleUpdate(row)">
@@ -71,6 +76,9 @@
             </el-form-item>
             <el-form-item :label="'昵称'" prop="nickName">
                 <el-input v-model="temp.nickName" />
+            </el-form-item>
+            <el-form-item :label="'邮箱'" prop="email">
+              <el-input v-model="temp.email" />
             </el-form-item>
             <el-form-item :label="'状态'"  prop="roleId">
                 <el-select v-model="temp.roleId" class="filter-item" placeholder="">
@@ -128,7 +136,8 @@
             nickName: undefined,
             mobile: undefined,
             status: undefined,
-            roleId: undefined
+            roleId: undefined,
+            email: undefined
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -142,6 +151,7 @@
             nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
             roleId: [{ required: true, message: '请选择角色', trigger: 'change' }],
             mobile: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+            email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
             status: [{ required: true, message: '请选择状态', trigger: 'change' }],
         },
         userStatus,
@@ -188,7 +198,8 @@
             nickName: undefined,
             mobile: undefined,
             status: undefined,
-            roleId: undefined
+            roleId: undefined,
+            email: undefined
         }
       },
       handleCreate() {

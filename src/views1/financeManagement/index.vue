@@ -45,6 +45,31 @@
       </el-table>
   
       <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
+      
+      <el-dialog :title="`${currentRow.type == 'IN' ? '增加' : '减少'}余额审核`" :visible.sync="dialogFormVisible" center>
+          <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
+              <el-form-item :label="'谷歌验证码'" prop="verifCode">
+                  <el-input  v-model="temp.verifCode" placeholder="谷歌验证码"/>
+              </el-form-item>
+              <el-form-item :label="'邮箱验证码'" prop="emailCode" class="emailCode">
+                  <el-input  v-model="temp.emailCode" placeholder="邮箱验证码">
+                    <template slot="append">
+                      <el-button type="primary" :disabled="disabledSendCode" :loading="codeLoading"  @click="sendCode">
+                        {{ disabledSendCode ? countdown + 's' : '发送验证码' }}
+                      </el-button>
+                    </template>
+                  </el-input>
+              </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">
+                {{ $t('table.cancel') }}
+              </el-button>
+              <el-button type="primary" :loading="buttonLoading" @click="confirm">
+                {{ $t('table.confirm') }}
+              </el-button>
+          </div>
+        </el-dialog>
     </div>
   </template>
   
@@ -68,11 +93,23 @@
           page: 1,
           size: 10,
         },
-        temp: {},
+        temp: {
+          verifCode: undefined,
+          emailCode: undefined
+        },
         dialogFormVisible: false,
         dialogStatus: '',
         adjustAccountsList,
-        moment
+        moment,
+        buttonLoading: false,
+        currentRow: {},
+        rules: {
+          verifCode: [{ required: true, message: '请输入谷歌验证码', trigger: 'blur' }],
+          emailCode: [{ required: true, message: '请输入邮箱验证码', trigger: 'blur' }],
+        },
+        disabledSendCode: false,
+        countdown: 60,
+        codeLoading: false
       }
     },
     async created() {
@@ -119,13 +156,23 @@
                 })
             return
         }
-        this.$prompt('请输入谷歌验证码', `${row.type == 'IN' ? '增加' : '减少'}余额审核`, {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d{6}$/,
-          inputErrorMessage: '请输入谷歌验证码'
-        }).then(async ({ value }) => {
-          let res = await utilsApi.balanceReview({id: row.id,verifCode: value})
+        this.currentRow = row
+        this.dialogFormVisible = true
+        this.temp = {
+          verifCode: undefined,
+          emailCode: undefined
+        }
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      confirm() {
+        this.$refs['dataForm'].validate(async (valid) => {
+          if (valid) {
+            this.buttonLoading = true
+            let res = await utilsApi.balanceReview({id: this.currentRow.id,verifCode: this.temp.verifCode,emailCode: this.temp.emailCode})
+            this.buttonLoading = false
+            this.dialogFormVisible = false
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -135,8 +182,29 @@
                 })
                 this.getList()
             }
+          }
         })
       },
+      async sendCode() {
+        this.codeLoading = true
+        let res = await utilsApi.sendCode({type: `${this.currentRow.type == 'IN' ? '增加' : '减少'}余额`})
+        this.codeLoading = false
+        this.disabledSendCode = true 
+        if(res.code == 0) {
+          this.countdown = 60
+          this.interval = setInterval(() => {
+            if(this.countdown == 0){
+              clearInterval(this.interval)
+              this.disabledSendCode = false 
+            }else{
+              this.countdown -= 1
+            }
+          }, 1000);
+        }else{
+          clearInterval(this.interval)
+          this.disabledSendCode = false 
+        }
+      }
     }
   }
   </script>

@@ -150,7 +150,7 @@ export default {
             }
             const data = await utilsApi.userInfo()
             sessionStorage.setItem('user', JSON.stringify(data.data))
-            if(!data.is_auth){
+            if(!data.data.is_auth){
               this.$notify({
                     title: '警告',
                     message: '您未绑定谷歌验证器,请先去右上角绑定谷歌验证器！',

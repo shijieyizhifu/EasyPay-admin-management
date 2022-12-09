@@ -234,3 +234,8 @@ aside {
 .qrcode img{
   margin-left: calc(50% - 100px);
 }
+
+.emailCode .el-input-group__append {
+  background-color: #409EFF!important;
+  color: #eef1f6;
+}

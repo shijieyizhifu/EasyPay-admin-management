@@ -139,6 +139,12 @@ utilsApi.genSecret = async (params) => {
     return reslut
 }
 
+//解绑固定验证器
+utilsApi.clearAuth = async (params) => {
+    let reslut = await axiosIns.post("/v1/adminUser/clearAuth", toFormData(params))
+    return reslut
+}
+
 
 //获取当前的用户信息
 utilsApi.userInfo = async (params) => {
@@ -149,6 +155,12 @@ utilsApi.userInfo = async (params) => {
 //绑定谷歌验证器
 utilsApi.bindGooleAuth = async (params) => {
     let reslut = await axiosIns.post("/v1//adminUser/bindGooleAuth",toFormData(params))
+    return reslut
+}
+
+//发送邮件
+utilsApi.sendCode = async (params) => {
+    let reslut = await axiosIns.get("/v1/adminUser/sendCode?" + formatParams(params))
     return reslut
 }
 

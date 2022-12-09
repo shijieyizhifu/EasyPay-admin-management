@@ -25,6 +25,9 @@
           <el-dropdown-item @click.native="bindGoogle" v-if="!user.is_auth">
             <span style="display:block;">绑定谷歌验证器</span>
           </el-dropdown-item>
+          <el-dropdown-item @click.native="unBindGoogle" v-else>
+            <span style="display:block;">解绑谷歌验证器</span>
+          </el-dropdown-item>
           <el-dropdown-item @click.native="logout">
             <span style="display:block;">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
@@ -226,7 +229,26 @@ export default {
             }
           }
         })
-    }
+    },
+    unBindGoogle() {
+            this.$prompt('请输入谷歌验证码', '解绑谷歌验证器', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                inputPattern: /^\d{6}$/,
+                inputErrorMessage: '请输入谷歌验证码'
+                }).then(async ({ value }) => {
+                    let res = await utilsApi.clearAuth({code: value})
+                        if(res.code == 0){
+                            this.getUserInfo()
+                            this.$notify({
+                                title: '成功',
+                                message: '解绑谷歌验证器成功',
+                                type: 'success',
+                                duration: 2000
+                            })
+                        }
+            })
+        }
   }
 }
 </script>
