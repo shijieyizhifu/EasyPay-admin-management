@@ -142,7 +142,7 @@
                         style="margin-bottom: 12px;"
                         type="warning">
                     </el-alert>
-                <el-form-item  :label="item.label" v-if="!['status','businessCode'].includes(item.key)"  :prop="item.key" :required="item.required" :rules="formRules(item)">
+                <el-form-item  :label="item.label" v-if="!['status','businessCode'].includes(item.key) || dialogStatus1 !=='编辑' "  :prop="item.key" :required="item.required" :rules="formRules(item)">
                     <el-input v-if="!item.type" v-model="temp1[item.key]" :disabled="dialogStatus1 ==='编辑' && item.editDisabled" :placeholder="item.label"/>
                     <el-select  filterable v-if="item.type == 'select'" v-model="temp1[item.key]" :placeholder="item.label">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
