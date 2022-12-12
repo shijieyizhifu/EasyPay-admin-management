@@ -48,18 +48,18 @@
     
         <el-dialog :title="`解冻审核`" :visible.sync="dialogFormVisible" center>
           <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
-              <el-form-item :label="'谷歌验证码'" prop="verifCode">
+            <el-form-item :label="'邮箱验证码'" prop="emailCode" class="emailCode">
+              <el-input  v-model="temp.emailCode" placeholder="邮箱验证码">
+                <template slot="append">
+                  <el-button type="primary" :disabled="disabledSendCode" :loading="codeLoading"  @click="sendCode">
+                    {{ disabledSendCode ? countdown + 's' : '发送验证码' }}
+                  </el-button>
+                </template>
+              </el-input>
+            </el-form-item>  
+            <el-form-item :label="'谷歌验证码'" prop="verifCode">
                   <el-input  v-model="temp.verifCode" placeholder="谷歌验证码"/>
-              </el-form-item>
-              <el-form-item :label="'邮箱验证码'" prop="emailCode" class="emailCode">
-                  <el-input  v-model="temp.emailCode" placeholder="邮箱验证码">
-                    <template slot="append">
-                      <el-button type="primary" :disabled="disabledSendCode" :loading="codeLoading"  @click="sendCode">
-                        {{ disabledSendCode ? countdown + 's' : '发送验证码' }}
-                      </el-button>
-                    </template>
-                  </el-input>
-              </el-form-item>
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">
