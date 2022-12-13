@@ -28,17 +28,17 @@
         <template v-for="item,index in payOutOrder">
             <el-table-column   v-if="item.key != 'date'" :key="index" :label="item.label" :width="item.width || '100px'" align="center">
                 <template slot-scope="{row}">
-                    <div v-if="row[item.key] && row[item.key].length < 20 || !row[item.key]">
+                    <!-- <div v-if="row[item.key] && row[item.key].length < 20 || !row[item.key]"> -->
                         <span v-if="item.type == 'select'">
                             <el-tag effect="dark" v-if="row[item.key] == 'Y'" type="success" round>{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
                             <el-tag effect="dark" v-else-if="row[item.key] == 'N'" type="danger" round>{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
                             <span v-else>{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</span>
                         </span>
                         <span v-else>{{ row[item.key] == -1 ? '-' : row[item.key] }}</span>
-                    </div>
+                    <!-- </div>
                     <el-tooltip v-else class="item" effect="light" :content="row[item.key]" placement="right-start">
                         <span>{{ row[item.key].slice(0,7)+'...'}}</span>
-                    </el-tooltip>
+                    </el-tooltip> -->
                 </template>
             </el-table-column>
         </template>
