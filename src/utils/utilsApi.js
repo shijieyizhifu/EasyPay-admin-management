@@ -629,6 +629,18 @@ utilsApi.payOutNotify = async (params) => {
     return reslut
 }
 
+//代收订单统计
+utilsApi.orderStatistic = async (params) => {
+    let reslut = await axiosIns.post("/v1/order/orderStatistic",params)
+    return reslut
+}
+
+//代付订单统计
+utilsApi.payOutStatistic = async (params) => {
+    let reslut = await axiosIns.post("/v1/order/payOutStatistic",params)
+    return reslut
+}
+
 //---------------------------------查询商户或者代理商余额--------------------------------
 utilsApi.searchBalances = async (params) => {
     let reslut = await axiosIns.get("/v1/account/findByCode?" + formatParams(params))
