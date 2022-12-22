@@ -1,3 +1,11 @@
+<!--
+ * @Author: hanjiangyanhuo hjpyh@foxmail.com
+ * @Date: 2022-09-26 11:00:16
+ * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
+ * @LastEditTime: 2022-12-22 15:09:29
+ * @FilePath: /EasyPay-admin-management/src/views/dashboard/admin/components/PieChart.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <div :class="className" :style="{height:height,width:width}" />
 </template>
@@ -21,11 +29,33 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    countData: {
+      type: Object,
+      default: () => {
+        return {
+          success: 0,
+          successAmount: 0,
+          systemGain: 0,
+          total: 0,
+          totalAmount: 0
+        }
+      }
     }
   },
   data() {
     return {
       chart: null
+    }
+  },
+  watch: {
+    countData: {
+      handler: ()=>{
+        if(this?.chart){
+          this.setOption()
+        }
+      },
+      deep: true
     }
   },
   mounted() {
@@ -43,8 +73,16 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
+      this.setOption()
+    },
+    setOption(){
       this.chart.setOption({
+        title: [
+          {
+            left: 'left',
+            text: '订单成功率'
+          }
+        ],
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -52,21 +90,18 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['成功订单数', '失败订单数']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '订单成功率',
             type: 'pie',
             roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
+            radius: [15, 165],
+            center: ['50%', '48%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: this.countData.success || 0, name: '成功订单数' },
+              { value: this.countData.total - this.countData.success || 0, name: '失败订单数' },
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

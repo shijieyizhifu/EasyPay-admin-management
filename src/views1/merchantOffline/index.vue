@@ -20,9 +20,9 @@
                 <template slot-scope="{row}">
                     <!-- <div v-if="row[item.key] && (row[item.key]+'').length < 20 || !row[item.key]"> -->
                         <span v-if="item.type == 'select'">
-                            <el-tag effect="dark" v-if="row[item.key] == 'success'" type="success" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
-                            <el-tag effect="dark" v-else-if="row[item.key] == 'fail'" type="danger" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
-                            <el-tag effect="dark" type="primary" v-else>{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
+                            <el-tag  v-if="row[item.key] == 'success'" type="success" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
+                            <el-tag  v-else-if="row[item.key] == 'fail'" type="danger" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
+                            <el-tag  type="primary" v-else>{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
                         </span>
                         <span v-else>{{ !row[item.key] ? '-' : row[item.key] }}</span>
                     <!-- </div> -->
@@ -34,7 +34,7 @@
         </template>
         <el-table-column  label="创建时间" align="center" width="160" >
             <template slot-scope="{row}">
-                <span >{{ moment(row.createdTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
+                <span >{{ moment(row.createdTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
             </template>
         </el-table-column>
         <el-table-column  :label="'操作'" align="center" width="280" class-name="small-padding fixed-width">

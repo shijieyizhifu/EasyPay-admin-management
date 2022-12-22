@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-03 17:48:51
+ * @LastEditTime: 2022-12-21 19:47:18
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
             <el-card>
                 <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" >
                     <el-form-item label="商户号" prop="merchant">
-                        <el-select v-model="temp.merchant" @blur="findMerchantRate" filterable placeholder="请选择">
+                        <el-select v-model="temp.merchant" @change="findMerchantRate" filterable placeholder="请选择">
                             <el-option
                               v-for="item in merchantList"
                               :key="item.merchantCode"
@@ -23,7 +23,11 @@
                           </el-select>
                     </el-form-item>
                     <el-form-item label="订单号" prop="orderNo">
-                        <el-input  v-model="temp.orderNo" placeholder="订单号"/>
+                        <el-input  v-model="temp.orderNo" placeholder="订单号">
+                            <template slot="append">
+                                <el-button type="primary" @click="temp.orderNo = new Date().getTime()">生成</el-button>
+                            </template>
+                        </el-input>
                     </el-form-item>
                     <el-form-item label="平台业务" prop="businessCode">
                         <el-select v-model="temp.businessCode" filterable placeholder="请选择">
@@ -97,7 +101,7 @@ export default {
                 orderNo: new Date().getTime(), 
                 businessCode: '100030',
                 accName: '3333',
-                phone: '15279163025',
+                phone: '15998765432',
                 accNo: '1111',
                 orderAmount: 100,
                 notifyUrl: 'http://8.218.2.19:8000/test',

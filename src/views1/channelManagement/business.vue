@@ -78,7 +78,7 @@
       <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <div v-for="item,index in platformBusiness" :key="index">
-                <el-form-item  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
+                <el-form-item v-if="item.key != 'code'"  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
                     <el-input v-if="!item.type" v-model="temp[item.key]" :disabled="dialogStatus==='编辑' && item.editDisabled" :placeholder="item.label"/>
                     <el-select  filterable v-if="item.type == 'select'" v-model="temp[item.key]" :placeholder="item.label">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>

@@ -15,6 +15,11 @@
       <!-- @sort-change="sortChange" -->
         <el-table-column :label="$t('table.id')" type="index"  align="center" width="80" >
         </el-table-column>
+        <el-table-column  label="创建时间" align="center" width="100" >
+          <template slot-scope="{row}">
+              <span >{{ moment(row.createdTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
+          </template>
+      </el-table-column>
         <el-table-column prop="amount" label="金额" align="center" width="100" >
             <template slot-scope="{row}">
                 <span >{{ row.amount + ' ' + row.currency }}</span>
@@ -37,8 +42,8 @@
                 <template slot-scope="{row}">
                     <!-- <div v-if="row[item.key] && row[item.key].length < 20 || !row[item.key]"> -->
                         <span v-if="item.type == 'select'">
-                            <el-tag effect="dark" v-if="row[item.key] == 'Y'" type="success" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
-                            <el-tag effect="dark" v-else-if="row[item.key] == 'N'" type="danger" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
+                            <el-tag  v-if="row[item.key] == 'Y'" type="success" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
+                            <el-tag  v-else-if="row[item.key] == 'N'" type="danger" >{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</el-tag>
                             <span v-else>{{ item.list.find(i => i.value == row[item.key]) ? item.list.find(i => i.value == row[item.key]).name : '' }}</span>
                         </span>
                         <span v-else>{{ row[item.key] == -1 ? '-' : row[item.key] }}</span>
@@ -49,14 +54,9 @@
                 </template>
             </el-table-column>
         </template>
-        <el-table-column  label="支付时间" align="center" width="160" >
+        <el-table-column  label="支付时间" align="center" width="100" >
             <template slot-scope="{row}">
-                <span >{{ moment(row.payTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column  label="创建时间" align="center" width="160" >
-            <template slot-scope="{row}">
-                <span >{{ moment(row.createdTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
+                <span >{{ moment(row.payTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
             </template>
         </el-table-column>
         <el-table-column :label="'操作'" align="center" width="120" class-name="small-padding fixed-width">
@@ -129,15 +129,21 @@
       for(let i of payOrder){
         this.temp[i.key] = i.value
         if(i.type == 'select'){
-          // if(i.key == 'merchantName'){
-          //   let res = (await utilsApi.businessFindAll()).data
-          //   for(let i of res){
-          //       i.value = i.code
-          //   }
-          //   i.list = res
-          // }else{  
+          if(i.listType == 'custom' && i.key == 'businessName'){
+              let res = (await utilsApi.businessFindAll({type: 'PAYOUT'})).data
+              for(let i of res){
+                  i.value = i.name
+              }
+              i.list = res
+          }else if(i.listType == 'custom' && i.key == 'agencyCode'){
+              let res = (await utilsApi.agencyFindAll()).data
+              for(let i of res){
+                  i.value = i.code
+              }
+              i.list = res
+          }else{
             i.list = (await utilsApi.dictionaryFindPage({type: i.listKey || i.key})).data.records
-          // }
+          }
         }
       }
       this.getList()

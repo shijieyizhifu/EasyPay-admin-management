@@ -170,6 +170,19 @@ utilsApi.logout = async (params) => {
     return reslut
 }
 
+//---------------------------------首页--------------------------------
+//统计今日代收代付情况
+utilsApi.todayData = async (params) => {
+    let reslut = await axiosIns.get("/v1/index/todayData",params)
+    return reslut
+}
+
+//根据时间查询(默认本月)
+utilsApi.timeStatistics = async (params) => {
+    let reslut = await axiosIns.get("/v1/index/timeStatistics?" + formatParams(params))
+    return reslut
+}
+
 //---------------------------------线下流水--------------------------------
 
 //查询线下流水

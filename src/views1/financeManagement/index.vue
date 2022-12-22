@@ -31,7 +31,7 @@
           </el-table-column>
           <el-table-column  label="创建时间" align="center" width="100" >
             <template slot-scope="{row}">
-                <span >{{ moment(row.createdTime).format('YYYY/DD/MM HH:mm:ss') }}</span>
+                <span >{{ moment(row.createdTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
             </template>
         </el-table-column>
         <el-table-column :label="'操作'" align="center" width="120" class-name="small-padding fixed-width">

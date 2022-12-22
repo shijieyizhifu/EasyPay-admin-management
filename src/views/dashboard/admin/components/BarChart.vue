@@ -23,11 +23,23 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    chartData: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       chart: null
+    }
+  },
+  watch: {
+    chartData: {
+      deep: true,
+      handler(val) {
+        this.setOptions(val)
+      }
     }
   },
   mounted() {
@@ -45,8 +57,16 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
+      this.setOptions(this.chartData)
+    },
+    setOptions({  timeLabel, totalPaySuccessAmountData, totalPayOutSuccessAmountData } = {}) {
       this.chart.setOption({
+        title: [
+          {
+            left: 'left',
+            text: '总/成功订单金额柱形图'
+          }
+        ],
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -54,7 +74,7 @@ export default {
           }
         },
         grid: {
-          top: 10,
+          top: 40,
           left: '2%',
           right: '2%',
           bottom: '3%',
@@ -62,11 +82,14 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: timeLabel,
           axisTick: {
             alignWithLabel: true
           }
         }],
+        legend: {
+          data: ['代收成功金额', '代付成功金额']
+        },
         yAxis: [{
           type: 'value',
           axisTick: {
@@ -74,25 +97,16 @@ export default {
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '代收成功金额',
           type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
+          barWidth: '40%',
+          data: totalPaySuccessAmountData,
           animationDuration
         }, {
-          name: 'pageB',
+          name: '代付成功金额',
           type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          barWidth: '40%',
+          data: totalPayOutSuccessAmountData,
           animationDuration
         }]
       })

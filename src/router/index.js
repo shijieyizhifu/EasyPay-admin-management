@@ -77,7 +77,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/dashboard/admin/index'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', affix: true }
       }
@@ -90,25 +90,25 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  {
-    path: '/offlineRecord',
-    component: Layout,
-    redirect: '/offlineRecord/index',
-    alwaysShow: true,
-    name: 'Offline',
-    meta: {
-      title: '流水管理',
-      icon: 'el-icon-s-operation',
-    },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views1/offlineRecord/index'),
-        name: 'OfflineRecord',
-        meta: { title: '流水记录' }
-      }
-    ]
-  },
+  // {
+  //   path: '/offlineRecord',
+  //   component: Layout,
+  //   redirect: '/offlineRecord/index',
+  //   alwaysShow: true,
+  //   name: 'Offline',
+  //   meta: {
+  //     title: '流水管理',
+  //     icon: 'el-icon-s-operation',
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views1/offlineRecord/index'),
+  //       name: 'OfflineRecord',
+  //       meta: { title: '流水记录' }
+  //     }
+  //   ]
+  // },
   {
     path: '/merchantManagement',
     component: Layout,

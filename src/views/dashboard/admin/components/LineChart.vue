@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+    <div :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -61,10 +61,16 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ totalPayData, totalPaySuccessData, totalPayOutData, totalPayOutSuccessData, timeLabel } = {}) {
       this.chart.setOption({
+        title: [
+          {
+            left: 'left',
+            text: '总/成功笔数折线图'
+          }
+        ],
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: timeLabel,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -74,7 +80,7 @@ export default {
           left: 10,
           right: 10,
           bottom: 20,
-          top: 30,
+          top: 40,
           containLabel: true
         },
         tooltip: {
@@ -90,10 +96,10 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['代收总笔数', '代收成功笔数','代付总笔数', '代付成功笔数']
         },
         series: [{
-          name: 'expected', itemStyle: {
+          name: '代收总笔数', itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -104,19 +110,19 @@ export default {
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: totalPayData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
         {
-          name: 'actual',
+          name: '代收成功笔数',
           smooth: true,
           type: 'line',
           itemStyle: {
             normal: {
-              color: '#3888fa',
+              color: '#67C23A',
               lineStyle: {
-                color: '#3888fa',
+                color: '#67C23A',
                 width: 2
               },
               areaStyle: {
@@ -124,7 +130,42 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: totalPaySuccessData,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        },{
+          name: '代付总笔数', itemStyle: {
+            normal: {
+              color: '#F56C6C',
+              lineStyle: {
+                color: '#F56C6C',
+                width: 2
+              }
+            }
+          },
+          smooth: true,
+          type: 'line',
+          data: totalPayOutData,
+          animationDuration: 2800,
+          animationEasing: 'cubicInOut'
+        },
+        {
+          name: '代付成功笔数',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#409EFF',
+              lineStyle: {
+                color: '#409EFF',
+                width: 2
+              },
+              areaStyle: {
+                color: '#f3f8ff'
+              }
+            }
+          },
+          data: totalPayOutSuccessData,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

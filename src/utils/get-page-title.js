@@ -9,7 +9,7 @@
 import defaultSettings from '@/settings'
 import i18n from '@/lang'
 
-const title = defaultSettings.title || '世界易支付'
+const title = defaultSettings.title || '全球闪付'
 
 export default function getPageTitle(key) {
   const hasKey = i18n.te(`route.${key}`)

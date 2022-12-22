@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '世界易支付' // page title
+const name = defaultSettings.title || '全球闪付' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -36,6 +36,7 @@ module.exports = {
         // target: 'https://api-tron-v1.dpay.systems',
         target: 'http://8.218.2.19:8000',
         // target: 'http://192.168.2.54:8081',
+        // target: 'http://192.168.2.54:8000',
         // target: 'http://192.168.2.57:8081',
         changeOrigin: true,
         pathRewrite: {
