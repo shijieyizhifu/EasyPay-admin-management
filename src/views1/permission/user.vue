@@ -9,6 +9,13 @@
           {{ $t('table.add') }}
         </el-button>
       </div>
+
+      <el-alert
+          title="重置的登录密码：admin123456"
+          :closable="false"
+          style="margin-bottom: 12px;"
+          type="warning">
+      </el-alert>
   
       <el-table
         :key="tableKey"
