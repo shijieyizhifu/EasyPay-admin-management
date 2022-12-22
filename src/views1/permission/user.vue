@@ -80,7 +80,7 @@
             <el-form-item :label="'邮箱'" prop="email">
               <el-input v-model="temp.email" />
             </el-form-item>
-            <el-form-item :label="'状态'"  prop="roleId">
+            <el-form-item :label="'角色'"  prop="roleId">
                 <el-select v-model="temp.roleId" class="filter-item" placeholder="">
                   <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
