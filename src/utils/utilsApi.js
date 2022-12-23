@@ -9,7 +9,7 @@ const sysRsaPrivate = "-----BEGIN PRIVATE KEY-----\n" +"MIICeQIBADANBgkqhkiG9w0B
 const axiosIns = axios.create({
     // You can add your headers here
     // ================================
-    // baseURL: process.env.NODE_ENV === 'production' ?  'http://1.13.253.193' : '',
+    baseURL: process.env.NODE_ENV === 'production' ?  '/v1' : '/v1',
     // timeout: 1000,
     // headers: {'X-Custom-Header': 'foobar'}
 })
@@ -88,7 +88,7 @@ const formatParams = (obj) => {
 }
 
 //上传图片地址
-utilsApi.uploadImgUrl =  '/v1/file/uploadImage'
+utilsApi.uploadImgUrl =  '/file/uploadImage'
 
 //图片地址
 utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?   'http://8.218.2.19:8000/image/' : 'http://8.218.2.19:8000/image/'
@@ -123,63 +123,63 @@ utilsApi.sign = function (data,rsaPrivate) {
 
 //登录
 utilsApi.login = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminUser/login",params)
+    let reslut = await axiosIns.post("/adminUser/login",params)
     return reslut
 }
 
 //修改密码
 utilsApi.updatePassword = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminUser/updatePassword",params)
+    let reslut = await axiosIns.post("/adminUser/updatePassword",params)
     return reslut
 }
 
 //获取一个谷歌验证器
 utilsApi.genSecret = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminUser/genSecret",params)
+    let reslut = await axiosIns.get("/adminUser/genSecret",params)
     return reslut
 }
 
 //解绑固定验证器
 utilsApi.clearAuth = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminUser/clearAuth", toFormData(params))
+    let reslut = await axiosIns.post("/adminUser/clearAuth", toFormData(params))
     return reslut
 }
 
 
 //获取当前的用户信息
 utilsApi.userInfo = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminUser/userInfo")
+    let reslut = await axiosIns.get("/adminUser/userInfo")
     return reslut
 }
 
 //绑定谷歌验证器
 utilsApi.bindGooleAuth = async (params) => {
-    let reslut = await axiosIns.post("/v1//adminUser/bindGooleAuth",toFormData(params))
+    let reslut = await axiosIns.post("//adminUser/bindGooleAuth",toFormData(params))
     return reslut
 }
 
 //发送邮件
 utilsApi.sendCode = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminUser/sendCode?" + formatParams(params))
+    let reslut = await axiosIns.get("/adminUser/sendCode?" + formatParams(params))
     return reslut
 }
 
 //退出登录
 utilsApi.logout = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminUser/logout",params)
+    let reslut = await axiosIns.get("/adminUser/logout",params)
     return reslut
 }
 
 //---------------------------------首页--------------------------------
 //统计今日代收代付情况
 utilsApi.todayData = async (params) => {
-    let reslut = await axiosIns.get("/v1/index/todayData",params)
+    let reslut = await axiosIns.get("/index/todayData",params)
     return reslut
 }
 
 //根据时间查询(默认本月)
 utilsApi.timeStatistics = async (params) => {
-    let reslut = await axiosIns.get("/v1/index/timeStatistics?" + formatParams(params))
+    let reslut = await axiosIns.get("/index/timeStatistics?" + formatParams(params))
     return reslut
 }
 
@@ -187,25 +187,25 @@ utilsApi.timeStatistics = async (params) => {
 
 //查询线下流水
 utilsApi.offlineRecordPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/offlineRecord/pageAll",params)
+    let reslut = await axiosIns.post("/offlineRecord/pageAll",params)
     return reslut
 }
 
 //新增
 utilsApi.offlineRecordSave = async (params) => {
-    let reslut = await axiosIns.post("/v1/offlineRecord/save",params)
+    let reslut = await axiosIns.post("/offlineRecord/save",params)
     return reslut
 }
 
 //修改
 utilsApi.offlineRecordUpdate = async (params) => {
-    let reslut = await axiosIns.post("/v1/offlineRecord/update",params)
+    let reslut = await axiosIns.post("/offlineRecord/update",params)
     return reslut
 }
 
 //删除
 utilsApi.offlineRecordDel = async (params) => {
-    let reslut = await axiosIns.post("/v1/offlineRecord/del",toFormData(params))
+    let reslut = await axiosIns.post("/offlineRecord/del",toFormData(params))
     return reslut
 }
 
@@ -213,25 +213,25 @@ utilsApi.offlineRecordDel = async (params) => {
 
 //查询用户拥有的权限
 utilsApi.getPermission = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminUser/permission",params)
+    let reslut = await axiosIns.get("/adminUser/permission",params)
     return reslut
 }
 
 //查询所有的权限
 utilsApi.getAllPermission = async (params) => {
-    let reslut = await axiosIns.get("/v1/permission/getAll",params)
+    let reslut = await axiosIns.get("/permission/getAll",params)
     return reslut
 }
 
 //新增或者修改权限
 utilsApi.updatePermission = async (params) => {
-    let reslut = await axiosIns.post("/v1/permission/save",params)
+    let reslut = await axiosIns.post("/permission/save",params)
     return reslut
 }
 
 //删除权限
 utilsApi.delPermission = async (params) => {
-    let reslut = await axiosIns.get("/v1/permission/del?id=" + params)
+    let reslut = await axiosIns.get("/permission/del?id=" + params)
     return reslut
 }
 
@@ -239,25 +239,25 @@ utilsApi.delPermission = async (params) => {
 
 //查询角色
 utilsApi.getRoles = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminRole/getAllPage?" + formatParams(params))
+    let reslut = await axiosIns.get("/adminRole/getAllPage?" + formatParams(params))
     return reslut
 }
 
 //新增修改角色
 utilsApi.updateRole = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminRole/save",params)
+    let reslut = await axiosIns.post("/adminRole/save",params)
     return reslut
 }
 
 //查询角色拥有的权限
 utilsApi.getRolePermission = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminRole/getRolePermission?" + formatParams(params))
+    let reslut = await axiosIns.get("/adminRole/getRolePermission?" + formatParams(params))
     return reslut
 }
 
 //删除角色
 utilsApi.delRole = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminRole/del?" + formatParams(params))
+    let reslut = await axiosIns.get("/adminRole/del?" + formatParams(params))
     return reslut
 }
 
@@ -265,31 +265,31 @@ utilsApi.delRole = async (params) => {
 
 //查询用户
 utilsApi.getUsers = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminUser/getAllPage",params)
+    let reslut = await axiosIns.post("/adminUser/getAllPage",params)
     return reslut
 }
 
 //新增修改用户
 utilsApi.updateUser = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminUser/save",params)
+    let reslut = await axiosIns.post("/adminUser/save",params)
     return reslut
 }
 
 //查询用户可选的角色
 utilsApi.getAllRoles = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminRole/getAll")
+    let reslut = await axiosIns.get("/adminRole/getAll")
     return reslut
 }
 
 //重置用户密码
 utilsApi.resetUser = async (params) => {
-    let reslut = await axiosIns.post("/v1/adminUser/reset",params)
+    let reslut = await axiosIns.post("/adminUser/reset",params)
     return reslut
 }
 
 //删除用户
 utilsApi.delUser = async (params) => {
-    let reslut = await axiosIns.get("/v1/adminUser/del?" + formatParams(params))
+    let reslut = await axiosIns.get("/adminUser/del?" + formatParams(params))
     return reslut
 }
 
@@ -297,19 +297,19 @@ utilsApi.delUser = async (params) => {
 
 //查询字典
 utilsApi.dictionaryFindPage = async (params) => {
-    let reslut = await axiosIns.get("/v1/dictionary/findPage?" + formatParams(params))
+    let reslut = await axiosIns.get("/dictionary/findPage?" + formatParams(params))
     return reslut
 }
 
 //新增修改字典
 utilsApi.updateDictionary = async (params) => {
-    let reslut = await axiosIns.post("/v1/dictionary/save",params)
+    let reslut = await axiosIns.post("/dictionary/save",params)
     return reslut
 }
 
 //删除字典
 utilsApi.delDictionary = async (params) => {
-    let reslut = await axiosIns.post("/v1/dictionary/del" , toFormData(params))
+    let reslut = await axiosIns.post("/dictionary/del" , toFormData(params))
     return reslut
 }
 
@@ -319,37 +319,37 @@ utilsApi.delDictionary = async (params) => {
 
 //查询所有通道
 utilsApi.agencyFindAll = async (params) => {
-    let reslut = await axiosIns.get("/v1/agency/findAll")
+    let reslut = await axiosIns.get("/agency/findAll")
     return reslut
 }
 
 //查询
 utilsApi.agencyPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/agency/page" , params)
+    let reslut = await axiosIns.post("/agency/page" , params)
     return reslut
 }
 
 //新增
 utilsApi.insertAgency = async (params) => {
-    let reslut = await axiosIns.post("/v1/agency/insert",params)
+    let reslut = await axiosIns.post("/agency/insert",params)
     return reslut
 }
 
 //修改通道状态
 utilsApi.updateStatusAgency = async (params) => {
-    let reslut = await axiosIns.post("/v1/agency/updateStatus",params)
+    let reslut = await axiosIns.post("/agency/updateStatus",params)
     return reslut
 }
 
 //查询上游通道开通的业务
 utilsApi.findAgencyCode = async (params) => {
-    let reslut = await axiosIns.get("/v1/agencyBusiness/findAgencyCode?" + formatParams(params))
+    let reslut = await axiosIns.get("/agencyBusiness/findAgencyCode?" + formatParams(params))
     return reslut
 }
 
 //新增修改上游通道业务
 utilsApi.agencyBusinessSave = async (params) => {
-    let reslut = await axiosIns.post("/v1/agencyBusiness/save", params)
+    let reslut = await axiosIns.post("/agencyBusiness/save", params)
     return reslut
 }
 
@@ -357,31 +357,31 @@ utilsApi.agencyBusinessSave = async (params) => {
 
 //查询所有业务
 utilsApi.businessFindAll = async (params) => {
-    let reslut = await axiosIns.get("/v1/business/findAll")
+    let reslut = await axiosIns.get("/business/findAll")
     return reslut
 }
 
 //查询平台业务
 utilsApi.businessPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/business/page", params)
+    let reslut = await axiosIns.post("/business/page", params)
     return reslut
 }
 
 //新增业务
 utilsApi.insterBusiness = async (params) => {
-    let reslut = await axiosIns.post("/v1/business/inster", params)
+    let reslut = await axiosIns.post("/business/inster", params)
     return reslut
 }
 
 //修改业务
 utilsApi.updateBusiness = async (params) => {
-    let reslut = await axiosIns.post("/v1/business/update", params)
+    let reslut = await axiosIns.post("/business/update", params)
     return reslut
 }
 
 //查询平台业务关联的通道业务
 utilsApi.findAgencyBusiness = async (params) => {
-    let reslut = await axiosIns.get("/v1/business/findAgencyBusiness?" + formatParams(params))
+    let reslut = await axiosIns.get("/business/findAgencyBusiness?" + formatParams(params))
     return reslut
 }
 
@@ -389,49 +389,49 @@ utilsApi.findAgencyBusiness = async (params) => {
 
 //新增和修改集群
 utilsApi.clusterSave = async (params) => {
-    let reslut = await axiosIns.post("/v1/cluster/save", params)
+    let reslut = await axiosIns.post("/cluster/save", params)
     return reslut
 }
 
 //删除集群
 utilsApi.delCluster = async (params) => {
-    let reslut = await axiosIns.post("/v1/cluster/delCluster", toFormData(params))
+    let reslut = await axiosIns.post("/cluster/delCluster", toFormData(params))
     return reslut
 }
 
 //分页查询集群数据
 utilsApi.clusterPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/cluster/page", params)
+    let reslut = await axiosIns.post("/cluster/page", params)
     return reslut
 }
 
 //重置集群商户
 utilsApi.resetClusterMerchant = async (params) => {
-    let reslut = await axiosIns.post("/v1/cluster/resetMerchant", params)
+    let reslut = await axiosIns.post("/cluster/resetMerchant", params)
     return reslut
 }
 
 //新增集群商户
 utilsApi.insterClusterMerchant = async (params) => {
-    let reslut = await axiosIns.post("/v1/cluster/insterMerchant", params)
+    let reslut = await axiosIns.post("/cluster/insterMerchant", params)
     return reslut
 }
 
 //删除集群商户
 utilsApi.delClusterMerchant = async (params) => {
-    let reslut = await axiosIns.post("/v1/cluster/delClusterMerchant", toFormData(params))
+    let reslut = await axiosIns.post("/cluster/delClusterMerchant", toFormData(params))
     return reslut
 }
 
 //查询集群的商户
 utilsApi.findClusterMerchant = async (params) => {
-    let reslut = await axiosIns.get("/v1/cluster/findClusterMerchant?" + formatParams(params))
+    let reslut = await axiosIns.get("/cluster/findClusterMerchant?" + formatParams(params))
     return reslut
 }
 
 //查询集群可绑定 和未绑定的商户
 utilsApi.findAllClusterMerchant = async (params) => {
-    let reslut = await axiosIns.get("/v1/cluster/findMerchant?" + formatParams(params))
+    let reslut = await axiosIns.get("/cluster/findMerchant?" + formatParams(params))
     return reslut
 }
 
@@ -439,31 +439,31 @@ utilsApi.findAllClusterMerchant = async (params) => {
 
 //查询通道商户
 utilsApi.agencyMerchantPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/agencyMerchant/page", params)
+    let reslut = await axiosIns.post("/agencyMerchant/page", params)
     return reslut
 }
 
 //新增修改通道商户
 utilsApi.saveAgencyMerchant = async (params) => {
-    let reslut = await axiosIns.post("/v1/agencyMerchant/save", params)
+    let reslut = await axiosIns.post("/agencyMerchant/save", params)
     return reslut
 }
 
 //查询商户绑定的汇率
 utilsApi.findAgencyMerchantRate = async (params) => {
-    let reslut = await axiosIns.get("/v1/agencyMerchant/findMerchantRate?" + formatParams(params))
+    let reslut = await axiosIns.get("/agencyMerchant/findMerchantRate?" + formatParams(params))
     return reslut
 }
 
 //新增和修改商户汇率
 utilsApi.merchantRateSave = async (params) => {
-    let reslut = await axiosIns.post("/v1/agencyMerchant/merchantRateSave", params)
+    let reslut = await axiosIns.post("/agencyMerchant/merchantRateSave", params)
     return reslut
 }
 
 //查询平台业务关联的通道业务
 utilsApi.agencyMerchant = async (params) => {
-    let reslut = await axiosIns.get("/v1/agencyMerchant/findMerchant?" + formatParams(params))
+    let reslut = await axiosIns.get("/agencyMerchant/findMerchant?" + formatParams(params))
     return reslut
 }
 
@@ -471,61 +471,61 @@ utilsApi.agencyMerchant = async (params) => {
 
 //查询代理商
 utilsApi.agentPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/agent/page", params)
+    let reslut = await axiosIns.post("/agent/page", params)
     return reslut
 }
 
 //新增代理商
 utilsApi.agentInsert = async (params) => {
-    let reslut = await axiosIns.post("/v1/agent/insert", params)
+    let reslut = await axiosIns.post("/agent/insert", params)
     return reslut
 }
 
 //新增代理商业务
 utilsApi.agentInsterbusiness = async (params) => {
-    let reslut = await axiosIns.post("/v1/agent/insterbusiness", params)
+    let reslut = await axiosIns.post("/agent/insterbusiness", params)
     return reslut
 }
 
 //查询代理上开通的业务（大类）
 utilsApi.findAgentType = async (params) => {
-    let reslut = await axiosIns.get("/v1/agent/findBusinessType?" + formatParams(params))
+    let reslut = await axiosIns.get("/agent/findBusinessType?" + formatParams(params))
     return reslut
 }
 
 //查询代理商业务费率
 utilsApi.findAgentRate = async (params) => {
-    let reslut = await axiosIns.get("/v1/agent/findBusiness?" + formatParams(params))
+    let reslut = await axiosIns.get("/agent/findBusiness?" + formatParams(params))
     return reslut
 }
 
 //查询所有代理商
 utilsApi.agentFindAll = async (params) => {
-    let reslut = await axiosIns.get("/v1/agent/findAll")
+    let reslut = await axiosIns.get("/agent/findAll")
     return reslut
 }
 
 //查询代理商业务集群
 utilsApi.findAgentBusinessMerchant = async (params) => {
-    let reslut = await axiosIns.get("/v1/agent/agentBusinessMerchant?" + formatParams(params))
+    let reslut = await axiosIns.get("/agent/agentBusinessMerchant?" + formatParams(params))
     return reslut
 }
 
 //给代理业务绑定商户业务
 utilsApi.agentInsertMerchantBusiness = async (params) => {
-    let reslut = await axiosIns.post("/v1/agent/insertMerchantBusiness", toFormData(params))
+    let reslut = await axiosIns.post("/agent/insertMerchantBusiness", toFormData(params))
     return reslut
 }
 
 //查询代理开通某个业务的商户
 utilsApi.getMerchantByBusiness = async (params) => {
-    let reslut = await axiosIns.get("/v1/merchant/getMerchantByBusiness?" + formatParams(params))
+    let reslut = await axiosIns.get("/merchant/getMerchantByBusiness?" + formatParams(params))
     return reslut
 }
 
 //修改代理商费率
 utilsApi.updateAgentBusinessRate = async (params) => {
-    let reslut = await axiosIns.post("/v1/agent/updateBusinessRate",params)
+    let reslut = await axiosIns.post("/agent/updateBusinessRate",params)
     return reslut
 }
 
@@ -533,61 +533,61 @@ utilsApi.updateAgentBusinessRate = async (params) => {
 
 //查询商户
 utilsApi.merchantPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/page", params)
+    let reslut = await axiosIns.post("/merchant/page", params)
     return reslut
 }
 
 //新增商户
 utilsApi.merchantSave = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/save", params)
+    let reslut = await axiosIns.post("/merchant/save", params)
     return reslut
 }
 
 //修改商户业务的状态
 utilsApi.updateBusinessStatus = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/updateBusinessStatus",  toFormData(params))
+    let reslut = await axiosIns.post("/merchant/updateBusinessStatus",  toFormData(params))
     return reslut
 }
 
 //修改商户状态
 utilsApi.updateMerchantStatus = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/updateMerchantStatus",  toFormData(params))
+    let reslut = await axiosIns.post("/merchant/updateMerchantStatus",  toFormData(params))
     return reslut
 }
 
 //新增商户业务费率
 utilsApi.merchantInsterbusiness = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/insertBusiness", params)
+    let reslut = await axiosIns.post("/merchant/insertBusiness", params)
     return reslut
 }
 
 //修改商户商费率
 utilsApi.updateMerchantBusinessRate = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/updateBusiessRate", params)
+    let reslut = await axiosIns.post("/merchant/updateBusiessRate", params)
     return reslut
 }
 
 //查询商户业务费率
 utilsApi.findMerchantRate = async (params) => {
-    let reslut = await axiosIns.get("/v1/merchant/findBusiness?" + formatParams(params))
+    let reslut = await axiosIns.get("/merchant/findBusiness?" + formatParams(params))
     return reslut
 }
 
 //重置登录密码
 utilsApi.resetLogPassword = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/resetLogPassword",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/resetLogPassword",toFormData(params))
     return reslut
 }
 
 //重置支付密码
 utilsApi.resetPayPassword = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/resetPayPassword",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/resetPayPassword",toFormData(params))
     return reslut
 }
 
 //安全校验
 utilsApi.ipVerify = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchant/ipVerify",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/ipVerify",toFormData(params))
     return reslut
 }
 
@@ -596,67 +596,67 @@ utilsApi.ipVerify = async (params) => {
 
 //查询代收订单
 utilsApi.orderPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/order/page", params)
+    let reslut = await axiosIns.post("/order/page", params)
     return reslut
 }
 
 //补发订单通知
 utilsApi.orderNotify = async (params) => {
-    let reslut = await axiosIns.get("/v1/orderNotify?" + formatParams(params))
+    let reslut = await axiosIns.get("/orderNotify?" + formatParams(params))
     return reslut
 }
 
 //查询代付订单
 utilsApi.orderPayOutPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/order/payOutPage", params)
+    let reslut = await axiosIns.post("/order/payOutPage", params)
     return reslut
 }
 
 //支付下单
 utilsApi.orderPay = async (params) => {
-    let reslut = await axiosIns.post("/v1/orderPay", params)
+    let reslut = await axiosIns.post("/orderPay", params)
     return reslut
 }
 
 //代付下单
 utilsApi.singleOrder = async (params) => {
-    let reslut = await axiosIns.post("/v1/singleOrder", params)
+    let reslut = await axiosIns.post("/singleOrder", params)
     return reslut
 }
 
 //完成代付订单
 utilsApi.finishPayOut = async (params) => {
-    let reslut = await axiosIns.post("/v1/order/finishPayOut",toFormData(params))
+    let reslut = await axiosIns.post("/order/finishPayOut",toFormData(params))
     return reslut
 }
 
 //完成代收订单
 utilsApi.finishOrder = async (params) => {
-    let reslut = await axiosIns.post("/v1/order/finishOrder",toFormData(params))
+    let reslut = await axiosIns.post("/order/finishOrder",toFormData(params))
     return reslut
 }
 
 //补发代付通知
 utilsApi.payOutNotify = async (params) => {
-    let reslut = await axiosIns.get("/v1/payOutNotify?" + formatParams(params))
+    let reslut = await axiosIns.get("/payOutNotify?" + formatParams(params))
     return reslut
 }
 
 //代收订单统计
 utilsApi.orderStatistic = async (params) => {
-    let reslut = await axiosIns.post("/v1/order/orderStatistic",params)
+    let reslut = await axiosIns.post("/order/orderStatistic",params)
     return reslut
 }
 
 //代付订单统计
 utilsApi.payOutStatistic = async (params) => {
-    let reslut = await axiosIns.post("/v1/order/payOutStatistic",params)
+    let reslut = await axiosIns.post("/order/payOutStatistic",params)
     return reslut
 }
 
 //---------------------------------查询商户或者代理商余额--------------------------------
 utilsApi.searchBalances = async (params) => {
-    let reslut = await axiosIns.get("/v1/account/findByCode?" + formatParams(params))
+    let reslut = await axiosIns.get("/account/findByCode?" + formatParams(params))
     return reslut
 }
 
@@ -664,13 +664,13 @@ utilsApi.searchBalances = async (params) => {
 
 //查询商户回U 数据
 utilsApi.merchantOfflinePage = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchantOffline/page", params)
+    let reslut = await axiosIns.post("/merchantOffline/page", params)
     return reslut
 }
 
 //通过/驳回 回U申请
 utilsApi.updateOffline = async (params) => {
-    let reslut = await axiosIns.post("/v1/merchantOffline/updateOffline", params)
+    let reslut = await axiosIns.post("/merchantOffline/updateOffline", params)
     return reslut
 }
 
@@ -678,37 +678,37 @@ utilsApi.updateOffline = async (params) => {
 
 //冻结和解冻
 utilsApi.accountFreeze = async (params) => {
-    let reslut = await axiosIns.post("/v1/account/freeze", params)
+    let reslut = await axiosIns.post("/account/freeze", params)
     return reslut
 }
 
 //查询冻结 解冻记录列表
 utilsApi.accountPage = async (params) => {
-    let reslut = await axiosIns.post("/v1/account/page", params)
+    let reslut = await axiosIns.post("/account/page", params)
     return reslut
 }
 
 //解冻审核
 utilsApi.accountReview = async (params) => {
-    let reslut = await axiosIns.post("/v1/account/review", toFormData(params))
+    let reslut = await axiosIns.post("/account/review", toFormData(params))
     return reslut
 }
 
 //加减余额 申请
 utilsApi.balanceOperate = async (params) => {
-    let reslut = await axiosIns.post("/v1/account/balanceOperate", params)
+    let reslut = await axiosIns.post("/account/balanceOperate", params)
     return reslut
 }
 
 //查询 加减余额列表
 utilsApi.balancePage = async (params) => {
-    let reslut = await axiosIns.post("/v1/account/balancePage", params)
+    let reslut = await axiosIns.post("/account/balancePage", params)
     return reslut
 }
 
 //审核加减余额
 utilsApi.balanceReview = async (params) => {
-    let reslut = await axiosIns.post("/v1/account/balanceReview", toFormData(params))
+    let reslut = await axiosIns.post("/account/balanceReview", toFormData(params))
     return reslut
 }
 
