@@ -70,7 +70,7 @@
           </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="$refs.qrCodeUrl.innerHTML = '';dialogFormGoogle = false;">
+        <el-button @click="dialogFormGoogle = false;">
           {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" :loading="buttonLoading" @click="bindGooleAuth">
@@ -185,6 +185,7 @@ export default {
       this.temp1 = res.data
       
       this.$nextTick(() => {
+        this.$refs.qrCodeUrl.innerHTML = '';
         this.creatQrCode()
       })
       // this.temp1.url = await utilsApi.axiosIns.get(res.data.url)
