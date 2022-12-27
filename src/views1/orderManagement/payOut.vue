@@ -314,7 +314,7 @@
           inputPattern: /^\d{6}$/,
           inputErrorMessage: '请输入谷歌验证码'
         }).then(async ({ value }) => {
-          let res = await utilsApi.finishPayOut({id: row.id,verifCode: value})
+          let res = await utilsApi.finishPayOut({id: row.id,verifCode: value, status})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',

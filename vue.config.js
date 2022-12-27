@@ -34,9 +34,9 @@ module.exports = {
     proxy: {
       '/v1': {
         // target: 'https://api-tron-v1.dpay.systems',
-        target: 'http://8.218.2.19:8000',
+        // target: 'http://8.218.2.19:8000',
         // target: 'http://192.168.2.54:8081',
-        // target: 'http://192.168.2.54:8000',
+        target: 'http://192.168.2.54:8000',
         // target: 'http://192.168.2.57:8081',
         changeOrigin: true,
         pathRewrite: {
