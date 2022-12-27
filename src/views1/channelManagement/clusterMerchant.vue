@@ -152,12 +152,12 @@
             <el-form-item :label="'集群名称'" prop="name">
                 <el-input style="width:198px;" v-model="temp.name" placeholder="集群名称"/>
             </el-form-item>
-            <el-form-item :label="'业务'" prop="businessCode">
+            <el-form-item v-if="dialogStatus==='新增'" :label="'业务'" prop="businessCode">
                 <el-select v-model="temp.businessCode" class="filter-item" placeholder="业务">
                   <el-option v-for="item in allBuinessList" :key="item.name" :label="item.name" :value="item.code" />
                 </el-select>
               </el-form-item>
-            <el-form-item  :label="'通道&商户'" required>
+            <el-form-item v-if="dialogStatus==='新增'"  :label="'通道&商户'" required>
                 <el-select v-if="showCascader && dialogStatus == '编辑'" style="width:198px;" :value="temp.agencyCode+'/'+temp.agencyMerchant" @click.native="showCascader=false"/>
                 <el-cascader ref="cascader" v-else  :props="props" ></el-cascader>
             </el-form-item>
@@ -436,23 +436,11 @@
         })
       },
       updateData() {
-        let selectData = this.$refs.cascader.getCheckedNodes()[0]
-        if(!selectData){
-            this.$notify({
-                    title: '警告',
-                    message: '请先选择通道/商户！',
-                    type: 'warning',
-                    duration: 2000
-                })
-            return
-        }
+       
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
-            let data = JSON.parse(JSON.stringify(this.temp))
-            data.agencyCode = selectData.parent.data.code
-            data.agencyMerchant = selectData.data.merchant
             this.buttonLoading = true
-            let res = await utilsApi.updateDictionary(this.temp)
+            let res = await utilsApi.clusterSave(this.temp)
             this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
