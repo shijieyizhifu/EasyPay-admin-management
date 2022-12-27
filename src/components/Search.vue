@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-16 19:26:27
+ * @LastEditTime: 2022-12-27 17:05:31
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -33,6 +33,9 @@
             </el-button>
             <el-button v-if="!hideAddButtonList.includes(type)" class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit" @click="addData">
               {{ $t('table.add') }}
+            </el-button>
+            <el-button style="margin-left: 10px;" v-if="showExportButtonList.includes(type)" :loading="exportLoading"  class="filter-item" type="primary" icon="el-icon-download" @click="handleExport">
+              {{exportLoading ? "导出中..." : "导出excel" }}
             </el-button>
             <el-button v-if="showCountButtonList.includes(type)" class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-edit" @click="countData">
               统计
@@ -108,9 +111,11 @@ import utilsApi from '@/utils/utilsApi'
         searchData: this.searchFields.filter(item => item.filter == true),
         hideAddButtonList: ['pay','payOut','MerchantOffline','FundsRecords'],
         showCountButtonList: ['pay','payOut'],
+        showExportButtonList: ['pay','payOut'],
         showCount: false,
         showCountLoading: false,
-        countList: []
+        countList: [],
+        exportLoading: false
       }
     },
     // watch:{
@@ -149,6 +154,32 @@ import utilsApi from '@/utils/utilsApi'
           this.countList = res.data
         }
         this.showCountLoading = false
+      },
+      async handleExport() {
+        this.exportLoading = true
+        let res,name
+        if(this.type == 'pay'){
+          res = await utilsApi.excelOrder(this.searchObj())
+          name = '代收订单.xlsx'
+        }else if(this.type == 'payOut'){
+          res = await utilsApi.excelPayOut(this.searchObj())
+          name = '代付订单.xlsx'
+        }
+        if (res) {
+            let blob = new Blob([res], { type: 'application/x-xls' })
+            const a = document.createElement('a')
+            // 创建URL
+            const blobUrl = window.URL.createObjectURL(blob)
+            a.download = name
+            a.href = blobUrl
+            document.body.appendChild(a)
+            // 下载文件
+            a.click()
+            // 释放内存
+            URL.revokeObjectURL(blobUrl)
+            document.body.removeChild(a)
+        }
+        this.exportLoading = false
       }
     }
   }

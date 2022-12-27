@@ -20,11 +20,17 @@ axiosIns.interceptors.request.use((config) => {
     if(token && token != config.headers['X-Token']) {
         config.headers['X-Token'] = token
     }
+    if (['/order/excelOrder', '/order/excelPayOut'].indexOf(config.url) > -1) {
+        config.responseType = 'blob';
+    }
     return config
 })
 
 axiosIns.interceptors.response.use((response) => {
     const data = response.data
+    if(['/v1/order/excelOrder', '/v1/order/excelPayOut'].indexOf(response.config.url) > -1){
+        return data
+    }
     if(data.data?.token){
         localStorage.setItem('token',data.data?.tokenHead + data.data?.token)
     }
@@ -609,6 +615,18 @@ utilsApi.orderNotify = async (params) => {
 //查询代付订单
 utilsApi.orderPayOutPage = async (params) => {
     let reslut = await axiosIns.post("/order/payOutPage", params)
+    return reslut
+}
+
+//导出 代收excel
+utilsApi.excelOrder = async (params) => {
+    let reslut = await axiosIns.post("/order/excelOrder", params)
+    return reslut
+}
+
+//导出代付excel
+utilsApi.excelPayOut = async (params) => {
+    let reslut = await axiosIns.post("/order/excelPayOut", params)
     return reslut
 }
 
