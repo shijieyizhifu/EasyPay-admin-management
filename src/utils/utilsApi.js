@@ -97,7 +97,7 @@ const formatParams = (obj) => {
 utilsApi.uploadImgUrl =  '/file/uploadImage'
 
 //图片地址
-utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?   'http://8.218.2.19:8000/image/' : 'http://8.218.2.19:8000/image/'
+utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?   'https://api.qg-pay.com/image/' : 'http://8.218.2.19:8000/image/'
 
 function encryptRSABL (prik, str) {
     console.log(str)
