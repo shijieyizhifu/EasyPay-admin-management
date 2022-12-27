@@ -9,7 +9,7 @@ const sysRsaPrivate = "-----BEGIN PRIVATE KEY-----\n" +"MIICeQIBADANBgkqhkiG9w0B
 const axiosIns = axios.create({
     // You can add your headers here
     // ================================
-    baseURL: process.env.NODE_ENV === 'production' ?  '/v1' : '/v1',
+    baseURL: process.env.NODE_ENV === 'production' ?  'https://api.qg-pay.com' : '/v1',
     // timeout: 1000,
     // headers: {'X-Custom-Header': 'foobar'}
 })
