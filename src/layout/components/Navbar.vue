@@ -70,7 +70,7 @@
           </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormGoogle = false">
+        <el-button @click="$refs.qrCodeUrl.innerHTML = '';dialogFormGoogle = false;">
           {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" :loading="buttonLoading" @click="bindGooleAuth">
@@ -239,7 +239,7 @@ export default {
                 }).then(async ({ value }) => {
                     let res = await utilsApi.clearAuth({code: value})
                         if(res.code == 0){
-                            this.getUserInfo()
+                            // this.getUserInfo()
                             this.$notify({
                                 title: '成功',
                                 message: '解绑谷歌验证器成功',

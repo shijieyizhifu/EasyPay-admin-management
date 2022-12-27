@@ -160,7 +160,7 @@ utilsApi.userInfo = async (params) => {
 
 //绑定谷歌验证器
 utilsApi.bindGooleAuth = async (params) => {
-    let reslut = await axiosIns.post("//adminUser/bindGooleAuth",toFormData(params))
+    let reslut = await axiosIns.post("/adminUser/bindGooleAuth",toFormData(params))
     return reslut
 }
 
