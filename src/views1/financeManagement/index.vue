@@ -17,8 +17,8 @@
         </el-table-column>
         <el-table-column prop="amount" label="金额" align="center" width="160" >
             <template slot-scope="{row}">
-                <el-tag effect="dark" v-if="row.type == 'IN'" type="success" round>{{ `加余额 ${row.amount+' '+ row.currency}` }}</el-tag>
-                <el-tag effect="dark" v-else type="danger" round>{{ `减余额 ${row.amount+' '+ row.currency}` }}</el-tag>
+                <el-tag  v-if="row.type == 'IN'" type="success" round>{{ `加余额 ${row.amount+' '+ row.currency}` }}</el-tag>
+                <el-tag  v-else type="danger" round>{{ `减余额 ${row.amount+' '+ row.currency}` }}</el-tag>
             </template>
         </el-table-column>
         <el-table-column v-for="item,index in adjustAccountsList" :key="index" :label="item.label" :width="item.width || '120px'" align="center">
