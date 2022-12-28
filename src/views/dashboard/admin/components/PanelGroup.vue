@@ -3,13 +3,17 @@
     <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <!-- <svg-icon icon-class="money" class-name="card-panel-icon" /> -->
+          <span class="card-panel-icon" style="width: 32px;text-align: center;"> $ </span>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             平台收益
           </div>
-          <count-to :start-val="0" :end-val="countData.systemGain" :duration="3000" class="card-panel-num" />
+          <div class="card-panel-num">
+            {{ countData.systemGain }}
+          </div>
+          <!-- <count-to :start-val="0" :end-val="countData.systemGain" :duration="3000" class="card-panel-num" /> -->
         </div>
       </div>
     </el-col>
@@ -22,20 +26,27 @@
           <div class="card-panel-text">
             总订单数
           </div>
-          <count-to :start-val="0" :end-val="countData.total" :duration="2600" class="card-panel-num" />
+          <div class="card-panel-num">
+            {{ countData.total }}
+          </div>
+          <!-- <count-to :start-val="0" :end-val="countData.total" :duration="2600" class="card-panel-num" /> -->
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
       <div class="card-panel" >
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <!-- <svg-icon icon-class="money" class-name="card-panel-icon" /> -->
+          <span class="card-panel-icon" style="width: 32px;text-align: center;"> $ </span>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             总订单金额
           </div>
-          <count-to :start-val="0" :end-val="countData.totalAmount" :duration="3200" class="card-panel-num" />
+          <div class="card-panel-num">
+            {{ countData.totalAmount }}
+          </div>
+          <!-- <count-to :start-val="0" :end-val="countData.totalAmount" :duration="3200" class="card-panel-num" /> -->
         </div>
       </div>
     </el-col>
@@ -48,20 +59,27 @@
           <div class="card-panel-text">
             成功订单数
           </div>
-          <count-to :start-val="0" :end-val="countData.success" :duration="3600" class="card-panel-num" />
+          <div class="card-panel-num">
+            {{ countData.success }}
+          </div>
+          <!-- <count-to :start-val="0" :end-val="countData.success" :duration="3600" class="card-panel-num" /> -->
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
       <div class="card-panel" >
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <!-- <svg-icon icon-class="money" class-name="card-panel-icon" /> -->
+          <span class="card-panel-icon" style="width: 32px;text-align: center;"> $ </span>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
             成功订单金额
           </div>
-          <count-to :start-val="0" :end-val="countData.successAmount" :duration="3200" class="card-panel-num" />
+          <div class="card-panel-num">
+            {{ countData.successAmount }}
+          </div>
+          <!-- <count-to :start-val="0" :end-val="countData.successAmount" :duration="3200" class="card-panel-num" /> -->
         </div>
       </div>
     </el-col>
