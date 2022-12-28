@@ -2,7 +2,7 @@
  * @Author: hanjiangyanhuo hjpyh@foxmail.com
  * @Date: 2022-10-27 16:11:24
  * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-21 19:47:18
+ * @LastEditTime: 2022-12-28 14:07:19
  * @FilePath: /vue-element-admin/src/components/seacrh.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -139,7 +139,7 @@ export default {
             let res = await utilsApi.merchantPage({page:1,size:10000})
             this.merchantList = res.data.records
             this.temp.merchant = this.merchantList.find(item => item.name == '平台测试商户号')?.merchantCode
-            this.findMerchantRate()
+            if(this.temp.merchant)this.findMerchantRate()
         },
         async findMerchantRate() {
             let res = await utilsApi.findMerchantRate({merchantCode: this.temp.merchant})
