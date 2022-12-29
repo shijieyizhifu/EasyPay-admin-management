@@ -34,7 +34,7 @@
                       <span v-else>{{ row[item.key] }}</span>
                     </template>
                   </el-table-column>
-                <el-table-column :label="'操作'" align="center" width="440" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'" align="center" width="550" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
