@@ -177,6 +177,9 @@
             <el-form-item :label="'ip地址(逗号,隔开)'" :prop="temp2.ipVerify == 'Y' ? 'ips' : undefined">
                 <el-input type="textarea"  v-model="temp2.ips" placeholder="ip地址，逗号,隔开"/>
             </el-form-item>
+            <el-form-item :label="'谷歌验证码'" prop="verifCode">
+              <el-input  v-model="temp2.verifCode" placeholder="谷歌验证码"/>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="ipVerifyDialog = false">
@@ -260,6 +263,7 @@
         rules2: {
           ipVerify: [{ required: true, message: '请选择ip认证', trigger: 'change' }],
           ips: [{ required: true, message: '请输入ip', trigger: 'blur' }],
+          verifCode: [{ required: true, message: '请输入谷歌验证码', trigger: 'blur' }],
         },
         temp3:{},
         rules3: {
@@ -344,7 +348,8 @@
       handleIpVerify(row) {
         this.temp2 = {
           ips: '',
-          ipVerify: ''
+          ipVerify: '',
+          verifCode: ''
         }
         this.temp2.ipVerify = row.ipVerify
         this.temp2.ips = row.ips
