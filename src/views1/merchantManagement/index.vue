@@ -346,6 +346,16 @@
         })
       },
       handleIpVerify(row) {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
         this.temp2 = {
           ips: '',
           ipVerify: '',
