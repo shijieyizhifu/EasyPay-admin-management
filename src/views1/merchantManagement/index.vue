@@ -448,7 +448,7 @@
         })
       },
       handleUpdate1(row) {
-        this.temp1 = row.rate
+        this.temp1 = JSON.parse(JSON.stringify(row.rate)) 
         this.temp1.id = row.id
         this.dialogStatus1 = '编辑'
         this.dialogFormVisible1 = true
