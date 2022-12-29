@@ -342,7 +342,10 @@
         })
       },
       handleIpVerify(row) {
-        this.temp2 = {}
+        this.temp2 = {
+          ips: '',
+          ipVerify: ''
+        }
         this.temp2.ipVerify = row.ipVerify
         this.temp2.ips = row.ips
         this.currentRow = row
