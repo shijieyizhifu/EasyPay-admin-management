@@ -65,7 +65,7 @@
         </el-table-column> -->
         <el-table-column :label="'操作'" align="center" width="180" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
-            <el-button v-if="row.status == 'Y'" type="success" size="mini" @click="payOutNotify(row)">
+            <el-button v-if="row.status != 'N'" type="success" size="mini" @click="payOutNotify(row)">
               补发通知
             </el-button>
             <div v-else-if="row.status == 'N'">
