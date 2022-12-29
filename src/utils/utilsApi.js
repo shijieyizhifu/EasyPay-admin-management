@@ -597,6 +597,12 @@ utilsApi.ipVerify = async (params) => {
     return reslut
 }
 
+//清除谷歌验证
+utilsApi.clearMercahntGoolAuth = async (params) => {
+    let reslut = await axiosIns.post("/merchant/clearMercahntGoolAuth",toFormData(params))
+    return reslut
+}
+
 
 //---------------------------------订单--------------------------------
 

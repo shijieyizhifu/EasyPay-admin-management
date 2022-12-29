@@ -48,6 +48,9 @@
                     <el-button type="success" size="mini" @click="handleIpVerify(row)">
                       安全校验
                     </el-button>
+                    <el-button type="warning" size="mini" @click="handleClearGooleAuth(row)">
+                      清除谷歌验证器
+                    </el-button>
                     <el-button type="warning" size="mini" @click="resetPayPassword(row)">
                       重置支付密码
                     </el-button>
@@ -176,10 +179,34 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">
+            <el-button @click="ipVerifyDialog = false">
               {{ $t('table.cancel') }}
             </el-button>
             <el-button type="primary" :loading="buttonLoading" @click="ipVerifyConfirm">
+              {{ $t('table.confirm') }}
+            </el-button>
+        </div>
+      </el-dialog>
+      <el-dialog :title="`解冻审核`" :visible.sync="dialogClearGooleAuth" center>
+        <el-form ref="clearGooleAuthForm" :model="temp3" :rules="rules3" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
+          <el-form-item :label="'邮箱验证码'" prop="emailCode" class="emailCode">
+            <el-input  v-model="temp3.emailCode" placeholder="邮箱验证码">
+              <template slot="append">
+                <el-button type="primary" :disabled="disabledSendCode" :loading="codeLoading"  @click="sendCode">
+                  {{ disabledSendCode ? countdown + 's' : '发送验证码' }}
+                </el-button>
+              </template>
+            </el-input>
+          </el-form-item>  
+          <el-form-item :label="'谷歌验证码'" prop="verifCode">
+                <el-input  v-model="temp3.verifCode" placeholder="谷歌验证码"/>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogClearGooleAuth = false">
+              {{ $t('table.cancel') }}
+            </el-button>
+            <el-button type="primary" :loading="buttonLoading" @click="clearGooleAuthConfirm">
               {{ $t('table.confirm') }}
             </el-button>
         </div>
@@ -212,6 +239,9 @@
         temp: {},
         dialogFormVisible: false,
         dialogFormVisible1: false,
+        dialogClearGooleAuth: false,
+        disabledSendCode: false,
+        codeLoading: false,
         dialogStatus: '',
         dialogStatus1: '',
         textMap: {
@@ -230,7 +260,13 @@
         rules2: {
           ipVerify: [{ required: true, message: '请选择ip认证', trigger: 'change' }],
           ips: [{ required: true, message: '请输入ip', trigger: 'blur' }],
-        }
+        },
+        temp3:{},
+        rules3: {
+          verifCode: [{ required: true, message: '请输入谷歌验证码', trigger: 'blur' }],
+          emailCode: [{ required: true, message: '请输入邮箱验证码', trigger: 'blur' }],
+        },
+        countdown: 60
       }
     },
     async created() {
@@ -307,6 +343,8 @@
       },
       handleIpVerify(row) {
         this.temp2 = {}
+        this.temp2.ipVerify = row.ipVerify
+        this.temp2.ips = row.ips
         this.currentRow = row
         this.ipVerifyDialog = true
         this.$nextTick(() => {
@@ -591,7 +629,67 @@
         //   })
         // }
         
-      }
+      },
+      handleClearGooleAuth() {
+        let user = JSON.parse(sessionStorage.getItem('user'))
+        if(!user.is_auth){
+          this.$notify({
+                    title: '警告',
+                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+                    type: 'warning',
+                    duration: 2000
+                })
+            return
+        }
+        this.currentRow = row
+        this.dialogClearGooleAuth = true
+        this.temp3 = {
+          verifCode: undefined,
+          emailCode: undefined
+        }
+        this.$nextTick(() => {
+          this.$refs['clearGooleAuthForm'].clearValidate()
+        })
+      },
+      async sendCode() {
+        this.codeLoading = true
+        let res = await utilsApi.sendCode({type: '清除商户谷歌验证器'})
+        this.codeLoading = false
+        this.disabledSendCode = true 
+        if(res.code == 0) {
+          this.countdown = 60
+          this.interval = setInterval(() => {
+            if(this.countdown == 0){
+              clearInterval(this.interval)
+              this.disabledSendCode = false 
+            }else{
+              this.countdown -= 1
+            }
+          }, 1000);
+        }else{
+          clearInterval(this.interval)
+          this.disabledSendCode = false 
+        }
+      },
+      clearGooleAuthConfirm() {
+        this.$refs['clearGooleAuthForm'].validate(async (valid) => {
+          if (valid) {
+            this.buttonLoading = true
+            let res = await utilsApi.clearMercahntGoolAuth({id: this.currentRow.id,verifCode: this.temp3.verifCode,emailCode: this.temp3.emailCode})
+            this.buttonLoading = false
+            this.dialogClearGooleAuth = false
+            if(res.code == 0){
+                this.$notify({
+                    title: '成功',
+                    message: '审核成功',
+                    type: 'success',
+                    duration: 2000
+                })
+                this.getList()
+            }
+          }
+        })
+      },
     }
   }
   </script>
