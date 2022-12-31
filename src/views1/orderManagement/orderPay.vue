@@ -1,11 +1,4 @@
-<!--
- * @Author: hanjiangyanhuo hjpyh@foxmail.com
- * @Date: 2022-10-27 16:11:24
- * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-28 14:07:06
- * @FilePath: /vue-element-admin/src/components/seacrh.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
+
 <template>
 <el-card>
     <el-row>

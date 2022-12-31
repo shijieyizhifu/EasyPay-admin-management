@@ -1,13 +1,4 @@
 /*
- * @Author: hanjiangyanhuo hjpyh@foxmail.com
- * @Date: 2022-10-27 17:37:09
- * @LastEditors: hanjiangyanhuo hjpyh@foxmail.com
- * @LastEditTime: 2022-12-28 13:58:18
- * @FilePath: /vue-element-admin/src/utils/table.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-
-/*
 formRules：简单的校验规则
 字段：表格，搜索表单，表单编辑
 label：展现标题
