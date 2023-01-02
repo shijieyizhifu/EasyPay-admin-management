@@ -87,8 +87,8 @@ export default {
                 phone: '15998765432',
                 email: '15998765432@163.com',
                 amount: 100,
-                notifyUrl: 'http://8.218.2.19:8000/test',
-                pageUrl: 'http://8.218.2.19:8000/test',
+                notifyUrl: 'https://api.qg-pay/test',
+                pageUrl: 'https://api.qg-pay/test',
                 bankCode: "BANK",
                 subject: '测试测试'
             },
