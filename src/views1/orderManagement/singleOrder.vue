@@ -97,7 +97,7 @@ export default {
                 phone: '15998765432',
                 accNo: '1111',
                 orderAmount: 100,
-                notifyUrl: 'https://api.qg-pay/test',
+                notifyUrl: 'https://api.qg-pay.com/test',
                 province: '',
                 bankCode: "UPI",
                 identityType: '',
