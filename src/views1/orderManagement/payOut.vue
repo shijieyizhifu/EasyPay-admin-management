@@ -63,7 +63,7 @@
             </el-button>
           </template>
         </el-table-column> -->
-        <el-table-column :label="'操作'" align="center" width="180" class-name="small-padding fixed-width">
+        <el-table-column :label="'操作'" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <el-button v-if="row.status != 'N'" type="success" size="mini" @click="payOutNotify(row)">
               补发通知

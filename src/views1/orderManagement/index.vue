@@ -59,7 +59,7 @@
                 <span >{{ moment(row.payTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="'操作'" align="center" width="120" class-name="small-padding fixed-width">
+        <el-table-column :label="'操作'" align="center" width="120" fixed="right" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <el-button v-if="row.status == 'Y'" type="success" size="mini" @click="orderNotify(row)">
               补发通知
