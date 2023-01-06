@@ -174,6 +174,16 @@
                   </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item :label="'商户是否测试'" prop="isTest">
+              <el-select v-model="temp2.isTest" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in [{name:'是',value: 'Y'},{name:'否',value: 'N'}]"
+                  :key="item.value"
+                  :label="item.name"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+          </el-form-item>
             <el-form-item :label="'ip地址(逗号,隔开)'" :prop="temp2.ipVerify == 'Y' ? 'ips' : undefined">
                 <el-input type="textarea"  v-model="temp2.ips" placeholder="ip地址，逗号,隔开"/>
             </el-form-item>
@@ -262,6 +272,7 @@
         temp2: {},
         rules2: {
           ipVerify: [{ required: true, message: '请选择ip认证', trigger: 'change' }],
+          isTest:  [{ required: true, message: '请选择是否测试', trigger: 'change' }],
           ips: [{ required: true, message: '请输入ip', trigger: 'blur' }],
           verifCode: [{ required: true, message: '请输入谷歌验证码', trigger: 'blur' }],
         },
@@ -276,7 +287,7 @@
     async created() {
       for(let i of merchant){
         this.temp[i.key] = i.value
-        if(i.type == 'select'){
+        if(i.type == 'select' && i.key != 'isTest'){
             i.list = (await utilsApi.dictionaryFindPage({type: i.listKey || i.key})).data.records
         }
       }
@@ -359,10 +370,12 @@
         this.temp2 = {
           ips: '',
           ipVerify: '',
-          verifCode: ''
+          verifCode: '',
+          isTest: ''
         }
         this.temp2.ipVerify = row.ipVerify
         this.temp2.ips = row.ips
+        this.temp2.isTest = row.isTest
         this.currentRow = row
         this.ipVerifyDialog = true
         this.$nextTick(() => {

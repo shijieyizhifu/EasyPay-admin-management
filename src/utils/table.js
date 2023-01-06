@@ -548,6 +548,12 @@ export const merchant = [
         filter: true,
         type: 'select',
         list: []
+    },{
+        label: '商户是否测试',
+        key: 'isTest',
+        value: '',
+        type: 'select',
+        list: [{name:'是',value: 'Y'},{name:'否',value: 'N'}]
     },
     {
         label: 'IP认证',
