@@ -66,7 +66,11 @@
         </el-col>
         <el-col :span="12">
             <el-card style="margin-left: 12px;">
-                <div v-html="msg.replaceAll(',',',<br>')"></div>
+                <el-result icon="success" v-if="msg.indexOf('成功') >= 0">
+                </el-result>
+                <el-result icon="error" v-if="msg.indexOf('失败') >= 0">
+                </el-result>
+                <div style="width:80%" v-html="msg.replaceAll(',',',<br>')"></div>
             </el-card>
         </el-col>
     </el-row>

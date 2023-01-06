@@ -76,7 +76,7 @@
                 </el-result>
                 <el-result icon="error" v-if="msg.indexOf('失败') >= 0">
                 </el-result>
-                <div v-html="msg.replaceAll(',',',<br>')"></div>
+                <div style="width:80%" v-html="msg.replaceAll(',',',<br>')"></div>
             </el-card>
         </el-col>
     </el-row>
