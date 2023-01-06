@@ -693,6 +693,20 @@ export const payOrder = [
         width: '120px',
         filter: true
     },{
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'payStatus',
+        filter: true
+    },{
+        label: '通知状态',
+        key: 'notifyStatus',
+        value: '',
+        type: 'select',
+        list: [],
+    },{
         label: '代理商编码',
         key: 'agentCode',
         value: '',
@@ -724,20 +738,6 @@ export const payOrder = [
         listType: 'custom',
         list: []
     },{
-        label: '状态',
-        key: 'status',
-        value: '',
-        type: 'select',
-        list: [],
-        listKey: 'payStatus',
-        filter: true
-    },{
-        label: '通知状态',
-        key: 'notifyStatus',
-        value: '',
-        type: 'select',
-        list: [],
-    },{
         label: '日期',
         key: 'date',
         value: '',
@@ -749,6 +749,20 @@ export const payOrder = [
 //代付订单 
 export const payOutOrder = [
     {
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'payStatus',
+        filter: true
+    },{
+        label: '回调状态',
+        key: 'notifyStatus',
+        value: '',
+        type: 'select',
+        list: [],
+    },{
         label: '商户号',
         key: 'merchant',
         value: '',
@@ -813,20 +827,6 @@ export const payOutOrder = [
         label: '银行编码',
         key: 'bankCode',
         value: '',
-    },{
-        label: '状态',
-        key: 'status',
-        value: '',
-        type: 'select',
-        list: [],
-        listKey: 'payStatus',
-        filter: true
-    },{
-        label: '回调状态',
-        key: 'notifyStatus',
-        value: '',
-        type: 'select',
-        list: [],
     },{
         label: '日期',
         key: 'date',
