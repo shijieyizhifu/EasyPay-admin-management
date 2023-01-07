@@ -34,7 +34,7 @@
                 <span >{{ moment(row.createdTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
             </template>
         </el-table-column>
-        <el-table-column :label="'操作'" align="center" width="120" class-name="small-padding fixed-width">
+        <el-table-column :label="'操作'" align="center" fixed="right" width="120" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <el-button v-if="row.type == 'UNFREEZE' && row.status == 'N'" type="primary" size="mini" @click="unfreeze(row)">
                 解冻审核

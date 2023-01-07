@@ -37,7 +37,7 @@
                 <span >{{ moment(row.createdTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
             </template>
         </el-table-column>
-        <el-table-column  :label="'操作'" align="center" width="280" class-name="small-padding fixed-width">
+        <el-table-column  :label="'操作'" align="center" fixed="right" width="280" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
             <template v-if="row.status=='apply'">
                 <el-button type="success" size="mini" @click="handleUpdateOffline(row,true)">
