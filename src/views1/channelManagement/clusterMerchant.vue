@@ -7,8 +7,13 @@
                         <el-form-item label="名称">
                             <el-input style="width:183px;" v-model="searchObj.name" placeholder="请输入名称"></el-input>
                         </el-form-item>
-                        <el-form-item label="业务编码">
-                            <el-input style="width:183px;" v-model="searchObj.businessCode" placeholder="请输入业务编码"></el-input>
+                        <el-form-item label="商户号">
+                          <el-input style="width:183px;" v-model="searchObj.merchantCode" placeholder="请输入商户号"></el-input>
+                      </el-form-item>
+                        <el-form-item label="业务名称">
+                            <el-select style="width:183px;" v-model="searchObj.businessCode" placeholder="请选择">
+                              <el-option v-for="item in allBuinessList" :key="item.code" :label="item.name" :value="item.code" />
+                            </el-select>
                         </el-form-item>
                     </el-form>
                     <el-row style="display:flex;justify-content:center;">
@@ -228,7 +233,8 @@
         moment,
         searchObj: {
             name: '',
-            businessCode: ''
+            businessCode: '',
+            merchantCode: ''
         },
         searchObj1: {
             clusterId: '',
