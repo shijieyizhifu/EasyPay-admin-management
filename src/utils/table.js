@@ -675,6 +675,20 @@ export const merchantRate = [
 //代收订单 
 export const payOrder = [
     {
+        label: '状态',
+        key: 'status',
+        value: '',
+        type: 'select',
+        list: [],
+        listKey: 'payStatus',
+        filter: true
+    },{
+        label: '通知状态',
+        key: 'notifyStatus',
+        value: '',
+        type: 'select',
+        list: [],
+    },{
         label: '商户号',
         key: 'merchant',
         value: '',
@@ -698,20 +712,6 @@ export const payOrder = [
         value: '',
         width: '120px',
         filter: true
-    },{
-        label: '状态',
-        key: 'status',
-        value: '',
-        type: 'select',
-        list: [],
-        listKey: 'payStatus',
-        filter: true
-    },{
-        label: '通知状态',
-        key: 'notifyStatus',
-        value: '',
-        type: 'select',
-        list: [],
     },{
         label: '代理商编码',
         key: 'agentCode',
