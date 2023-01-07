@@ -845,17 +845,16 @@ export const payOutOrder = [
 //回U记录
 export const backUList = [
     {
-        label: '商户编码',
+        label: '编码',
         key: 'merchantCode',
         value: '',
         filter: true
     },
-    // {
-    //     label: '商户名称',
-    //     key: 'merchantName',
-    //     value: '',
-    //     filter: true
-    // },
+    {
+        label: '名称',
+        key: 'merchantName',
+        value: '',
+    },
     {
         label: '币种',
         key: 'currency',
