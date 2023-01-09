@@ -121,16 +121,15 @@ export default {
     }
   },
   created() {
-    this.getTodayData()
+    this.timer = setInterval(()=>{
+      this.getTodayData()
+    },10000)
     this.handleFilter()
   },
+  beforeDestroy() {
+    clearInterval(this.timer)
+  },
   methods: {
-    async getTodayData() {
-      let res = await utilsApi.todayData()
-      if(res.code == 0) {
-        this.countData = res.data
-      }
-    },
     async getTodayData() {
       let res = await utilsApi.todayData()
       if(res.code == 0) {

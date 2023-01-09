@@ -107,7 +107,7 @@ export const tradingChannel = [
         width: '140px'
     },{
         label: '通知ip检验',
-        key: 'notify_ips',
+        key: 'notifyIps',
         value: '',
         required: true,
         width: '140px'
@@ -553,12 +553,14 @@ export const merchant = [
         value: '',
         filter: true,
         type: 'select',
+        editDisabled: true,
         list: []
     },{
         label: '商户是否测试',
         key: 'isTest',
         value: '',
         type: 'select',
+        editDisabled: true,
         list: [{name:'是',value: 'Y'},{name:'否',value: 'N'}]
     },
     {
@@ -567,6 +569,7 @@ export const merchant = [
         value: '',
         filter: true,
         type: 'select',
+        editDisabled: true,
         list: []
     },
     {
@@ -595,6 +598,7 @@ export const merchant = [
         label: '登录名',
         key: 'logName',
         value: '',
+        editDisabled: true,
         required: true,
     },
 ]

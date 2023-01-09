@@ -34,8 +34,11 @@
                       <span v-else>{{ row[item.key] }}</span>
                     </template>
                   </el-table-column>
-                <el-table-column :label="'操作'" align="center" width="550" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'" align="center" width="650" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
+                    <el-button type="primary" size="mini" @click="handleUpdate(row)">
+                        编辑
+                    </el-button>
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
                     </el-button>
@@ -113,14 +116,14 @@
       <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item  :label="'代理商'" required :prop="'agentCode'" :rules="formRules({key: 'agentCode',type: 'select',label: '代理商',required: true})">
-                <el-select  filterable  v-model="temp.agentCode" :placeholder="'代理商'">
-                    <el-option v-for="(option,index) in agentList" :key="index" :label="option.name" :value="option.code"></el-option>
+                <el-select  filterable  v-model="temp.agentCode" :placeholder="'代理商'" >
+                    <el-option v-for="(option,index) in agentList" :key="index" :label="option.name" :value="option.code + ''"></el-option>
                   </el-select>
             </el-form-item>
             <div v-for="item,index in merchant" :key="index">
                 <el-form-item v-if="item.key != 'code' && !(item.hidden && item.hidden.indexOf('form')>=0)"  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
                     <el-input v-if="!item.type" v-model="temp[item.key]" :disabled="dialogStatus==='编辑' && item.editDisabled" :placeholder="item.label"/>
-                    <el-select  filterable v-if="item.type == 'select'" v-model="temp[item.key]" :placeholder="item.label">
+                    <el-select  filterable v-if="item.type == 'select'" v-model="temp[item.key]" :placeholder="item.label" :disabled="dialogStatus==='编辑' && item.editDisabled">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
                       </el-select>
                 </el-form-item>
@@ -488,7 +491,7 @@
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
             this.buttonLoading = true
-            let res = await utilsApi.merchantSave(this.temp)
+            let res = await utilsApi.merchantUpdate(this.temp)
             this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({

@@ -336,8 +336,8 @@ utilsApi.agencyPage = async (params) => {
 }
 
 //新增
-utilsApi.insertAgency = async (params) => {
-    let reslut = await axiosIns.post("/agency/insert",params)
+utilsApi.saveAgency = async (params) => {
+    let reslut = await axiosIns.post("/agency/save",params)
     return reslut
 }
 
@@ -546,6 +546,12 @@ utilsApi.merchantPage = async (params) => {
 //新增商户
 utilsApi.merchantSave = async (params) => {
     let reslut = await axiosIns.post("/merchant/save", params)
+    return reslut
+}
+
+//修改商户
+utilsApi.merchantUpdate = async (params) => {
+    let reslut = await axiosIns.post("/merchant/update", params)
     return reslut
 }
 

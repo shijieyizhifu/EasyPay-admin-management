@@ -26,6 +26,9 @@
                   </el-table-column>
                 <el-table-column :label="'操作'" fixed="right" align="center" width="230" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
+                    <el-button type="primary"  size="mini" @click="handleUpdate(row)">
+                       编辑
+                  </el-button>
                     <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用
                     </el-button>
@@ -94,9 +97,9 @@
             <!-- <el-form-item :label="'通知ip检验'" :prop="'ips'">
                 <el-input type="textarea"  v-model="temp.ips" placeholder="ip地址，逗号,隔开"/>
             </el-form-item> -->
-            <el-form-item  :label="'谷歌验证码'" required :prop="'verifCode'" :rules="formRules({key: 'verifCode',label: '谷歌验证码',required: true})">
+            <!-- <el-form-item  :label="'谷歌验证码'" required :prop="'verifCode'" :rules="formRules({key: 'verifCode',label: '谷歌验证码',required: true})">
               <el-input  v-model="temp.verifCode" :placeholder="'谷歌验证码'"/>
-            </el-form-item>
+            </el-form-item> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">
@@ -251,7 +254,7 @@
             let data = JSON.parse(JSON.stringify(this.temp))
             delete data.id
             this.buttonLoading = true
-            let res = await utilsApi.insertAgency(data)
+            let res = await utilsApi.saveAgency(data)
             this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
@@ -288,16 +291,6 @@
         })
       },
       handleUpdate(row) {
-        let user = JSON.parse(sessionStorage.getItem('user'))
-        if(!user.is_auth){
-          this.$notify({
-                    title: '警告',
-                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
-                    type: 'warning',
-                    duration: 2000
-                })
-            return
-        }
         this.temp = row
         this.dialogStatus = '编辑'
         this.dialogFormVisible = true
@@ -317,7 +310,7 @@
         this.$refs['dataForm'].validate(async(valid) => {
           if (valid) {
             this.buttonLoading = true
-            let res = await utilsApi.updateDictionary(this.temp)
+            let res = await utilsApi.saveAgency(this.temp)
             this.buttonLoading = false
             if(res.code == 0){
                 this.$notify({
