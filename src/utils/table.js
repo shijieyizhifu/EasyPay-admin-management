@@ -106,6 +106,12 @@ export const tradingChannel = [
         required: true,
         width: '140px'
     },{
+        label: '通知ip检验',
+        key: 'notify_ips',
+        value: '',
+        required: true,
+        width: '140px'
+    },{
         label: '备注',
         key: 'remake',
         value: '',

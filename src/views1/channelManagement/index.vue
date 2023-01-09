@@ -91,6 +91,9 @@
                       </el-select>
                 </el-form-item>
             </div>
+            <!-- <el-form-item :label="'通知ip检验'" :prop="'ips'">
+                <el-input type="textarea"  v-model="temp.ips" placeholder="ip地址，逗号,隔开"/>
+            </el-form-item> -->
             <el-form-item  :label="'谷歌验证码'" required :prop="'verifCode'" :rules="formRules({key: 'verifCode',label: '谷歌验证码',required: true})">
               <el-input  v-model="temp.verifCode" :placeholder="'谷歌验证码'"/>
             </el-form-item>
