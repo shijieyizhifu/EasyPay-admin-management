@@ -17,7 +17,7 @@ export const formRules = (item) => {
     if(!item.required){
         return {}
     }
-    if(!item.type){
+    if(!item.type || item.type == 'textarea'){
         return {required: true, message: `${item.label}不能为空`, trigger: ['blur','change']}
     }
     if(item.type == 'select'){
@@ -109,6 +109,7 @@ export const tradingChannel = [
         label: '通知ip检验',
         key: 'notifyIps',
         value: '',
+        type: 'textarea',
         required: true,
         width: '140px'
     },{

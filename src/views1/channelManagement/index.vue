@@ -92,6 +92,7 @@
                     <el-select  filterable v-if="item.type == 'select'" v-model="temp[item.key]" :placeholder="item.label">
                         <el-option v-for="(option,index) in item.list" :key="index" :label="option.name" :value="option.value"></el-option>
                       </el-select>
+                    <el-input v-if="item.type == 'textarea'" type="textarea"  v-model="temp[item.key]" placeholder="ip地址，逗号,隔开"/>
                 </el-form-item>
             </div>
             <!-- <el-form-item :label="'通知ip检验'" :prop="'ips'">
