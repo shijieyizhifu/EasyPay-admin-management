@@ -20,7 +20,7 @@ export default {
         },
         height: {
             type: String,
-            default: '400px'
+            default: '300px'
         },
         countData: {
             type: Object,
@@ -86,8 +86,8 @@ export default {
                 series: [{
                     name: '订单成功率',
                     type: 'pie',
-                    roseType: 'radius',
-                    radius: [15, 165],
+                    // roseType: 'radius',
+                    radius: '72%',
                     center: ['50%', '48%'],
                     data: [{
                             value: countData.success || 0,

@@ -14,14 +14,14 @@ listType：默认来源数据字典，可选值custom（用来自定义查询）
 listKey：自定义数据字段key
 */
 export const formRules = (item) => {
-    if(!item.required){
+    if (!item.required) {
         return {}
     }
-    if(!item.type || item.type == 'textarea'){
-        return {required: true, message: `${item.label}不能为空`, trigger: ['blur','change']}
+    if (!item.type || item.type == 'textarea') {
+        return { required: true, message: `${item.label}不能为空`, trigger: ['blur', 'change'] }
     }
-    if(item.type == 'select'){
-        return {required: true, message: `请选择${item.label}`, trigger: 'change'}
+    if (item.type == 'select') {
+        return { required: true, message: `请选择${item.label}`, trigger: 'change' }
     }
 }
 //数据字典
@@ -41,18 +41,18 @@ export const dataDictionary = [
         value: '',
         required: true,
         filter: true
-    },{
+    }, {
         label: '字典值',
         key: 'value',
         value: '',
         required: true,
         filter: true
-    },{
+    }, {
         label: '排序号',
         key: 'sort',
         value: '',
         required: true
-    },{
+    }, {
         label: '字典描述',
         value: '',
         key: 'details',
@@ -86,33 +86,33 @@ export const tradingChannel = [
         filter: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '调用方式',
         key: 'runType',
         value: '',
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '代收下单地址',
         key: 'payUrl',
         value: '',
         required: true,
         width: '140px'
-    },{
+    }, {
         label: '代付下单地址',
         key: 'payOutUrl',
         value: '',
         required: true,
         width: '140px'
-    },{
+    }, {
         label: '通知ip检验',
         key: 'notifyIps',
         value: '',
         type: 'textarea',
         required: true,
         width: '140px'
-    },{
+    }, {
         label: '备注',
         key: 'remake',
         value: '',
@@ -128,12 +128,12 @@ export const tradingBusiness = [
         required: true,
         width: '140px',
         editDisabled: true,
-    },{
+    }, {
         label: '业务名称',
         key: 'name',
         value: '',
         required: true,
-    },{
+    }, {
         label: '类型',
         key: 'type',
         value: '',
@@ -156,21 +156,21 @@ export const tradingBusiness = [
         key: 'code',
         value: '',
         required: true,
-    },{
+    }, {
         label: '结算类型',
         key: 'settleType',
         value: '',
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '备注',
         key: 'remake',
         value: '',
@@ -185,13 +185,13 @@ export const platformBusiness = [
         value: '',
         required: true,
         filter: true,
-    },{
+    }, {
         label: '平台业务编码',
         key: 'code',
         value: '',
         required: true,
         filter: true,
-    },{
+    }, {
         label: '类型',
         key: 'type',
         value: '',
@@ -200,24 +200,24 @@ export const platformBusiness = [
         listKey: 'type',
         filter: true,
         list: []
-    },{
+    }, {
         label: '国家',
         key: 'country',
         value: '',
         required: true,
-    },{
+    }, {
         label: '币种',
         key: 'currency',
         value: '',
         required: true,
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '备注',
         key: 'remake',
         value: '',
@@ -233,25 +233,25 @@ export const tradingChannelSim = [
         required: true,
         width: '140px',
         editDisabled: true,
-    },{
+    }, {
         label: '平台业务编码',
         key: 'businessCode',
         width: '140px',
         value: '',
         required: true,
-    },{
+    }, {
         label: '通道业务编码',
         key: 'code',
         width: '140px',
         value: '',
         required: true,
-    },{
+    }, {
         label: '通道业务名称',
         key: 'name',
         width: '140px',
         value: '',
         required: true,
-    },{
+    }, {
         label: '类型',
         key: 'type',
         value: '',
@@ -259,14 +259,14 @@ export const tradingChannelSim = [
         type: 'select',
         listKey: 'type',
         list: []
-    },{
+    }, {
         label: '结算类型',
         key: 'settleType',
         value: '',
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
@@ -284,14 +284,14 @@ export const ChannelMerchant = [
         value: '',
         required: true,
         filter: true,
-    },{
+    }, {
         label: '通道商户',
         key: 'merchant',
         value: '',
         required: true,
         editDisabled: true,
         filter: true,
-    },{
+    }, {
         label: '上游通道编码',
         key: 'agencyCode',
         value: '',
@@ -301,7 +301,7 @@ export const ChannelMerchant = [
         filter: true,
         listType: 'custom',
         list: []
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
@@ -309,23 +309,23 @@ export const ChannelMerchant = [
         filter: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: 'md5私钥',
         key: 'md5Private',
         value: '',
-    },{
+    }, {
         label: 'rsa私钥',
         key: 'rsaPrivate',
         value: '',
-    },{
+    }, {
         label: 'rsa公钥',
         key: 'rsaPublic',
         value: '',
-    },{
+    }, {
         label: '平台公钥',
         key: 'agencyPublic',
         value: '',
-    },{
+    }, {
         label: '备注',
         key: 'remake',
         value: '',
@@ -376,7 +376,7 @@ export const ChannelMerchantRate = [
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '费率比例',
         key: 'rate',
         value: '',
@@ -396,42 +396,42 @@ export const ChannelMerchantRate = [
         key: 'mixFee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每笔固定手续费',
         key: 'fee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '最高手续费',
         key: 'maxFee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '订单最小金额限制',
         key: 'mixPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '订单最大金额限制',
         key: 'maxPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每日订单数量限制',
         key: 'dayCountLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每月订单数量限制',
         key: 'monthCountLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每日上限金额',
         key: 'dayPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每月上限金额',
         key: 'monthPriceLimit',
         value: '-1',
@@ -478,52 +478,52 @@ export const agentRate = [
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '费率比例',
         key: 'rate',
         value: '',
         required: true,
-    },{
+    }, {
         label: '最低手续费',
         key: 'mixFee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每笔固定手续费',
         key: 'fee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '最高手续费',
         key: 'maxFee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '订单最小金额限制',
         key: 'mixPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '订单最大金额限制',
         key: 'maxPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每日订单数量限制',
         key: 'dayCountLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每月订单数量限制',
         key: 'monthCountLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每日上限金额',
         key: 'dayPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每月上限金额',
         key: 'monthPriceLimit',
         value: '-1',
@@ -556,13 +556,13 @@ export const merchant = [
         type: 'select',
         editDisabled: true,
         list: []
-    },{
+    }, {
         label: '商户是否测试',
         key: 'isTest',
         value: '',
         type: 'select',
         editDisabled: true,
-        list: [{name:'是',value: 'Y'},{name:'否',value: 'N'}]
+        list: [{ name: '是', value: 'Y' }, { name: '否', value: 'N' }]
     },
     {
         label: 'IP认证',
@@ -624,58 +624,58 @@ export const merchantRate = [
         required: true,
         type: 'select',
         list: []
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
         type: 'select',
         list: []
-    },{
+    }, {
         label: '费率比例',
         key: 'rate',
         value: '',
         required: true,
-    },{
+    }, {
         label: '最低手续费',
         key: 'mixFee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每笔固定手续费',
         key: 'fee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '最高手续费',
         key: 'maxFee',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '订单最小金额限制',
         key: 'mixPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '订单最大金额限制',
         key: 'maxPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每日订单数量限制',
         key: 'dayCountLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每月订单数量限制',
         key: 'monthCountLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每日上限金额',
         key: 'dayPriceLimit',
         value: '-1',
         required: true,
-    },{
+    }, {
         label: '每月上限金额',
         key: 'monthPriceLimit',
         value: '-1',
@@ -693,18 +693,18 @@ export const payOrder = [
         list: [],
         listKey: 'payStatus',
         filter: true
-    },{
+    }, {
         label: '通知状态',
         key: 'notifyStatus',
         value: '',
         type: 'select',
         list: [],
-    },{
+    }, {
         label: '商户号',
         key: 'merchant',
         value: '',
         filter: true
-    },{
+    }, {
         label: '商户名称',
         key: 'merchantName',
         value: '',
@@ -712,28 +712,28 @@ export const payOrder = [
         // type: 'select',
         // list: [],
         // listKey: 'payStatus',
-    },{
+    }, {
         label: '商户订单号',
         key: 'merchantOrderNo',
         value: '',
         filter: true
-    },{
+    }, {
         label: '系统订单号',
         key: 'orderNo',
         value: '',
         width: '120px',
         filter: true
-    },{
+    }, {
         label: '代理商编码',
         key: 'agentCode',
         value: '',
         filter: true
-    },{
+    }, {
         label: '代理商名称',
         key: 'agentName',
         value: '',
         filter: true
-    },{
+    }, {
         label: '通道编码',
         key: 'agencyCode',
         value: '',
@@ -741,12 +741,12 @@ export const payOrder = [
         type: 'select',
         listType: 'custom',
         list: []
-    },{
+    }, {
         label: '业务编码',
         key: 'businessCode',
         value: '',
         // filter: true
-    },{
+    }, {
         label: '业务名称',
         key: 'businessName',
         value: '',
@@ -754,7 +754,7 @@ export const payOrder = [
         type: 'select',
         listType: 'custom',
         list: []
-    },{
+    }, {
         label: '日期',
         key: 'date',
         value: '',
@@ -773,44 +773,44 @@ export const payOutOrder = [
         list: [],
         listKey: 'payStatus',
         filter: true
-    },{
+    }, {
         label: '回调状态',
         key: 'notifyStatus',
         value: '',
         type: 'select',
         list: [],
-    },{
+    }, {
         label: '商户号',
         key: 'merchant',
         value: '',
         filter: true
-    },{
+    }, {
         label: '商户名称',
         key: 'merchantName',
         value: '',
         filter: true
-    },{
+    }, {
         label: '商户订单号',
         key: 'merchantOrderNo',
         value: '',
         filter: true
-    },{
+    }, {
         label: '系统订单号',
         key: 'orderNo',
         value: '',
         width: '120px',
         filter: true
-    },{
+    }, {
         label: '代理商编码',
         key: 'agentCode',
         value: '',
         filter: true
-    },{
+    }, {
         label: '代理商名称',
         key: 'agentName',
         value: '',
         filter: true
-    },{
+    }, {
         label: '通道编码',
         key: 'agencyCode',
         value: '',
@@ -818,12 +818,12 @@ export const payOutOrder = [
         type: 'select',
         listType: 'custom',
         list: []
-    },{
+    }, {
         label: '业务编码',
         key: 'businessCode',
         value: '',
         // filter: true
-    },{
+    }, {
         label: '业务名称',
         key: 'businessName',
         value: '',
@@ -831,20 +831,20 @@ export const payOutOrder = [
         type: 'select',
         listType: 'custom',
         list: []
-    },{
+    }, {
         label: '收款账户',
         key: 'accNo',
         value: '',
-    },{
+    }, {
         label: '收款商户名称',
         key: 'accName',
         width: '120px',
         value: '',
-    },{
+    }, {
         label: '银行编码',
         key: 'bankCode',
         value: '',
-    },{
+    }, {
         label: '日期',
         key: 'date',
         value: '',
@@ -871,11 +871,11 @@ export const backUList = [
         key: 'currency',
         value: '',
         filter: true
-    },{
+    }, {
         label: '金额',
         key: 'amount',
         value: '',
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
@@ -883,28 +883,28 @@ export const backUList = [
         list: [],
         listKey: 'backUStatus',
         filter: true
-    },{
+    }, {
         label: '回U地址',
         key: 'merchantAddress',
         value: '',
-    },{
+    }, {
         label: 'U的费率',
         key: 'usdtRate',
         value: '',
-    },{
+    }, {
         label: '收款（U)',
         key: 'actualReceive',
         value: '',
-    },{
+    }, {
         label: '付款 (U)',
         key: 'actualPayment',
         value: '',
-    },{
+    }, {
         label: '利润（U）',
         key: 'profit',
         width: '120px',
         value: '',
-    },{
+    }, {
         label: '通道商户',
         key: 'agencyCode',
         value: '',
@@ -919,17 +919,17 @@ export const fundsList = [
         value: '',
         width: '140px',
         filter: true
-    },{
+    }, {
         label: '商户/代理商名字',
         key: 'name',
         value: '',
         width: '140px',
         filter: true
-    },{
+    }, {
         label: '备注',
         key: 'remake',
         value: '',
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
@@ -937,7 +937,7 @@ export const fundsList = [
         list: [],
         listKey: 'fundsStatus',
         filter: true
-    },{
+    }, {
         label: '类型',
         key: 'type',
         value: '',
@@ -945,11 +945,11 @@ export const fundsList = [
         list: [],
         listKey: 'fundsType',
         filter: true
-    },{
+    }, {
         label: '发起人',
         key: 'createName',
         value: '',
-    },{
+    }, {
         label: '审核人',
         key: 'reviewName',
         value: '',
@@ -964,17 +964,17 @@ export const adjustAccountsList = [
         value: '',
         width: '140px',
         filter: true
-    },{
+    }, {
         label: '商户/代理商名字',
         key: 'name',
         value: '',
         width: '140px',
         filter: true
-    },{
+    }, {
         label: '备注',
         key: 'remake',
         value: '',
-    },{
+    }, {
         label: '状态',
         key: 'status',
         value: '',
@@ -982,7 +982,7 @@ export const adjustAccountsList = [
         list: [],
         listKey: 'fundsStatus',
         filter: true
-    },{
+    }, {
         label: '类型',
         key: 'type',
         value: '',
@@ -990,11 +990,11 @@ export const adjustAccountsList = [
         list: [],
         listKey: 'adjustAccountType',
         filter: true
-    },{
+    }, {
         label: '发起人',
         key: 'createdName',
         value: '',
-    },{
+    }, {
         label: '审核人',
         key: 'reviewName',
         value: '',

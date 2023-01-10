@@ -19,7 +19,7 @@ router.beforeEach(async (to, from, next) => {
   document.title = getPageTitle(to.meta.title)
   const hasToken = localStorage.getItem('token')
   if (hasToken) {
-    if (to.path === '/login' || to.path.indexOf('/redirect') >= 0 ) {
+    if (to.path === '/login' || to.path.indexOf('/redirect') >= 0) {
       // if is logged in, redirect to the home page
       next()
       NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
@@ -28,16 +28,16 @@ router.beforeEach(async (to, from, next) => {
       sessionStorage.setItem('user', JSON.stringify(data.data))
       const hasRoute = JSON.parse(sessionStorage.getItem('userRouter'))
       let userRouter = [], userFunction = []
-      if(hasRoute && hasRoute.length > 0){
+      if (hasRoute && hasRoute.length > 0) {
         userRouter = hasRoute
         userFunction = JSON.parse(sessionStorage.getItem('userFunction'))
-      }else{
+      } else {
         const res = await utilsApi.getPermission()
         let userPermissions = res.data
-        for(let i of userPermissions){
-          if(i.type == 'function'){
+        for (let i of userPermissions) {
+          if (i.type == 'function') {
             userFunction.push(i)
-          }else{
+          } else {
             userRouter.push(i)
           }
         }
@@ -47,18 +47,18 @@ router.beforeEach(async (to, from, next) => {
       if (userRouter.map(item => item.router).includes(to.path)) {
         next()
       } else {
-          next('/login')
-          NProgress.done()
+        next('/login')
+        NProgress.done()
       }
     }
   } else {
     /* has no token*/
-    if(to.path != '/login'){
+    if (to.path != '/login') {
       next('/login')
-    }else{
+    } else {
       next()
     }
-      NProgress.done()
+    NProgress.done()
   }
 })
 

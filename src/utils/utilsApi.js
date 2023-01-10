@@ -4,12 +4,12 @@ import router from '@/router'
 const base64url = require('base64url')
 const crypto = require('crypto')
 
-const sysRsaPrivate = "-----BEGIN PRIVATE KEY-----\n" +"MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAKVTGCD8/im8bZNP/ZHlHSXNF/Lr9/sA/skZOQ3huOyQvhRUi0ZcPN8hjsvpMJJVFLakIAKUnOMB+Brwur/gRQWIOiqgTN2j0KteXbOLp36kppgd9hZ8AO8C50pfPZRTJUwYrWhytK2aNNpC4og/hgPQXEUAr2fImlJbsSwVLqx7AgMBAAECgYEAgddr+OSZfQ/nAy5smPvXU4vrRjc7UGAsuqXboGJqCSl4j6ECrWTdzeSeMNnY8uRtWzA1j7FGMiemwwnTscSij3kqXci/WDpTEXVeykb5uGLkMk4N3A+atoXkc6eKNLT+TbTcX1GxD42/oCZVzfSg4cbL0MGrRKTGn7yNsW9wX+ECQQDyovID91GIzbXDGfhRMyncF+SYDuXmLtBJrOb1yGyWC7DA8XIkvURO2+PhFyPWCkYwwicdn1rE9rsnn6ngp8XRAkEArm4WzxwZ+euUSNCSmXyGqAlhhVXUH1BtBCBz7z1/oy6hzDegbcQoB90iI/3p0uBXWfPkz8eWezwTcyrR188EiwJBAKCRaKtrPc/UolZsl0HVI/x861Ade9KqZDh9bZJ1gjaBogTtQ2ZAwjWVmuZYk+SPhAe8VHpr/Huf9BayuI7tOCECQQCZr5fbLYhZok5JhbPVFlnSjkllYIUAfi0/WJStcwMVtQ2L0GtCq3UV0Km3Co5NZaqxL+onhFQ7CmicrVqsidMXAkEAtPoUlDZSWaYSFKGZE46PZCEMoujNMKBYqguaqNtsogr6RMHji4Fbx4xc78y3Bu77eu+rz8eYqnkZ6sXMFuwyDg==\n" + "-----END PRIVATE KEY-----"
+const sysRsaPrivate = "-----BEGIN PRIVATE KEY-----\n" + "MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAKVTGCD8/im8bZNP/ZHlHSXNF/Lr9/sA/skZOQ3huOyQvhRUi0ZcPN8hjsvpMJJVFLakIAKUnOMB+Brwur/gRQWIOiqgTN2j0KteXbOLp36kppgd9hZ8AO8C50pfPZRTJUwYrWhytK2aNNpC4og/hgPQXEUAr2fImlJbsSwVLqx7AgMBAAECgYEAgddr+OSZfQ/nAy5smPvXU4vrRjc7UGAsuqXboGJqCSl4j6ECrWTdzeSeMNnY8uRtWzA1j7FGMiemwwnTscSij3kqXci/WDpTEXVeykb5uGLkMk4N3A+atoXkc6eKNLT+TbTcX1GxD42/oCZVzfSg4cbL0MGrRKTGn7yNsW9wX+ECQQDyovID91GIzbXDGfhRMyncF+SYDuXmLtBJrOb1yGyWC7DA8XIkvURO2+PhFyPWCkYwwicdn1rE9rsnn6ngp8XRAkEArm4WzxwZ+euUSNCSmXyGqAlhhVXUH1BtBCBz7z1/oy6hzDegbcQoB90iI/3p0uBXWfPkz8eWezwTcyrR188EiwJBAKCRaKtrPc/UolZsl0HVI/x861Ade9KqZDh9bZJ1gjaBogTtQ2ZAwjWVmuZYk+SPhAe8VHpr/Huf9BayuI7tOCECQQCZr5fbLYhZok5JhbPVFlnSjkllYIUAfi0/WJStcwMVtQ2L0GtCq3UV0Km3Co5NZaqxL+onhFQ7CmicrVqsidMXAkEAtPoUlDZSWaYSFKGZE46PZCEMoujNMKBYqguaqNtsogr6RMHji4Fbx4xc78y3Bu77eu+rz8eYqnkZ6sXMFuwyDg==\n" + "-----END PRIVATE KEY-----"
 
 const axiosIns = axios.create({
     // You can add your headers here
     // ================================
-    baseURL: process.env.NODE_ENV === 'production' ?  'https://api.qg-pay.com' : '/v1',
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://api.qg-pay.com' : '/v1',
     // timeout: 1000,
     // headers: {'X-Custom-Header': 'foobar'}
 })
@@ -17,7 +17,7 @@ const axiosIns = axios.create({
 axiosIns.interceptors.request.use((config) => {
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
     const token = localStorage.getItem('token')
-    if(token && token != config.headers['X-Token']) {
+    if (token && token != config.headers['X-Token']) {
         config.headers['X-Token'] = token
     }
     if (['/order/excelOrder', '/order/excelPayOut'].indexOf(config.url) > -1) {
@@ -28,33 +28,33 @@ axiosIns.interceptors.request.use((config) => {
 
 axiosIns.interceptors.response.use((response) => {
     const data = response.data
-    if(['/v1/order/excelOrder', '/v1/order/excelPayOut'].indexOf(response.config.url) > -1){
+    if (['/v1/order/excelOrder', '/v1/order/excelPayOut'].indexOf(response.config.url) > -1) {
         return data
     }
-    if(data.data?.token){
-        localStorage.setItem('token',data.data?.tokenHead + data.data?.token)
+    if (data.data?.token) {
+        localStorage.setItem('token', data.data?.tokenHead + data.data?.token)
     }
-    if(data && data.code != 0 && data.code != 2001){
+    if (data && data.code != 0 && data.code != 2001) {
         try {
-            if(data.image || data.length > 0 || data.buttonText){
+            if (data.image || data.length > 0 || data.buttonText) {
                 return data
             }
             Message({
                 showClose: true,
                 message: data.message,
                 type: 'error'
-              })
+            })
             return data
         } catch (error) {
             return data
         }
     }
-    if(data.code == 2001){
+    if (data.code == 2001) {
         Message({
             showClose: true,
             message: '请重新登录！',
             type: 'warning'
-          })
+        })
         sessionStorage.clear()
         // store.commit('user/update_user', {})
         router.push('/login')
@@ -62,13 +62,13 @@ axiosIns.interceptors.response.use((response) => {
     }
     return data
 },
-err => {
-    Message({
-        showClose: true,
-        message: err,
-        type: 'error'
-    })
-}
+    err => {
+        Message({
+            showClose: true,
+            message: err,
+            type: 'error'
+        })
+    }
 )
 
 const utilsApi = {
@@ -77,7 +77,7 @@ const utilsApi = {
 
 const toFormData = (obj) => {
     let data = new FormData()
-    for(let i in obj){
+    for (let i in obj) {
         data.append(i, obj[i])
     }
     return data
@@ -86,62 +86,62 @@ const toFormData = (obj) => {
 const formatParams = (obj) => {
     const str = [];
     Object.keys(obj).sort().forEach((key) => {
-      if (obj.hasOwnProperty(key) && obj[key] && obj[key]) {
-        str.push(key + '=' + obj[key])
-      }
+        if (obj.hasOwnProperty(key) && obj[key] && obj[key]) {
+            str.push(key + '=' + obj[key])
+        }
     });
     return str.join('&')
 }
 
 //上传图片地址
-utilsApi.uploadImgUrl =  '/file/uploadImage'
+utilsApi.uploadImgUrl = '/file/uploadImage'
 
 //图片地址
-utilsApi.imgUrl =  process.env.NODE_ENV === 'production' ?   'https://api.qg-pay.com/image/' : 'http://8.218.2.19:8000/image/'
+utilsApi.imgUrl = process.env.NODE_ENV === 'production' ? 'https://api.qg-pay.com/image/' : 'http://8.218.2.19:8000/image/'
 
-function encryptRSABL (prik, str) {
+function encryptRSABL(prik, str) {
     console.log(str)
     let encryptString = Buffer.from(str)
-    let result = []    
-    let inputLen = encryptString.length    
-    let offSet = 0    
-    let length = 117    
-    let i = 0    
-    while (inputLen - offSet > 0) {        
-        let cache = ''        
-        if (inputLen - offSet > length) { 
-            cache = crypto.privateEncrypt(prik, encryptString.slice(offSet, (offSet + length))) 
+    let result = []
+    let inputLen = encryptString.length
+    let offSet = 0
+    let length = 117
+    let i = 0
+    while (inputLen - offSet > 0) {
+        let cache = ''
+        if (inputLen - offSet > length) {
+            cache = crypto.privateEncrypt(prik, encryptString.slice(offSet, (offSet + length)))
         } else {
-            cache = crypto.privateEncrypt(prik, encryptString.slice(offSet, (offSet + (inputLen - offSet))))        
-        }        
-        cache.forEach(o => { result.push(o)        })
-        i++        
-        offSet = i * length    
-    }    
+            cache = crypto.privateEncrypt(prik, encryptString.slice(offSet, (offSet + (inputLen - offSet))))
+        }
+        cache.forEach(o => { result.push(o) })
+        i++
+        offSet = i * length
+    }
     return base64url.fromBase64(new Buffer.from(result).toString('base64'))
 }
 //支付代付下单签名
-utilsApi.sign = function (data,rsaPrivate) {
+utilsApi.sign = function (data, rsaPrivate) {
     let formatData = formatParams(data)
     let rsaPri = rsaPrivate ? `-----BEGIN PRIVATE KEY-----\n${rsaPrivate}\n-----END PRIVATE KEY-----` : sysRsaPrivate
-    return encryptRSABL(rsaPri ,formatData)
+    return encryptRSABL(rsaPri, formatData)
 }
 
 //登录
 utilsApi.login = async (params) => {
-    let reslut = await axiosIns.post("/adminUser/login",params)
+    let reslut = await axiosIns.post("/adminUser/login", params)
     return reslut
 }
 
 //修改密码
 utilsApi.updatePassword = async (params) => {
-    let reslut = await axiosIns.post("/adminUser/updatePassword",params)
+    let reslut = await axiosIns.post("/adminUser/updatePassword", params)
     return reslut
 }
 
 //获取一个谷歌验证器
 utilsApi.genSecret = async (params) => {
-    let reslut = await axiosIns.get("/adminUser/genSecret",params)
+    let reslut = await axiosIns.get("/adminUser/genSecret", params)
     return reslut
 }
 
@@ -160,7 +160,7 @@ utilsApi.userInfo = async (params) => {
 
 //绑定谷歌验证器
 utilsApi.bindGooleAuth = async (params) => {
-    let reslut = await axiosIns.post("/adminUser/bindGooleAuth",toFormData(params))
+    let reslut = await axiosIns.post("/adminUser/bindGooleAuth", toFormData(params))
     return reslut
 }
 
@@ -172,14 +172,14 @@ utilsApi.sendCode = async (params) => {
 
 //退出登录
 utilsApi.logout = async (params) => {
-    let reslut = await axiosIns.get("/adminUser/logout",params)
+    let reslut = await axiosIns.get("/adminUser/logout", params)
     return reslut
 }
 
 //---------------------------------首页--------------------------------
 //统计今日代收代付情况
 utilsApi.todayData = async (params) => {
-    let reslut = await axiosIns.get("/index/todayData",params)
+    let reslut = await axiosIns.get("/index/todayData", params)
     return reslut
 }
 
@@ -193,25 +193,25 @@ utilsApi.timeStatistics = async (params) => {
 
 //查询线下流水
 utilsApi.offlineRecordPage = async (params) => {
-    let reslut = await axiosIns.post("/offlineRecord/pageAll",params)
+    let reslut = await axiosIns.post("/offlineRecord/pageAll", params)
     return reslut
 }
 
 //新增
 utilsApi.offlineRecordSave = async (params) => {
-    let reslut = await axiosIns.post("/offlineRecord/save",params)
+    let reslut = await axiosIns.post("/offlineRecord/save", params)
     return reslut
 }
 
 //修改
 utilsApi.offlineRecordUpdate = async (params) => {
-    let reslut = await axiosIns.post("/offlineRecord/update",params)
+    let reslut = await axiosIns.post("/offlineRecord/update", params)
     return reslut
 }
 
 //删除
 utilsApi.offlineRecordDel = async (params) => {
-    let reslut = await axiosIns.post("/offlineRecord/del",toFormData(params))
+    let reslut = await axiosIns.post("/offlineRecord/del", toFormData(params))
     return reslut
 }
 
@@ -219,19 +219,19 @@ utilsApi.offlineRecordDel = async (params) => {
 
 //查询用户拥有的权限
 utilsApi.getPermission = async (params) => {
-    let reslut = await axiosIns.get("/adminUser/permission",params)
+    let reslut = await axiosIns.get("/adminUser/permission", params)
     return reslut
 }
 
 //查询所有的权限
 utilsApi.getAllPermission = async (params) => {
-    let reslut = await axiosIns.get("/permission/getAll",params)
+    let reslut = await axiosIns.get("/permission/getAll", params)
     return reslut
 }
 
 //新增或者修改权限
 utilsApi.updatePermission = async (params) => {
-    let reslut = await axiosIns.post("/permission/save",params)
+    let reslut = await axiosIns.post("/permission/save", params)
     return reslut
 }
 
@@ -251,7 +251,7 @@ utilsApi.getRoles = async (params) => {
 
 //新增修改角色
 utilsApi.updateRole = async (params) => {
-    let reslut = await axiosIns.post("/adminRole/save",params)
+    let reslut = await axiosIns.post("/adminRole/save", params)
     return reslut
 }
 
@@ -271,13 +271,13 @@ utilsApi.delRole = async (params) => {
 
 //查询用户
 utilsApi.getUsers = async (params) => {
-    let reslut = await axiosIns.post("/adminUser/getAllPage",params)
+    let reslut = await axiosIns.post("/adminUser/getAllPage", params)
     return reslut
 }
 
 //新增修改用户
 utilsApi.updateUser = async (params) => {
-    let reslut = await axiosIns.post("/adminUser/save",params)
+    let reslut = await axiosIns.post("/adminUser/save", params)
     return reslut
 }
 
@@ -289,7 +289,7 @@ utilsApi.getAllRoles = async (params) => {
 
 //重置用户密码
 utilsApi.resetUser = async (params) => {
-    let reslut = await axiosIns.post("/adminUser/reset",params)
+    let reslut = await axiosIns.post("/adminUser/reset", params)
     return reslut
 }
 
@@ -309,13 +309,13 @@ utilsApi.dictionaryFindPage = async (params) => {
 
 //新增修改字典
 utilsApi.updateDictionary = async (params) => {
-    let reslut = await axiosIns.post("/dictionary/save",params)
+    let reslut = await axiosIns.post("/dictionary/save", params)
     return reslut
 }
 
 //删除字典
 utilsApi.delDictionary = async (params) => {
-    let reslut = await axiosIns.post("/dictionary/del" , toFormData(params))
+    let reslut = await axiosIns.post("/dictionary/del", toFormData(params))
     return reslut
 }
 
@@ -331,19 +331,19 @@ utilsApi.agencyFindAll = async (params) => {
 
 //查询
 utilsApi.agencyPage = async (params) => {
-    let reslut = await axiosIns.post("/agency/page" , params)
+    let reslut = await axiosIns.post("/agency/page", params)
     return reslut
 }
 
 //新增
 utilsApi.saveAgency = async (params) => {
-    let reslut = await axiosIns.post("/agency/save",params)
+    let reslut = await axiosIns.post("/agency/save", params)
     return reslut
 }
 
 //修改通道状态
 utilsApi.updateStatusAgency = async (params) => {
-    let reslut = await axiosIns.post("/agency/updateStatus",params)
+    let reslut = await axiosIns.post("/agency/updateStatus", params)
     return reslut
 }
 
@@ -531,7 +531,7 @@ utilsApi.getMerchantByBusiness = async (params) => {
 
 //修改代理商费率
 utilsApi.updateAgentBusinessRate = async (params) => {
-    let reslut = await axiosIns.post("/agent/updateBusinessRate",params)
+    let reslut = await axiosIns.post("/agent/updateBusinessRate", params)
     return reslut
 }
 
@@ -557,13 +557,13 @@ utilsApi.merchantUpdate = async (params) => {
 
 //修改商户业务的状态
 utilsApi.updateBusinessStatus = async (params) => {
-    let reslut = await axiosIns.post("/merchant/updateBusinessStatus",  toFormData(params))
+    let reslut = await axiosIns.post("/merchant/updateBusinessStatus", toFormData(params))
     return reslut
 }
 
 //修改商户状态
 utilsApi.updateMerchantStatus = async (params) => {
-    let reslut = await axiosIns.post("/merchant/updateMerchantStatus",  toFormData(params))
+    let reslut = await axiosIns.post("/merchant/updateMerchantStatus", toFormData(params))
     return reslut
 }
 
@@ -587,25 +587,25 @@ utilsApi.findMerchantRate = async (params) => {
 
 //重置登录密码
 utilsApi.resetLogPassword = async (params) => {
-    let reslut = await axiosIns.post("/merchant/resetLogPassword",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/resetLogPassword", toFormData(params))
     return reslut
 }
 
 //重置支付密码
 utilsApi.resetPayPassword = async (params) => {
-    let reslut = await axiosIns.post("/merchant/resetPayPassword",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/resetPayPassword", toFormData(params))
     return reslut
 }
 
 //安全校验
 utilsApi.ipVerify = async (params) => {
-    let reslut = await axiosIns.post("/merchant/ipVerify",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/ipVerify", toFormData(params))
     return reslut
 }
 
 //清除谷歌验证
 utilsApi.clearMercahntGoolAuth = async (params) => {
-    let reslut = await axiosIns.post("/merchant/clearMercahntGoolAuth",toFormData(params))
+    let reslut = await axiosIns.post("/merchant/clearMercahntGoolAuth", toFormData(params))
     return reslut
 }
 
@@ -656,13 +656,13 @@ utilsApi.singleOrder = async (params) => {
 
 //完成代付订单
 utilsApi.finishPayOut = async (params) => {
-    let reslut = await axiosIns.post("/order/finishPayOut",toFormData(params))
+    let reslut = await axiosIns.post("/order/finishPayOut", toFormData(params))
     return reslut
 }
 
 //完成代收订单
 utilsApi.finishOrder = async (params) => {
-    let reslut = await axiosIns.post("/order/finishOrder",toFormData(params))
+    let reslut = await axiosIns.post("/order/finishOrder", toFormData(params))
     return reslut
 }
 
@@ -674,13 +674,13 @@ utilsApi.payOutNotify = async (params) => {
 
 //代收订单统计
 utilsApi.orderStatistic = async (params) => {
-    let reslut = await axiosIns.post("/order/orderStatistic",params)
+    let reslut = await axiosIns.post("/order/orderStatistic", params)
     return reslut
 }
 
 //代付订单统计
 utilsApi.payOutStatistic = async (params) => {
-    let reslut = await axiosIns.post("/order/payOutStatistic",params)
+    let reslut = await axiosIns.post("/order/payOutStatistic", params)
     return reslut
 }
 
