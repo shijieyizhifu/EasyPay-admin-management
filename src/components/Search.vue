@@ -137,11 +137,17 @@ import utilsApi from '@/utils/utilsApi'
       async countData() {
         this.showCount = true
         this.showCountLoading = true
+        let searchObj = JSON.parse(JSON.stringify(this.searchObj()))
+        if(searchObj.date && searchObj.date.length > 0 && searchObj.date[0]){
+            searchObj.startTime = new Date(searchObj.date[0]).getTime()
+            searchObj.endTime = new Date(searchObj.date[1]).getTime()
+            delete searchObj.date
+        }
         let res
         if(this.type == 'pay'){
-          res = await utilsApi.orderStatistic(this.searchObj())
+          res = await utilsApi.orderStatistic(searchObj)
         }else if(this.type == 'payOut'){
-          res = await utilsApi.payOutStatistic(this.searchObj())
+          res = await utilsApi.payOutStatistic(searchObj)
         }
         if(res.code == 0){
           this.countList = res.data
