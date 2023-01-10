@@ -43,12 +43,11 @@ export default {
   },
   watch: {
     countData: {
-      handler: ()=>{
-        if(this?.chart){
-          this.setOption()
-        }
+      handler: function(){
+        this.setOption(this.countData)
       },
-      deep: true
+      deep: true,
+      immediate: false
     }
   },
   mounted() {
@@ -65,10 +64,12 @@ export default {
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-      this.setOption()
+      if(!this?.chart){
+          this.chart = echarts.init(this.$el, 'macarons')
+      }
+      this.setOption(this.countData)
     },
-    setOption(){
+    setOption(countData){
       this.chart.setOption({
         title: [
           {
@@ -93,14 +94,14 @@ export default {
             radius: [15, 165],
             center: ['50%', '48%'],
             data: [
-              { value: this.countData.success || 0, name: '成功订单数' },
-              { value: this.countData.total - this.countData.success || 0, name: '失败订单数' },
+              { value: countData.success || 0, name: '成功订单数' },
+              { value: countData.total - countData.success || 0, name: '失败订单数' },
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }
         ]
-      })
+      },true)
     }
   }
 }
