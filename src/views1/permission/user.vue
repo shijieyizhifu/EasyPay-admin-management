@@ -76,7 +76,7 @@
   
       <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
   
-      <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
             <el-form-item :label="'用户名'" prop="username">
                 <el-input v-model="temp.username" :disabled="dialogStatus==='编辑'"/>

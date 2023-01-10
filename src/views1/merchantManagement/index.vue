@@ -113,7 +113,7 @@
                 </el-button>
               </el-row>
         </div>
-      <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item  :label="'代理商'" required :prop="'agentCode'" :rules="formRules({key: 'agentCode',type: 'select',label: '代理商',required: true})">
                 <el-select  filterable  v-model="temp.agentCode" :placeholder="'代理商'" >
@@ -138,7 +138,7 @@
           </el-button>
         </div>
       </el-dialog>
-      <el-dialog :title="dialogStatus1" :visible.sync="dialogFormVisible1">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus1" :visible.sync="dialogFormVisible1">
         <el-form ref="dataForm1" :model="temp1" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
             <div v-for="item,index in merchantRate" :key="index">
                 <el-alert
@@ -165,7 +165,7 @@
           </el-button>
         </div>
       </el-dialog>
-      <el-dialog title="安全校验" :visible.sync="ipVerifyDialog" center>
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' title="安全校验" :visible.sync="ipVerifyDialog" center>
         <el-form ref="dataForm2" :model="temp2" :rules="rules2" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item label="开启/关闭" prop="ipVerify">
                 <el-select v-model="temp2.ipVerify" filterable placeholder="请选择">
@@ -203,7 +203,7 @@
             </el-button>
         </div>
       </el-dialog>
-      <el-dialog :title="`解冻审核`" :visible.sync="dialogClearGooleAuth" center>
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="`解冻审核`" :visible.sync="dialogClearGooleAuth" center>
         <el-form ref="clearGooleAuthForm" :model="temp3" :rules="rules3" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
           <el-form-item :label="'邮箱验证码'" prop="emailCode" class="emailCode">
             <el-input  v-model="temp3.emailCode" placeholder="邮箱验证码">

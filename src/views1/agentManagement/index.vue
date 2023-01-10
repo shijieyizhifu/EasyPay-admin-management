@@ -106,7 +106,7 @@
                 </el-table>
             </div>
         </div>
-    <el-dialog :title="'新增'" :visible.sync="businessDialog">
+    <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="'新增'" :visible.sync="businessDialog">
         <el-form ref="dataForm" :model="business" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item  :label="'业务产品'"  prop="businessSelected" :rules="formRules({required: true, type: 'select', label: '业务产品'})">
                 <el-select  filterable v-model="business.businessSelected" :placeholder="'选择业务产品'">
@@ -125,7 +125,7 @@
             </el-button>
         </div>
       </el-dialog>
-      <el-dialog :title="'集群'" :visible.sync="bindMerchantDialog" width="750px" center>
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="'集群'" :visible.sync="bindMerchantDialog" width="750px" center>
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
           <el-tab-pane label="已绑定" name="1"></el-tab-pane>
           <el-tab-pane label="待绑定" name="2"></el-tab-pane>
@@ -168,7 +168,7 @@
             </el-button>
         </div>
       </el-dialog>
-      <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <div v-for="item,index in agent" :key="index">
                 <el-form-item v-if="item.key != 'code'"  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">
@@ -188,7 +188,7 @@
           </el-button>
         </div>
       </el-dialog>
-      <el-dialog :title="dialogStatus1" :visible.sync="dialogFormVisible1">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus1" :visible.sync="dialogFormVisible1">
         <el-form ref="dataForm1" :model="temp1" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
             <el-form-item  :label="'通道&商户'" required v-if="dialogStatus1 == '新增'">
                 <el-cascader ref="cascader" v-if="dialogFormVisible1"  :props="props"></el-cascader>

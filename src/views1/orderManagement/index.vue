@@ -76,7 +76,7 @@
   
       <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
   
-      <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:36px;">
             <el-form-item v-for="item,index in payOrder" :key="index" :label="item.label" :prop="item.key" :required="item.required" :rules="formRules(item)">
                 <el-input v-model="temp[item.key]" :disabled="dialogStatus==='编辑' && item.editDisabled"/>

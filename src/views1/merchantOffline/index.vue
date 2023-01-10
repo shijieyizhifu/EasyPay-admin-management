@@ -60,7 +60,7 @@
   
       <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
   
-      <el-dialog :title="'通过回U申请'" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="'通过回U申请'" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item  label="上游U的费率" prop="agencyUsdtRate">
               <el-input v-model="temp.agencyUsdtRate" placeholder="上游U的费率"/>
@@ -125,7 +125,7 @@
         </div>
       </el-dialog>
 
-      <el-dialog :title="'回U证明'" :visible.sync="imgDialog"  center width="408px">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="'回U证明'" :visible.sync="imgDialog"  center width="408px">
         <img
           width="360"
           :src="imgUrl"/>

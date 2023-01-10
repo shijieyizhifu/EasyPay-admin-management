@@ -35,7 +35,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
+    <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' title="修改密码" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
           <el-form-item :label="'旧密码'" prop="oldPassword">
               <el-input v-model="temp.oldPassword" />
@@ -53,7 +53,7 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog title="绑定谷歌验证器" :visible.sync="dialogFormGoogle">
+    <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' title="绑定谷歌验证器" :visible.sync="dialogFormGoogle">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="20px" style="width: 400px; margin-left:50px;">
           <div style="text-align: center;">
             <span>打开 Google Authenticator,扫描下方二维码或手动输入下方密钥,添加验证令牌。</span>

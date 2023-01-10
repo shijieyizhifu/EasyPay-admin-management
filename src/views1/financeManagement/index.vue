@@ -46,7 +46,7 @@
   
       <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
       
-      <el-dialog :title="`${currentRow.type == 'IN' ? '增加' : '减少'}余额审核`" :visible.sync="dialogFormVisible" center>
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="`${currentRow.type == 'IN' ? '增加' : '减少'}余额审核`" :visible.sync="dialogFormVisible" center>
           <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="140px" style="width: 400px; margin-left:36px;">
             <el-form-item :label="'邮箱验证码'" prop="emailCode" class="emailCode">
               <el-input  v-model="temp.emailCode" placeholder="邮箱验证码">

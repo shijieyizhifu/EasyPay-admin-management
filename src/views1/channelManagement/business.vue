@@ -75,7 +75,7 @@
                 </el-button>
               </el-row>
         </div>
-      <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <div v-for="item,index in platformBusiness" :key="index">
                 <el-form-item v-if="item.key != 'code'"  :label="item.label"  :prop="item.key" :required="item.required" :rules="formRules(item)">

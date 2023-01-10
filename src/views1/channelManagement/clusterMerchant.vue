@@ -152,7 +152,7 @@
           
               <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
         </div>
-      <el-dialog :title="dialogStatus" :visible.sync="dialogFormVisible">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :model="temp" :rules="clusterRules" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item :label="'集群名称'" prop="name">
                 <el-input style="width:198px;" v-model="temp.name" placeholder="集群名称"/>
@@ -176,7 +176,7 @@
           </el-button>
         </div>
       </el-dialog>
-      <el-dialog :title="dialogStatus1" :visible.sync="dialogFormVisible1">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="dialogStatus1" :visible.sync="dialogFormVisible1">
         <el-form ref="dataForm1" :model="temp1" :rules="clusterRules1" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
             <el-form-item :label="'商户'" prop="merchantCode">
                 <el-select v-model="temp1.merchantCode" class="filter-item" placeholder="商户">
@@ -193,7 +193,7 @@
           </el-button>
         </div>
       </el-dialog>
-      <el-dialog title="重置集群商户" :visible.sync="dialogFormVisible2" width="720px">
+      <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' title="重置集群商户" :visible.sync="dialogFormVisible2" width="720px">
         <div >
             <el-transfer
                 filterable

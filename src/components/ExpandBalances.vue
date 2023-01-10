@@ -36,7 +36,7 @@
           </template>
       </el-table-column>
     </el-table>
-    <el-dialog :title="showTitle(status)" :visible.sync="dialogFormVisible" center>
+    <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :title="showTitle(status)" :visible.sync="dialogFormVisible" center>
       <el-form ref="dataForm" :model="temp" :rules="rules" label-position="left" label-width="120px" style="width: 400px; margin-left:36px;">
           <el-form-item :label="showTitle(status)" prop="amount">
               <el-input  v-model="temp.amount" placeholder="金额">
@@ -44,7 +44,7 @@
               </el-input>
           </el-form-item>
           <el-form-item :label="'备注'">
-              <el-input  v-model="temp.remark" :maxlength='200' placeholder="备注"/>
+              <el-input type="textarea"  v-model="temp.remark" :maxlength='200' placeholder="备注"/>
           </el-form-item>
           <el-form-item :label="'谷歌验证码'" prop="verifCode">
             <el-input  v-model="temp.verifCode" placeholder="谷歌验证码"/>

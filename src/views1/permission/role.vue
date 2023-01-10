@@ -39,7 +39,7 @@
 
     <pagination style="margin-top:0" v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getRoles" />
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'修改角色':'新增角色'">
+    <el-dialog :close-on-click-modal='false'  :close-on-press-escape='false' :visible.sync="dialogVisible" :title="dialogType==='edit'?'修改角色':'新增角色'">
       <el-form :model="role" label-width="80px" label-position="left">
         <el-form-item label="角色名字">
           <el-input v-model="role.name" placeholder="角色名字" />
