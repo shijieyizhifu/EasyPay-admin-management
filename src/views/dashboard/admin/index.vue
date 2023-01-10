@@ -122,10 +122,11 @@ export default {
   },
   created() {
     this.getTodayData()
+    this.handleFilter()
     this.timer = setInterval(()=>{
+      this.handleFilter()
       this.getTodayData()
     },10000)
-    this.handleFilter()
   },
   beforeDestroy() {
     clearInterval(this.timer)
