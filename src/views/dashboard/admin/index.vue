@@ -121,6 +121,7 @@ export default {
     }
   },
   created() {
+    this.getTodayData()
     this.timer = setInterval(()=>{
       this.getTodayData()
     },10000)
