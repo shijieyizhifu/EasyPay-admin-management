@@ -381,6 +381,11 @@ export const ChannelMerchantRate = [
         key: 'rate',
         value: '',
         required: true,
+    },{
+        label: '每笔固定手续费',
+        key: 'fee',
+        value: '-1',
+        required: true,
     },
     // {
     //     label: '状态',
@@ -396,12 +401,7 @@ export const ChannelMerchantRate = [
         key: 'mixFee',
         value: '-1',
         required: true,
-    }, {
-        label: '每笔固定手续费',
-        key: 'fee',
-        value: '-1',
-        required: true,
-    }, {
+    },  {
         label: '最高手续费',
         key: 'maxFee',
         value: '-1',
@@ -484,16 +484,16 @@ export const agentRate = [
         value: '',
         required: true,
     }, {
-        label: '最低手续费',
-        key: 'mixFee',
-        value: '-1',
-        required: true,
-    }, {
         label: '每笔固定手续费',
         key: 'fee',
         value: '-1',
         required: true,
-    }, {
+    },{
+        label: '最低手续费',
+        key: 'mixFee',
+        value: '-1',
+        required: true,
+    },  {
         label: '最高手续费',
         key: 'maxFee',
         value: '-1',
@@ -636,16 +636,16 @@ export const merchantRate = [
         value: '',
         required: true,
     }, {
-        label: '最低手续费',
-        key: 'mixFee',
-        value: '-1',
-        required: true,
-    }, {
         label: '每笔固定手续费',
         key: 'fee',
         value: '-1',
         required: true,
-    }, {
+    },{
+        label: '最低手续费',
+        key: 'mixFee',
+        value: '-1',
+        required: true,
+    },  {
         label: '最高手续费',
         key: 'maxFee',
         value: '-1',
