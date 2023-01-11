@@ -973,6 +973,7 @@ export const adjustAccountsList = [
     }, {
         label: '备注',
         key: 'remake',
+        width: '200px',
         value: '',
     }, {
         label: '状态',
