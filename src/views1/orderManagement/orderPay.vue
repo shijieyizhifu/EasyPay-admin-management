@@ -70,7 +70,7 @@
                 </el-result>
                 <el-result icon="error" v-if="msg.indexOf('失败') >= 0">
                 </el-result>
-                <div style="width:80%" v-html="msg.replaceAll(',',',<br>')"></div>
+                <div class="result" style="width:80%" v-html="msg.replaceAll(',',',<br>').replace('\http','http')"></div>
             </el-card>
         </el-col>
     </el-row>
@@ -140,8 +140,8 @@ export default {
                         let res = await utilsApi.orderPay(data)
                         this.loading = false
                         if(res.code == 0){
-                            res.data.orderData = `<el-link href="${res.data.orderData}" type="success" target="_blank">${res.data.orderData}</el-link>`
-                            this.msg = '下单成功：,'+JSON.stringify(res.data)
+                            res.data.orderData = `<a class='el-link el-link--primary' href=${res.data.orderData} target=_blank>${res.data.orderData}</a>`
+                            this.msg = '下单成功：,'+(JSON.stringify(res.data)).replaceAll('"','')
                         }else{
                             this.msg = '下单失败：,'+res.message
                         }
