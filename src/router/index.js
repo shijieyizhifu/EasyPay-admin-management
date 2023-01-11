@@ -161,7 +161,7 @@ export const asyncRoutes = [
         path: 'orderPay',
         component: () => import('@/views1/orderManagement/orderPay'),
         name: 'OrderPay',
-        meta: { title: '支付下单' }
+        meta: { title: '代收下单' }
       },
       {
         path: 'singleOrder',

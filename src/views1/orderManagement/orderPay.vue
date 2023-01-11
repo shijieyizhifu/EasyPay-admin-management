@@ -140,6 +140,7 @@ export default {
                         let res = await utilsApi.orderPay(data)
                         this.loading = false
                         if(res.code == 0){
+                            res.data.orderData = `<el-link href="${res.data.orderData}" type="success" target="_blank">${res.data.orderData}</el-link>`
                             this.msg = '下单成功：,'+JSON.stringify(res.data)
                         }else{
                             this.msg = '下单失败：,'+res.message

@@ -642,7 +642,7 @@ utilsApi.excelPayOut = async (params) => {
     return reslut
 }
 
-//支付下单
+//代收下单
 utilsApi.orderPay = async (params) => {
     let reslut = await axiosIns.post("/orderPay", params)
     return reslut
