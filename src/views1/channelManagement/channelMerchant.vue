@@ -2,11 +2,11 @@
     <div class="app-container">
         <div v-if="type != 'business'">
             <div class="filter-container">
-                <search :searchFields='ChannelMerchant' @searchData='handleFilter' @addData='handleCreate'/>
+                <search :searchFields='ChannelMerchant'  @searchData='handleFilter' @addData='handleCreate'/>
               </div>
           
               <el-table
-                style="width:911px"
+                style="width:886px"
                 :key="tableKey"
                 v-loading="listLoading"
                 :data="list"
@@ -15,8 +15,11 @@
                 highlight-current-row
               >
               <!-- @sort-change="sortChange" -->
-                <el-table-column :label="$t('table.id')" type="index"  align="center" width="80" >
-                </el-table-column>
+              <el-table-column type="expand" label="余额" width="55">
+                <template slot-scope="{row}">
+                  <expandBalances :row="row" type="ChannelMerchant"></expandBalances>
+                </template>
+              </el-table-column>
                 <template v-for="item in ChannelMerchant" >
                     <el-table-column :key="item.label" v-if="!['md5Private', 'rsaPrivate', 'rsaPublic', 'agencyPublic'].includes(item.key)"   :label="item.label" :width="item.width || '120px'" align="center">
                         <template slot-scope="{row}">
@@ -153,11 +156,12 @@
   import utilsApi from '@/utils/utilsApi'
   import moment from 'moment'
   import Search from '@/components/Search'
+  import ExpandBalances from '@/components/ExpandBalances'
   import { ChannelMerchant, formRules, ChannelMerchantRate } from '@/utils/table'
   
   export default {
     name: 'ChannelMerchant',
-    components: { Pagination, Search },
+    components: { Pagination, Search, ExpandBalances },
     data() {
       return {
         buttonLoading: false,

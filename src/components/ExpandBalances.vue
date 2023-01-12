@@ -1,13 +1,15 @@
 <template>
 <div>
-    <el-table :data="list" border fit v-loading="loading" style="width: 661px;margin-left: 56px;">
+    <el-table :data="list" border fit v-loading="loading" :style="{width: type != 'ChannelMerchant' ? '661px' : '371px',marginLeft: '56px'}">
         <el-table-column prop="currency" label="币种" width="120">
         </el-table-column>
         <el-table-column prop="balance" label="余额" width="120">
         </el-table-column>
-        <el-table-column prop="freeze" width="120" label="冻结余额">
+        <el-table-column prop="freeze" v-if="type != 'ChannelMerchant'" width="120" label="冻结余额">
         </el-table-column>
-        <el-table-column width="300" align="center" label="操作">
+        <el-table-column prop="freeBalance" v-else width="130" label="冻结/未结算余额">
+        </el-table-column>
+        <el-table-column width="300" align="center" label="操作" v-if="type != 'ChannelMerchant'">
             <template slot-scope="{row}">
                 <div>
                     <el-button type="success" size="mini" @click="accountFreeze(row, 'UNFREEZE')">解冻</el-button>
@@ -119,9 +121,16 @@ export default {
                 return
             }
             this.loading = true
-            let res = await utilsApi.searchBalances({
-                code: this.row.merchantCode || this.row.code
-            })
+            let res
+            if(this.type == 'ChannelMerchant'){
+                res =  await utilsApi.agencyMerchantFindBalance({
+                    id: this.row.id
+                })
+            }else{
+                res = await utilsApi.searchBalances({
+                    code: this.row.merchantCode || this.row.code
+                })
+            }
             this.loading = false
             this.list = res.data
         },

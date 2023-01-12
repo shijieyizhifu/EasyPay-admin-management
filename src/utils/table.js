@@ -106,6 +106,11 @@ export const tradingChannel = [
         required: true,
         width: '140px'
     }, {
+        label: '查询余额地址',
+        key: 'findBalanceUrl',
+        value: '',
+        width: '140px'
+    }, {
         label: '通知ip检验',
         key: 'notifyIps',
         value: '',

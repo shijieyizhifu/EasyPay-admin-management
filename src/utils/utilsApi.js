@@ -449,6 +449,12 @@ utilsApi.agencyMerchantPage = async (params) => {
     return reslut
 }
 
+//查询机构商户余额
+utilsApi.agencyMerchantFindBalance = async (params) => {
+    let reslut = await axiosIns.get("/agencyMerchant/findBalance?" + formatParams(params))
+    return reslut
+}
+
 //新增修改通道商户
 utilsApi.saveAgencyMerchant = async (params) => {
     let reslut = await axiosIns.post("/agencyMerchant/save", params)
