@@ -115,7 +115,6 @@ export const tradingChannel = [
         key: 'notifyIps',
         value: '',
         type: 'textarea',
-        required: true,
         width: '140px'
     }, {
         label: '备注',
