@@ -61,7 +61,7 @@
                         <span >{{ moment(row.createdTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column :label="'操作'" fixed="right" align="center" width="240" class-name="small-padding fixed-width">
+                <el-table-column :label="'操作'"  align="center" width="240" class-name="small-padding fixed-width">
                   <template slot-scope="{row}">
                     <!-- <el-button type="success" v-if="row.status == 'N'" size="mini" @click="handleStatus(row,'Y')">
                         启用

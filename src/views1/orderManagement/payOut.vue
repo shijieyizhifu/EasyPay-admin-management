@@ -270,23 +270,13 @@
         });
       },
       payOutNotify(row) {
-        let user = JSON.parse(sessionStorage.getItem('user'))
-        if(!user.is_auth){
-          this.$notify({
-                    title: '警告',
-                    message: '请先去右上角绑定谷歌验证器，再进行该操作！',
-                    type: 'warning',
-                    duration: 2000
-                })
-            return
-        }
-        this.$prompt('请输入谷歌验证码', '补发通知', {
+        this.$alert('确定补发通知吗？', '通知', {
           confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /^\d{6}$/,
-          inputErrorMessage: '请输入谷歌验证码'
-        }).then(async ({ value }) => {
-          let res = await utilsApi.payOutNotify({id: row.id,verifCode: value})
+          callback: async action => {
+            if(action != 'confirm'){
+                return
+            }
+            let res = await utilsApi.payOutNotify({id: row.id})
             if(res.code == 0){
                 this.$notify({
                     title: '成功',
@@ -294,8 +284,36 @@
                     type: 'success',
                     duration: 2000
                 })
+                this.getList()
             }
-        })
+          }
+        });
+        // let user = JSON.parse(sessionStorage.getItem('user'))
+        // if(!user.is_auth){
+        //   this.$notify({
+        //             title: '警告',
+        //             message: '请先去右上角绑定谷歌验证器，再进行该操作！',
+        //             type: 'warning',
+        //             duration: 2000
+        //         })
+        //     return
+        // }
+        // this.$prompt('请输入谷歌验证码', '补发通知', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   inputPattern: /^\d{6}$/,
+        //   inputErrorMessage: '请输入谷歌验证码'
+        // }).then(async ({ value }) => {
+        //   let res = await utilsApi.payOutNotify({id: row.id,verifCode: value})
+        //     if(res.code == 0){
+        //         this.$notify({
+        //             title: '成功',
+        //             message: '补发通知成功',
+        //             type: 'success',
+        //             duration: 2000
+        //         })
+        //     }
+        // })
       },
       finishPayOut(row,status) {
         let user = JSON.parse(sessionStorage.getItem('user'))
